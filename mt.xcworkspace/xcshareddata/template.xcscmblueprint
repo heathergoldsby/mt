@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DD94F048C98556D3C12A5F11A703963E031E5922",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DD94F048C98556D3C12A5F11A703963E031E5922" : 9223372036854775807,
+    "F4E43731183036190F477CF4C99425A6516F08D2" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "55FC4908-B9ED-4799-B254-61BDCEE81D6F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DD94F048C98556D3C12A5F11A703963E031E5922" : "mt\/",
+    "F4E43731183036190F477CF4C99425A6516F08D2" : "ealib\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "template",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "template.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dknoester\/ealib-project.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DD94F048C98556D3C12A5F11A703963E031E5922"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:dknoester\/ealib.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F4E43731183036190F477CF4C99425A6516F08D2"
+    }
+  ]
+}

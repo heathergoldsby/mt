@@ -139,7 +139,7 @@ typedef digital_evolution
 , recombination::asexual
 , round_robin
 , multibirth_selfrep_not_remote_ancestor
-, empty_facing_neighbor
+, empty_neighbor
 , dont_stop
 , generate_single_ancestor
 > sea_type;

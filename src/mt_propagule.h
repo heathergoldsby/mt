@@ -63,8 +63,6 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
         hw.replicated_soft_reset();
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
-            // set rest to zero
-            put<GROUP_RESOURCE_UNITS>(0.0, ea);
             // raise flag
             put<DIVIDE_REMOTE>(1, ea);
         }
@@ -107,9 +105,7 @@ DIGEVO_INSTRUCTION_DECL(h_alt_divide) {
         // remote = 0; local = 1.
         if(get<DIVIDE_ALT>(ea, 0) == 0) {
             if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
-                // set rest to zero
-                put<GROUP_RESOURCE_UNITS>(0.0, ea);
-                // raise flag
+                // set rest to zero                // raise flag
                 put<DIVIDE_REMOTE>(1, ea);
             }
             put<DIVIDE_ALT>(1,ea);
@@ -223,7 +219,8 @@ struct mt_propagule : end_of_update_event<MEA> {
                     
                     // reset parent multicell
                     i->resources().reset();
-                    put<GROUP_RESOURCE_UNITS>(0,*i);
+                    int res_amt = get<GROUP_RESOURCE_UNITS>(*i) - get<GROUP_REP_THRESHOLD>(*i, 0.0);
+                    put<GROUP_RESOURCE_UNITS>(res_amt,*i);
                     put<MULTICELL_REP_TIME>(0,*i);
                     put<DIVIDE_REMOTE>(0,*i);
                     

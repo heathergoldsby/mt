@@ -202,6 +202,8 @@ struct mt_propagule : end_of_update_event<MEA> {
 
                             
                             p->insert(p->end(), q);
+                            p->resources().reset();
+
                             
                             ++num_moved;
                             

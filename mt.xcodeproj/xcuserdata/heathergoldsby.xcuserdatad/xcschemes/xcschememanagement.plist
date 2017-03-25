@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>18</integer>
 		</dict>
+		<key>mt.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>21</integer>
+		</dict>
 		<key>template-all-ones.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -28,6 +33,11 @@
 			<true/>
 		</dict>
 		<key>42F4EE5B16AEE80D000123A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>481EFFBE1E86F165006786A5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

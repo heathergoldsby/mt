@@ -14,3 +14,11 @@ exe ts_mt :
     ;
 
 install dist : ts_mt : <location>$(HOME)/bin ;
+
+exe mt :
+src/mt.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt : <location>$(HOME)/bin ;

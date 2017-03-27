@@ -77,6 +77,7 @@
 		42F4EE6616AEE80D000123A4 /* mt-all-ones */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mt-all-ones"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F4EE6916AEE845000123A4 /* all_ones.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = all_ones.cpp; sourceTree = "<group>"; };
 		481EFFC71E86F165006786A5 /* mt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mt; sourceTree = BUILT_PRODUCTS_DIR; };
+		48BA62311E89663800FF91C4 /* mt_propagule_orig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mt_propagule_orig.h; sourceTree = "<group>"; };
 		48BD95071E8559F700C7B0EA /* mt_propagule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mt_propagule.h; sourceTree = "<group>"; };
 		48BD95081E8559F700C7B0EA /* mt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt.cpp; sourceTree = "<group>"; };
 		48BD95091E8559F700C7B0EA /* multi_birth_selfrep_not_remote_ancestor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_birth_selfrep_not_remote_ancestor.h; sourceTree = "<group>"; };
@@ -149,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				48BD95071E8559F700C7B0EA /* mt_propagule.h */,
+				48BA62311E89663800FF91C4 /* mt_propagule_orig.h */,
 				48BD95081E8559F700C7B0EA /* mt.cpp */,
 				48BD95091E8559F700C7B0EA /* multi_birth_selfrep_not_remote_ancestor.h */,
 				48BD950A1E8559F700C7B0EA /* ts_replication_propagule.h */,

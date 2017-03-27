@@ -22,3 +22,12 @@ src/mt.cpp
 ;
 
 install dist : mt : <location>$(HOME)/bin ;
+
+
+exe mt_lr :
+src/mt_lr.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr : <location>$(HOME)/bin ;

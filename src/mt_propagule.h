@@ -103,15 +103,15 @@ DIGEVO_INSTRUCTION_DECL(h_alt_divide) {
         hw.replicated_soft_reset();
         
         // remote = 0; local = 1.
-        if(get<DIVIDE_ALT>(ea, 0) == 0) {
+        if(get<DIVIDE_ALT>(*p, 0) == 0) {
             if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
                 // set rest to zero                // raise flag
                 put<DIVIDE_REMOTE>(1, ea);
+                put<DIVIDE_ALT>(1,*p);
             }
-            put<DIVIDE_ALT>(1,ea);
         } else {
             replicate(p, offr, ea);
-            put<DIVIDE_ALT>(0,ea);
+            put<DIVIDE_ALT>(0,*p);
         }
         
     }

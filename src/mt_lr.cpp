@@ -71,7 +71,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<jump_head>(ea);
         append_isa<is_neighbor>(ea);
         append_isa<h_divide_remote>(ea);
-        append_isa<h_alt_divide>(ea);
+        append_isa<h_divide_multicell>(ea);
         
         add_event<task_resource_consumption>(ea);
         add_event<task_switching_cost>(ea);

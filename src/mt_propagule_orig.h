@@ -127,6 +127,49 @@ DIGEVO_INSTRUCTION_DECL(h_alt_divide) {
 
 
 
+/* Divide remote only works if there are enough resources... */
+DIGEVO_INSTRUCTION_DECL(h_divide_multicell) {
+    if(hw.age() >= (0.8 * hw.original_size())) {
+        typename Hardware::genome_type& r=hw.repr();
+        
+        // Check to see if the offspring would be a good length.
+        int divide_pos = hw.getHeadLocation(Hardware::RH);
+        int extra_lines = r.size() - hw.getHeadLocation(Hardware::WH);
+        
+        int child_size = r.size() - divide_pos - extra_lines;
+        int parent_size = r.size() - child_size - extra_lines;
+        double ratio = 2.0;
+        
+        if ((child_size < (hw.original_size()/ratio)) ||
+            (child_size > (hw.original_size()*ratio)) ||
+            (parent_size < (hw.original_size()/ratio)) ||
+            (parent_size > (hw.original_size()*ratio))){
+            // fail!
+            return;
+        }
+        
+        
+        typename Hardware::genome_type::iterator f=r.begin(),l=r.begin();
+        std::advance(f, hw.getHeadLocation(Hardware::RH));
+        std::advance(l, hw.getHeadLocation(Hardware::WH));
+        typename Hardware::genome_type offr(f, l);
+        
+        
+        r.resize(parent_size);
+        hw.replicated_soft_reset();
+        
+        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
+                // set rest to zero
+                put<GROUP_RESOURCE_UNITS>(0.0, ea);
+        } else {
+            replicate(p, offr, ea);
+        }
+        
+    }
+    
+}
+
+
 // make sure resources are moved to multi. check gls for example
 
 //! Performs multicell replication using germ lines. One cells is selected, mutated, and then used to create the appropriate number of cells. Thus, the starting multicell offspring is clonal.

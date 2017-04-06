@@ -33,6 +33,21 @@ LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 di
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
 
+//! Execute the next instruction if group resources exceed threshold.
+DIGEVO_INSTRUCTION_DECL(if_res_more_than_thresh) {
+    if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) < get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+//! Execute the next instruction if group resources is less than the threshold.
+DIGEVO_INSTRUCTION_DECL(if_res_less_than_thresh) {
+    if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+
 /* Divide remote only works if there are enough resources... */
 DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
     if(hw.age() >= (0.8 * hw.original_size())) {

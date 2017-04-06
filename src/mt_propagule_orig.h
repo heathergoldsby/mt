@@ -159,8 +159,9 @@ DIGEVO_INSTRUCTION_DECL(h_divide_multicell) {
         hw.replicated_soft_reset();
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
-                // set rest to zero
-                put<GROUP_RESOURCE_UNITS>(0.0, ea);
+            // set rest to zero
+            put<GROUP_RESOURCE_UNITS>(0.0, ea);
+            put<DIVIDE_REMOTE>(1, ea);
         } else {
             replicate(p, offr, ea);
         }

@@ -62,7 +62,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<if_less>(ea);
         append_isa<h_alloc>(ea);
         append_isa<h_copy>(ea);
-        append_isa<h_divide_soft_parent_reset>(ea);
+        append_isa<h_divide_local>(ea);
         append_isa<fixed_input>(ea);
         append_isa<output>(ea);
         append_isa<donate_res_to_group>(ea);

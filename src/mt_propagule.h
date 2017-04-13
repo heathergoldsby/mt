@@ -29,6 +29,8 @@ using namespace ealib;
 // RES_UPDATE, MULTICELL_REP_TIME, DIVIDE_REMOTE
 
 LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 divide
+LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divide; 1 divide
+
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
 
@@ -64,8 +66,52 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
             // raise flag
+            int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<GROUP_REP_THRESHOLD>(ea, 0.0);
+            put<GROUP_RESOURCE_UNITS>(res_amt,ea);
             put<DIVIDE_REMOTE>(1, ea);
         }
+    }
+}
+
+
+DIGEVO_INSTRUCTION_DECL(h_divide_local) {
+    if(hw.age() >= (0.8 * hw.original_size())) {
+        typename Hardware::genome_type& r=hw.repr();
+        
+        // Check to see if the offspring would be a good length.
+        int divide_pos = hw.getHeadLocation(Hardware::RH);
+        int extra_lines = r.size() - hw.getHeadLocation(Hardware::WH);
+        
+        int child_size = r.size() - divide_pos - extra_lines;
+        int parent_size = r.size() - child_size - extra_lines;
+        double ratio = 2.0;
+        
+        if ((child_size < (hw.original_size()/ratio)) ||
+            (child_size > (hw.original_size()*ratio)) ||
+            (parent_size < (hw.original_size()/ratio)) ||
+            (parent_size > (hw.original_size()*ratio))){
+            // fail!
+            return;
+        }
+        
+        
+        typename Hardware::genome_type::iterator f=r.begin(),l=r.begin();
+        std::advance(f, hw.getHeadLocation(Hardware::RH));
+        std::advance(l, hw.getHeadLocation(Hardware::WH));
+        typename Hardware::genome_type offr(f, l);
+        
+        r.resize(parent_size);
+        hw.replicated_soft_reset();
+        
+        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<IND_REP_THRESHOLD>(ea, 0.0)) {
+            // raise flag
+            int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<IND_REP_THRESHOLD>(ea, 0.0);
+            put<GROUP_RESOURCE_UNITS>(res_amt,ea);
+            replicate(p, offr, ea);
+
+        }
+
+        
     }
 }
 
@@ -105,12 +151,21 @@ DIGEVO_INSTRUCTION_DECL(h_alt_divide) {
         // remote = 0; local = 1.
         if(get<DIVIDE_ALT>(*p, 0) == 0) {
             if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
-                // set rest to zero                // raise flag
+                int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<GROUP_REP_THRESHOLD>(ea, 0.0);
+                put<GROUP_RESOURCE_UNITS>(res_amt,ea);
+                
                 put<DIVIDE_REMOTE>(1, ea);
                 put<DIVIDE_ALT>(1,*p);
             }
         } else {
-            replicate(p, offr, ea);
+            
+            if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<IND_REP_THRESHOLD>(ea, 0.0)) {
+                // raise flag
+                int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<IND_REP_THRESHOLD>(ea, 0.0);
+                put<GROUP_RESOURCE_UNITS>(res_amt,ea);
+                replicate(p, offr, ea);
+                
+            }
             put<DIVIDE_ALT>(0,*p);
         }
         
@@ -221,8 +276,6 @@ struct mt_propagule : end_of_update_event<MEA> {
                     
                     // reset parent multicell
                     i->resources().reset();
-                    int res_amt = get<GROUP_RESOURCE_UNITS>(*i) - get<GROUP_REP_THRESHOLD>(*i, 0.0);
-                    put<GROUP_RESOURCE_UNITS>(res_amt,*i);
                     put<MULTICELL_REP_TIME>(0,*i);
                     put<DIVIDE_REMOTE>(0,*i);
                     

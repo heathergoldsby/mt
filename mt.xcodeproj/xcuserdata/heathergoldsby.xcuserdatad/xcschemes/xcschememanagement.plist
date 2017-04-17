@@ -19,6 +19,11 @@
 			<key>orderHint</key>
 			<integer>22</integer>
 		</dict>
+		<key>mt_lr_perfect.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>23</integer>
+		</dict>
 		<key>template-all-ones.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -53,6 +58,11 @@
 			<true/>
 		</dict>
 		<key>48BD950E1E855A2800C7B0EA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48CD1FDF1EA500BA003393BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

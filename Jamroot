@@ -31,3 +31,12 @@ src/mt_lr.cpp
 ;
 
 install dist : mt_lr : <location>$(HOME)/bin ;
+
+
+exe mt_lr_perfect :
+src/mt_lr_perfect.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_perfect : <location>$(HOME)/bin ;

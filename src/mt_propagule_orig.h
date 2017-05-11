@@ -414,4 +414,116 @@ struct mt_propagule : end_of_update_event<MEA> {
 };
 
 
+
+template <typename MEA>
+struct dol_tracking : end_of_update_event<MEA> {
+    dol_tracking(MEA& ea) : end_of_update_event<MEA>(ea), _df("dol.dat") {
+        _df.add_field("update")
+        .add_field("mean_shannon_sum")
+        .add_field("mean_shannon_norm")
+        .add_field("mean_active_pop")
+        .add_field("mean_pop_count");
+        
+    }
+    
+    //! Destructor.
+    virtual ~dol_tracking() {
+    }
+    
+    //! Track how many task-switches are being performed!
+    virtual void operator()(MEA& ea) {
+        
+        if ((ea.current_update() % 100) == 0) {
+            _df.write(ea.current_update());
+            double shannon_sum_all = 0;
+            double shannon_norm_all = 0;
+            double active_pop_all = 0;
+            double pop_count_all = 0;
+            double num_multis = 0;
+            
+            for(typename MEA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                num_multis++;
+                std::vector< std::vector<double> > pij;
+                std::vector<double> pj (9);
+                double pop_count = 0;
+                double active_pop = 0;
+                
+                // cycle through orgs and create matrix for shannon mutual information.
+                for(typename MEA::subpopulation_type::iterator j=i->begin(); j!=i->end(); ++j) {
+                    typename MEA::subpopulation_type::individual_type& org=*j;
+                    ++pop_count;
+                    std::vector<double> porg (9);
+                    porg[0] = get<TASK_NOT>(org,0.0);
+                    porg[1] = get<TASK_NAND>(org,0.0);
+                    porg[2] = get<TASK_AND>(org,0.0);
+                    porg[3] = get<TASK_ORNOT>(org,0.0);
+                    porg[4] = get<TASK_OR>(org,0.0);
+                    porg[5] = get<TASK_ANDNOT>(org,0.0);
+                    porg[6] = get<TASK_NOR>(org,0.0);
+                    porg[7] = get<TASK_XOR>(org,0.0);
+                    porg[8] = get<TASK_EQUALS>(org,0.0);
+                    
+                    double total_num_tasks = std::accumulate(porg.begin(), porg.end(), 0);
+                    
+                    // Normalize the tasks and add to matrix
+                    if(total_num_tasks > 0) {
+                        for (unsigned int k=0; k<porg.size(); ++k) {
+                            porg[k] /= total_num_tasks;
+                        }
+                        ++active_pop;
+                        pij.push_back(porg);
+                    }
+                }
+                
+                double shannon_sum = 0.0;
+                double shannon_norm = 0.0;
+                if (active_pop > 1) {
+                    // figure out pj
+                    for (unsigned int k=0; k<pj.size(); ++k) {
+                        for (int m=0; m<active_pop; ++m) {
+                            pj[k] += pij[m][k];
+                        }
+                        pj[k] /= active_pop;
+                    }
+                    
+                    // compute shannon mutual information based on matrix...
+                    double shannon_change = 0.0;
+                    double t_pij = 0.0;
+                    double t_pi = 1.0/active_pop;
+                    double t_pj = 0;
+                    double pij_sum = 0.0;
+                    // calculate shannon mutual information
+                    for (unsigned int i=0; i<active_pop; i++) {
+                        for (int j=0; j<pj.size(); j++) {
+                            t_pij = pij[i][j]/active_pop;
+                            t_pj = pj[j];
+                            pij_sum += t_pij;
+                            if (t_pi && t_pj && t_pij) {
+                                shannon_change= (t_pij * log(t_pij / (t_pi * t_pj)));
+                                shannon_sum += shannon_change;
+                            }
+                        }
+                    }
+                }
+                shannon_norm = shannon_sum / log((double)active_pop);
+                
+                shannon_sum_all += shannon_sum;
+                shannon_norm_all += shannon_norm;
+                active_pop_all += active_pop;
+                pop_count_all += pop_count;
+                
+                
+            }
+            _df.write(shannon_sum_all / num_multis)
+            .write(shannon_norm_all / num_multis)
+            .write(active_pop_all / num_multis)
+            .write(pop_count_all / num_multis);
+            _df.endl();
+        }
+    }
+    datafile _df;
+    
+};
+
+
 #endif

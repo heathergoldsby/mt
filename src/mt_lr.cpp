@@ -206,7 +206,7 @@ public:
         add_event<mt_propagule>(ea);
         add_event<task_performed_tracking>(ea);
         add_event<task_switch_tracking>(ea);
-
+        add_event<dol_tracking>(ea);
         
     }
 };

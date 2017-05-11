@@ -505,7 +505,9 @@ struct dol_tracking : end_of_update_event<MEA> {
                         }
                     }
                 }
-                shannon_norm = shannon_sum / log((double)active_pop);
+                if ((shannon_sum > 0 ) &&(active_pop > 0)) {
+                    shannon_norm = shannon_sum / log((double)active_pop);
+                } 
                 
                 shannon_sum_all += shannon_sum;
                 shannon_norm_all += shannon_norm;

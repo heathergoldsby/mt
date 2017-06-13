@@ -17,7 +17,7 @@ LIBEA_ANALYSIS_TOOL(movie) {
     
     int update_max = 500;
     int max_fit = 0;
-    typename EA::individual_type best = *ea.begin();
+    typename EA::individual_type best_founder = *ea.begin();
     
 //    for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
 //        
@@ -50,8 +50,8 @@ LIBEA_ANALYSIS_TOOL(movie) {
     df.write(get<SPATIAL_Y>(ea));
     df.endl();
     
-    //            typename EA::individual_type best_founder(*best.traits().founder());
-    typename EA::individual_type best_founder = *best.traits().founder();
+    //typename EA::individual_type best_founder(*best.traits().founder());
+    //typename EA::individual_type best_founder = *best.traits().founder();
     
     for (int j=0; j<=update_max; ++j) {
         best_founder.update();

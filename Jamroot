@@ -40,3 +40,23 @@ src/mt_lr_perfect.cpp
 ;
 
 install dist : mt_lr_perfect : <location>$(HOME)/bin ;
+
+
+
+exe mt_lr_only_comm :
+src/mt_lr_only_comm.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_only_comm : <location>$(HOME)/bin ;
+
+
+exe mt_lr_no_comm :
+src/mt_lr_no_comm.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_no_comm : <location>$(HOME)/bin ;
+

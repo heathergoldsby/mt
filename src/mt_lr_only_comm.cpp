@@ -53,10 +53,9 @@ struct lifecycle : public default_lifecycle {
         append_isa<swap>(ea);
         append_isa<inc>(ea);
         append_isa<dec>(ea);
-        append_isa<tx_msg>(ea);
+        //append_isa<tx_msg>(ea);
         append_isa<tx_msg_check_task>(ea);
         append_isa<rx_msg>(ea);
-        append_isa<bc_msg>(ea);
         append_isa<bc_msg_check_task>(ea);
         append_isa<rotate>(ea);
         append_isa<rotate_cw>(ea);
@@ -66,15 +65,15 @@ struct lifecycle : public default_lifecycle {
         append_isa<h_copy>(ea);
         append_isa<h_divide_local>(ea);
         append_isa<fixed_input>(ea);
-        append_isa<output>(ea);
+        //append_isa<output>(ea);
         append_isa<donate_res_to_group>(ea);
         append_isa<if_equal>(ea);
         append_isa<if_not_equal>(ea);
         append_isa<jump_head>(ea);
         append_isa<is_neighbor>(ea);
         append_isa<h_divide_remote>(ea);
-//        append_isa<if_res_more_than_thresh>(ea);
-//        append_isa<if_res_less_than_thresh>(ea);
+        //        append_isa<if_res_more_than_thresh>(ea);
+        //        append_isa<if_res_less_than_thresh>(ea);
         
         add_event<task_resource_consumption>(ea);
         add_event<task_switching_cost>(ea);
@@ -141,7 +140,7 @@ typedef digital_evolution
 < lifecycle
 , recombination::asexual
 , round_robin
-, multibirth_selfrep_not_remote_ancestor
+, multibirth_selfrep_not_remote_comm_ancestor
 , empty_facing_neighbor
 , dont_stop
 , generate_single_ancestor
@@ -202,7 +201,7 @@ public:
     virtual void gather_tools() {
         
         add_tool<movie>(this);
-
+        
     }
     
     virtual void gather_events(EA& ea) {

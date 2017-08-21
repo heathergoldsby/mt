@@ -33,6 +33,7 @@ LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divi
 
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
+LIBEA_MD_DECL(MULTICELL_PARENT_SIZE, "ea.mt.parentsize", int);
 
 /* Divide remote only works if there are enough resources... */
 DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
@@ -220,18 +221,18 @@ struct mt_propagule : end_of_update_event<MEA> {
                 // track multicells (even those that don't replicate)
                 if ((mea.current_update() % 100) == 0) {
                     
-                    int alive_count = 0;
-                    
-                    for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
-                        if ((*j)->alive()) {
-                            alive_count++;
-                        }
-                        
-                    }
+//                    int alive_count = 0;
+//                    
+//                    for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+//                        if ((*j)->alive()) {
+//                            alive_count++;
+//                        }
+//                        
+//                    }
                     
                     multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
                     multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
-                    multicell_size.push_back(alive_count);
+                    multicell_size.push_back(get<MULTICELL_PARENT_SIZE>(*i, 0));
                 }
                 
             
@@ -267,6 +268,9 @@ struct mt_propagule : end_of_update_event<MEA> {
                             break;
                         }
                     }
+                    
+                    // hjg
+                    put<MULTICELL_PARENT_SIZE>(p,(*i).size());
                     
                     offspring.insert(offspring.end(),p);
                     

@@ -482,6 +482,8 @@ struct gls_replication_ps : end_of_update_event<EA> {
                             inherits_from(**j, *q, *p);
                             
                             mutate(*q,m,*p);
+                            
+                            p->insert(p->end(), q);
                         
                             num_moved++;
                             
@@ -508,6 +510,7 @@ struct gls_replication_ps : end_of_update_event<EA> {
                 germ_percent.push_back(germ_count/((double) i->population().size())*100.0);
                 germ_workload.push_back(mean(germ_workload_acc));
                 germ_workload_var.push_back(variance(germ_workload_acc));
+                prop_size.push_back(p_size);
                 
                 if (germ_count != pop_count) {
                     soma_workload.push_back(mean(soma_workload_acc));
@@ -528,6 +531,7 @@ struct gls_replication_ps : end_of_update_event<EA> {
                     germ_workload_var.pop_front();
                     soma_workload.pop_front();
                     soma_workload_var.pop_front();
+                    prop_size.pop_front();
                 }
 
                 
@@ -604,11 +608,13 @@ struct gls_replication_ps : end_of_update_event<EA> {
                 .write(std::accumulate(germ_workload_var.begin(), germ_workload_var.end(), 0.0)/germ_workload.size())
                 .write(std::accumulate(soma_workload.begin(), soma_workload.end(), 0.0)/soma_workload.size())
                 .write(std::accumulate(soma_workload_var.begin(), soma_workload_var.end(), 0.0)/soma_workload.size())
+                .write(std::accumulate(prop_size.begin(), prop_size.end(), 0.0)/prop_size.size())
                 .write(num_rep)
                 .endl();
                 num_rep = 0;
             } else {
                 _df.write(ea.current_update())
+                .write(0)
                 .write(0)
                 .write(0)
                 .write(0)
@@ -630,6 +636,8 @@ struct gls_replication_ps : end_of_update_event<EA> {
     std::deque<double> germ_workload_var;
     std::deque<double> soma_workload;
     std::deque<double> soma_workload_var;
+    std::deque<double> prop_size;
+
     int num_rep;
     
     

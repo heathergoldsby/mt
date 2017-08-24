@@ -60,3 +60,13 @@ src/mt_lr_no_comm.cpp
 
 install dist : mt_lr_no_comm : <location>$(HOME)/bin ;
 
+
+
+exe gls_ps :
+src/gls_ps.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : gls_ps : <location>$(HOME)/bin ;
+

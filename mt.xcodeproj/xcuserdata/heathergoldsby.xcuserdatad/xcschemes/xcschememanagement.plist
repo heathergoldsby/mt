@@ -9,6 +9,16 @@
 			<key>orderHint</key>
 			<integer>18</integer>
 		</dict>
+		<key>gls.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>24</integer>
+		</dict>
+		<key>gls_ps.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>25</integer>
+		</dict>
 		<key>mt.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -43,6 +53,16 @@
 			<true/>
 		</dict>
 		<key>42F4EE5B16AEE80D000123A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4804DF101F4F208800B649C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4804DF1C1F4F2C0300B649C8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

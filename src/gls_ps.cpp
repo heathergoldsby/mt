@@ -20,7 +20,7 @@
 
 #include "gls.h"
 //#include "subpopulation_founder.h"
-#include <ea/digital_evolution/ancestors/multi_birth_selfrep_not_ancestor.h>
+#include <ea/digital_evolution/ancestors/selfrep_not_ancestor.h>
 #include <ea/subpopulation_founder.h>
 #include <ea/digital_evolution/utils/resource_consumption.h>
 #include <ea/digital_evolution/utils/task_switching.h>
@@ -172,7 +172,7 @@ typedef digital_evolution
 < lifecycle
 , recombination::asexual
 , round_robin
-, multibirth_selfrep_not_ancestor
+, selfrep_not_ancestor
 , empty_neighbor
 , dont_stop
 , generate_single_ancestor

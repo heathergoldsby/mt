@@ -439,6 +439,7 @@ struct gls_replication_ps : end_of_update_event<EA> {
                 }
 
                 
+                
                 // grab a copy of the first individual:
                 //typename EA::individual_type::ea_type::individual_type germ;
                 //typename EA::individual_type::ea_type::individual_type germ;
@@ -461,6 +462,10 @@ struct gls_replication_ps : end_of_update_event<EA> {
                 
                 // setup the population (really, an ea):
                 typename EA::individual_ptr_type p = ea.make_individual();
+                p->initialize(ea.md());
+                p->reset_rng(ea.rng().seed());
+                
+                
                 
                 
                 for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
@@ -471,13 +476,14 @@ struct gls_replication_ps : end_of_update_event<EA> {
                         germ_workload_acc(get<WORKLOAD>(org, 0.0));
                         
                         if (num_moved < p_size) {
-                            typename EA::subpopulation_type::genome_type r(org.genome().begin(), org.genome().begin()+org.hw().original_size());
+                            typename EA::subpopulation_type::genome_type r((*j)->genome().begin(), (*j)->genome().begin()+(*j)->hw().original_size());
                             typename EA::subpopulation_type::individual_ptr_type q = p->make_individual(r);
                             
-                            inherits_from(org, *q, *p);
+                            inherits_from(**j, *q, *p);
                             
                             mutate(*q,m,*p);
                         
+                            num_moved++;
                             
                         }
                         

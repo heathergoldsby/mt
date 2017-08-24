@@ -242,6 +242,12 @@ public:
         add_option<XOR_MUTATION_MULT>(this);
         add_option<EQUALS_MUTATION_MULT>(this);
         add_option<NUM_PROPAGULE_CELL>(this);
+        
+        
+        add_option<RES_INITIAL_AMOUNT>(this);
+        add_option<RES_INFLOW_AMOUNT>(this);
+        add_option<RES_OUTFLOW_FRACTION>(this);
+        add_option<RES_FRACTION_CONSUMED>(this);
 
     }
     

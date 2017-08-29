@@ -435,7 +435,7 @@ struct gls_replication_ps : end_of_update_event<EA> {
                 int p_size = get<NUM_PROPAGULE_CELL>(*i);
                 
                 if (p_size == 0) {
-                    return;
+                    continue;
                 }
 
                 

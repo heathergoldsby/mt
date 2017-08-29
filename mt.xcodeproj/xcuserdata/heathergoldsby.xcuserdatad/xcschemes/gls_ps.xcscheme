@@ -64,7 +64,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--ea.rng.seed 1  -c gls.cfg"
+            argument = "--ea.rng.seed 3  -c gls.cfg"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

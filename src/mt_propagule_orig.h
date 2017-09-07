@@ -521,9 +521,6 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                                 p->insert(p->end(), q);
                                 
                                 germ_present = true;
-                                
-
-                                
                             }
                         } else {
                             soma_workload_acc(get<WORKLOAD>(org, 0.0));
@@ -553,7 +550,16 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     offspring_pop.push_back(p);
                     inherits(parent_pop, offspring_pop, mea);
                     
-                    
+                    if (germ_num.size() > 100) {
+                        germ_num.pop_front();
+                        germ_percent.pop_front();
+                        pop_num.pop_front();
+                        germ_workload.pop_front();
+                        germ_workload_var.pop_front();
+                        soma_workload.pop_front();
+                        soma_workload_var.pop_front();
+                    }
+
                     
                 }
             }
@@ -574,41 +580,47 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
             }
         }
         
+        
         if ((mea.current_update() % 100) == 0) {
+            _df.write(mea.current_update());
             
-            if ((multicell_rep.size() > 0)&& (germ_num.size() > 0)) {
-                _df.write(mea.current_update())
-                .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size())
+            if (multicell_rep.size() > 0) {
+                _df.write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size())
                 .write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
-                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size())
-                .write(std::accumulate(germ_num.begin(), germ_num.end(), 0.0)/germ_num.size())
+                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size());
+            } else {
+                _df.write(0.0)
+                .write(0.0)
+                .write(0.0);
+            }
+            
+            
+            if (germ_num.size() > 0) {
+                _df.write(std::accumulate(germ_num.begin(), germ_num.end(), 0.0)/germ_num.size())
                 .write(std::accumulate(pop_num.begin(), pop_num.end(), 0.0)/pop_num.size())
                 .write(std::accumulate(germ_percent.begin(), germ_percent.end(), 0.0)/germ_percent.size())
                 .write(std::accumulate(germ_workload.begin(), germ_workload.end(), 0.0)/germ_workload.size())
                 .write(std::accumulate(germ_workload_var.begin(), germ_workload_var.end(), 0.0)/germ_workload.size())
                 .write(std::accumulate(soma_workload.begin(), soma_workload.end(), 0.0)/soma_workload.size())
-                .write(std::accumulate(soma_workload_var.begin(), soma_workload_var.end(), 0.0)/soma_workload.size())
-                .write(num_rep)
-                .endl();
-                num_rep = 0;
-                multicell_rep.clear();
-                multicell_res.clear();
-                multicell_size.clear();
+                .write(std::accumulate(soma_workload_var.begin(), soma_workload_var.end(), 0.0)/soma_workload.size());
             } else {
-                _df.write(mea.current_update())
-                .write(0.0)
-                .write(0.0)
-                .write(0.0)
+                _df.write(0)
                 .write(0)
                 .write(0)
                 .write(0)
                 .write(0)
                 .write(0)
-                .write(0)
-                .write(0)
-                .write(num_rep)
-                .endl();
+                .write(0);
+                
             }
+            
+            _df.write(num_rep)
+            .endl();
+            num_rep = 0;
+            multicell_rep.clear();
+            multicell_res.clear();
+            multicell_size.clear();
+            
         }
         
     }

@@ -70,3 +70,16 @@ src/gls_ps.cpp
 
 install dist : gls_ps : <location>$(HOME)/bin ;
 
+
+
+
+
+
+exe mt_lr_gls :
+src/mt_lr_gls.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_gls : <location>$(HOME)/bin ;
+

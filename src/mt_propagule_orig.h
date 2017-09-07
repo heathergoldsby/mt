@@ -20,7 +20,7 @@
 #include <ea/metapopulation.h>
 #include <ea/mutation.h>
 
-
+#include "gls.h"
 
 //#include "stripes.h"
 
@@ -288,7 +288,6 @@ struct mt_propagule : end_of_update_event<MEA> {
                 
                 // figure out which individuals from the parent comprise the propagule:
                 typedef typename MEA::subpopulation_type::population_type propagule_type;
-                //                propagule_type propagule;
                 
                 // track multicells (even those that don't replicate)
                 if ((mea.current_update() % 100) == 0) {
@@ -407,6 +406,221 @@ struct mt_propagule : end_of_update_event<MEA> {
     std::deque<double> multicell_rep;
     std::deque<double> multicell_res;
     std::deque<double> multicell_size;
+    
+    int num_rep;
+    
+    
+};
+
+
+// make sure resources are moved to multi. check gls for example
+
+//! Performs multicell replication using germ lines. One cells is selected, mutated, and then used to create the appropriate number of cells. Thus, the starting multicell offspring is clonal.
+template <typename MEA>
+struct mt_gls_propagule : end_of_update_event<MEA> {
+    //! Constructor.
+    mt_gls_propagule(MEA& mea) : end_of_update_event<MEA>(mea), _df("mt_gls.dat") {
+        _df.add_field("update")
+        .add_field("mean_rep_time")
+        .add_field("mean_res")
+        .add_field("mean_multicell_size")
+        .add_field("mean_germ_num")
+        .add_field("mean_pop_num")
+        .add_field("mean_germ_percent")
+        .add_field("mean_germ_workload")
+        .add_field("mean_germ_workload_var")
+        .add_field("mean_soma_workload")
+        .add_field("mean_soma_workload_var")
+        .add_field("replication_count");
+        num_rep = 0;
+    }
+    
+    
+    //! Destructor.
+    virtual ~mt_gls_propagule() {
+    }
+    
+    //! Perform germline replication among populations.
+    virtual void operator()(MEA& mea) {
+        
+        
+        configurable_per_site m(get<GERM_MUTATION_PER_SITE_P>(mea));
+        
+        
+        // Replicate!
+        int ru = 1;
+        if ((mea.current_update() % ru) == 0) {
+            
+            // See if any subpops have exceeded the resource threshold
+            typename MEA::population_type offspring;
+            for(typename MEA::iterator i=mea.begin(); i!=mea.end(); ++i) {
+                
+                // track time since group rep
+                get<MULTICELL_REP_TIME>(*i,0) +=1;
+                
+                // figure out which individuals from the parent comprise the propagule:
+                typedef typename MEA::subpopulation_type::population_type propagule_type;
+                
+                // track multicells (even those that don't replicate)
+                if ((mea.current_update() % 100) == 0) {
+                    
+                    int alive_count = 0;
+                    
+                    for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                        if ((*j)->alive()) {
+                            alive_count++;
+                        }
+                        
+                    }
+                    
+                    multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
+                    multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
+                    multicell_size.push_back(alive_count);
+                }
+                
+                
+                
+                
+                if (get<DIVIDE_REMOTE>(*i,0)){
+                    typename MEA::subpopulation_type::individual_type germ;
+                    int germ_present = false;
+                    
+                    // If so, setup a new replicate pop.
+                    // Find a germ...
+                    std::random_shuffle(i->population().begin(), i->population().end(), mea.rng());
+                    
+                    int germ_count = 0;
+                    int pop_count = 0;
+                    accumulator_set<double, stats<tag::mean, tag::variance> > germ_workload_acc;
+                    accumulator_set<double, stats<tag::mean, tag::variance> > soma_workload_acc;
+                    
+                    
+                    
+                    
+                    
+                    // get a new subpopulation:
+                    typename MEA::individual_ptr_type p = mea.make_individual();
+                    p->initialize(mea.md());
+                    p->reset_rng(mea.rng().seed());
+                    
+                    
+                    int num_moved = 0;
+                    for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                        typename MEA::subpopulation_type::individual_type& org=**j;
+                        if (get<GERM_STATUS>(org, true)) {
+                            ++germ_count;
+                            germ_workload_acc(get<WORKLOAD>(org, 0.0));
+                            if (!germ_present){
+                                typename MEA::subpopulation_type::genome_type r((*j)->genome().begin(), (*j)->genome().begin()+(*j)->hw().original_size());
+                                typename MEA::subpopulation_type::individual_ptr_type q = p->make_individual(r);
+                                
+                                inherits_from(**j, *q, *p);
+                                
+                                mutate(*q,m,*p);
+                                
+                                p->insert(p->end(), q);
+                                
+                                germ_present = true;
+                                
+
+                                
+                            }
+                        } else {
+                            soma_workload_acc(get<WORKLOAD>(org, 0.0));
+                        }
+                        ++pop_count;
+                        
+                    }
+                    
+                    offspring.insert(offspring.end(),p);
+                    
+                    
+                    // replication
+                    ++num_rep;
+                    
+                    // reset parent multicell
+                    i->resources().reset();
+                    put<GROUP_RESOURCE_UNITS>(0,*i);
+                    put<MULTICELL_REP_TIME>(0,*i);
+                    put<DIVIDE_REMOTE>(0,*i);
+                    
+                    // i == parent individual;
+                    typename MEA::population_type parent_pop, offspring_pop;
+                    parent_pop.push_back(*i.base());
+                    offspring_pop.push_back(p);
+                    inherits(parent_pop, offspring_pop, mea);
+                    
+                    
+                    
+                }
+            }
+            
+            
+            // select surviving parent groups
+            if (offspring.size() > 0) {
+                int n = get<METAPOPULATION_SIZE>(mea) - offspring.size();
+                
+                typename MEA::population_type survivors;
+                select_n<selection::random< > >(mea.population(), survivors, n, mea);
+                
+                // add the offspring to the list of survivors:
+                survivors.insert(survivors.end(), offspring.begin(), offspring.end());
+                
+                // and swap 'em in for the current population:
+                std::swap(mea.population(), survivors);
+            }
+        }
+        
+        if ((mea.current_update() % 100) == 0) {
+            
+            if ((multicell_rep.size() > 0)&& (germ_num.size() > 0)) {
+                _df.write(mea.current_update())
+                .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size())
+                .write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
+                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size())
+                .write(std::accumulate(germ_num.begin(), germ_num.end(), 0.0)/germ_num.size())
+                .write(std::accumulate(pop_num.begin(), pop_num.end(), 0.0)/pop_num.size())
+                .write(std::accumulate(germ_percent.begin(), germ_percent.end(), 0.0)/germ_percent.size())
+                .write(std::accumulate(germ_workload.begin(), germ_workload.end(), 0.0)/germ_workload.size())
+                .write(std::accumulate(germ_workload_var.begin(), germ_workload_var.end(), 0.0)/germ_workload.size())
+                .write(std::accumulate(soma_workload.begin(), soma_workload.end(), 0.0)/soma_workload.size())
+                .write(std::accumulate(soma_workload_var.begin(), soma_workload_var.end(), 0.0)/soma_workload.size())
+                .write(num_rep)
+                .endl();
+                num_rep = 0;
+                multicell_rep.clear();
+                multicell_res.clear();
+                multicell_size.clear();
+            } else {
+                _df.write(mea.current_update())
+                .write(0.0)
+                .write(0.0)
+                .write(0.0)
+                .write(0)
+                .write(0)
+                .write(0)
+                .write(0)
+                .write(0)
+                .write(0)
+                .write(0)
+                .write(num_rep)
+                .endl();
+            }
+        }
+        
+    }
+    
+    datafile _df;
+    std::deque<double> multicell_rep;
+    std::deque<double> multicell_res;
+    std::deque<double> multicell_size;
+    std::deque<double> germ_num;
+    std::deque<double> germ_percent;
+    std::deque<double> pop_num;
+    std::deque<double> germ_workload;
+    std::deque<double> germ_workload_var;
+    std::deque<double> soma_workload;
+    std::deque<double> soma_workload_var;
     
     int num_rep;
     

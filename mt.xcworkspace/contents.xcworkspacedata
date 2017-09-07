@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:src/mt_lr_gls.cpp">
+   </FileRef>
+   <FileRef
       location = "group:../ealib/ealib.xcodeproj">
    </FileRef>
    <FileRef

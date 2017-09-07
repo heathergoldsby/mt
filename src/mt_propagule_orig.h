@@ -530,6 +530,21 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     }
                     
                     if (!germ_present) continue;
+                    
+                    pop_num.push_back(pop_count);
+                    germ_num.push_back(germ_count);
+                    germ_percent.push_back(germ_count/((double) i->population().size())*100.0);
+                    germ_workload.push_back(mean(germ_workload_acc));
+                    germ_workload_var.push_back(variance(germ_workload_acc));
+                    
+                    if (germ_count != pop_count) {
+                        soma_workload.push_back(mean(soma_workload_acc));
+                        soma_workload_var.push_back(variance(soma_workload_acc));
+                    } else {
+                        soma_workload.push_back(0);
+                        soma_workload_var.push_back(0);
+                    }
+
 
                     
                     offspring.insert(offspring.end(),p);

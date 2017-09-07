@@ -532,6 +532,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                         
                     }
                     
+                    if (!germ_present) continue;
+
+                    
                     offspring.insert(offspring.end(),p);
                     
                     

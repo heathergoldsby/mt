@@ -550,15 +550,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     offspring_pop.push_back(p);
                     inherits(parent_pop, offspring_pop, mea);
                     
-                    if (germ_num.size() > 100) {
-                        germ_num.pop_front();
-                        germ_percent.pop_front();
-                        pop_num.pop_front();
-                        germ_workload.pop_front();
-                        germ_workload_var.pop_front();
-                        soma_workload.pop_front();
-                        soma_workload_var.pop_front();
-                    }
+
 
                     
                 }
@@ -620,6 +612,14 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
             multicell_rep.clear();
             multicell_res.clear();
             multicell_size.clear();
+            germ_num.clear();
+            germ_percent.clear();
+            pop_num.clear();
+            germ_workload.clear();
+            germ_workload_var.clear();
+            soma_workload.clear();
+            soma_workload_var.clear();
+            
             
         }
         

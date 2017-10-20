@@ -115,10 +115,10 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         }
         
         // defaults to no cost... ramps up the cost one step per update till max.
-        int start_updates = get<RUN_UPDATES>(ea, -1);
+        int start_updates = get<START_UPDATE>(ea, -1);
         int local_cost = 0;
         if (start_updates > -1) {
-            local_cost = ea.current_update() - start_updates;
+            local_cost = floor((ea.current_update() - start_updates)/10);
             if (local_cost < 0) { local_cost = 0; }
             if (local_cost > get<IND_REP_THRESHOLD>(ea, 0.0)) { local_cost = get<IND_REP_THRESHOLD>(ea, 0.0); }
         }

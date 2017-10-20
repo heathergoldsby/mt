@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-               BuildableName = "mt_lr_gls"
-               BlueprintName = "mt_lr_gls"
+               BlueprintIdentifier = "4869C2F91F9A34570094E1A4"
+               BuildableName = "mt_lr_only_comm"
+               BlueprintName = "mt_lr_only_comm"
                ReferencedContainer = "container:mt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "4869C2F91F9A34570094E1A4"
+            BuildableName = "mt_lr_only_comm"
+            BlueprintName = "mt_lr_only_comm"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,15 +56,15 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "4869C2F91F9A34570094E1A4"
+            BuildableName = "mt_lr_only_comm"
+            BlueprintName = "mt_lr_only_comm"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-c mt.cfg"
+            argument = "-c mt.cfg --ea.mt.start_update=0 --ea.mt.ind_rep_threshold=1000"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
@@ -81,9 +81,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "4869C2F91F9A34570094E1A4"
+            BuildableName = "mt_lr_only_comm"
+            BlueprintName = "mt_lr_only_comm"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -224,7 +224,8 @@ public:
         add_option<LAST_TASK>(this);
         add_option<NUM_SWITCHES>(this);
         add_option<GERM_MUTATION_PER_SITE_P>(this);
-        
+        add_option<START_UPDATE>(this);
+
         
         // gls specific options
         add_option<TASK_MUTATION_PER_SITE_P>(this);

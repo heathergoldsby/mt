@@ -33,6 +33,7 @@ LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 di
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
 LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divide; 1 divide
+LIBEA_MD_DECL(START_UPDATE, "ea.mt.start_update", int); // update at which the cost of individuals replicating starts.
 
 
 //! Execute the next instruction if group resources exceed threshold.
@@ -91,6 +92,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
 }
 
 
+/* changed to using ramped costs... */
 
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
     if(hw.age() >= (0.8 * hw.original_size())) {
@@ -112,6 +114,14 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
             return;
         }
         
+        // defaults to no cost... ramps up the cost one step per update till max.
+        int start_updates = get<RUN_UPDATES>(ea, -1);
+        int local_cost = 0;
+        if (start_updates > -1) {
+            local_cost = ea.current_update() - start_updates;
+            if (local_cost < 0) { local_cost = 0; }
+            if (local_cost > get<IND_REP_THRESHOLD>(ea, 0.0)) { local_cost = get<IND_REP_THRESHOLD>(ea, 0.0); }
+        }
         
         typename Hardware::genome_type::iterator f=r.begin(),l=r.begin();
         std::advance(f, hw.getHeadLocation(Hardware::RH));

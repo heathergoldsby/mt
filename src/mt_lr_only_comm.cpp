@@ -188,13 +188,13 @@ public:
         
         add_option<ANALYSIS_INPUT>(this);
         
-        
         // ts specific options
         add_option<TASK_SWITCHING_COST>(this);
         add_option<GERM_MUTATION_PER_SITE_P>(this);
         add_option<GROUP_REP_THRESHOLD>(this);
         add_option<IND_REP_THRESHOLD>(this);
-        
+        add_option<START_UPDATE>(this);
+
         
     }
     

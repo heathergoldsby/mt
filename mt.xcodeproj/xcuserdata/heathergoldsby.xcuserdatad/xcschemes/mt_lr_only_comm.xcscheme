@@ -65,6 +65,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-c mt.cfg --ea.mt.start_update=0 --ea.mt.ind_rep_threshold=1000"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-l checkpoint-255500.xml.gz --ea.run.epochs=1 --ea.run.updates=10000 --ea.mt.ind_rep_threshold=250 "
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

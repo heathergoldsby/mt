@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/mt_propagule_orig.h"
-            timestampString = "514303364.55719"
+            timestampString = "530458779.485369"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
             landmarkName = "DIGEVO_INSTRUCTION_DECL(h_divide_multicell)"
             landmarkType = "9">
          </BreakpointContent>
@@ -48,6 +48,38 @@
             startingLineNumber = "506"
             endingLineNumber = "506"
             landmarkName = "operator()(EA&amp; ea)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/mt_propagule_orig.h"
+            timestampString = "530458779.485369"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "DIGEVO_INSTRUCTION_DECL(h_divide_local)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/mt_propagule_orig.h"
+            timestampString = "530458836.704198"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "DIGEVO_INSTRUCTION_DECL(h_divide_local)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

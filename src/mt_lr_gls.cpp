@@ -246,6 +246,9 @@ public:
         add_option<RES_INFLOW_AMOUNT>(this);
         add_option<RES_OUTFLOW_FRACTION>(this);
         add_option<RES_FRACTION_CONSUMED>(this);
+        add_option<COST_RAMP>(this);
+        add_option<COST_START_UPDATE>(this);
+
         
         
     }

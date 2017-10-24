@@ -193,6 +193,8 @@ public:
         add_option<GERM_MUTATION_PER_SITE_P>(this);
         add_option<GROUP_REP_THRESHOLD>(this);
         add_option<IND_REP_THRESHOLD>(this);
+        add_option<COST_RAMP>(this);
+        add_option<COST_START_UPDATE>(this);
 
         
     }

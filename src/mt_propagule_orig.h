@@ -33,6 +33,8 @@ LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 di
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
 LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divide; 1 divide
+LIBEA_MD_DECL(COST_START_UPDATE, "ea.mt.cost_start_update", int);
+LIBEA_MD_DECL(COST_RAMP, "ea.mt.cost_ramp", int);
 
 
 //! Execute the next instruction if group resources exceed threshold.
@@ -115,9 +117,11 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         // defaults to no cost... ramps up the cost one step per update till max.
         int local_cost = 0;
+        int birth_update = get<IND_BIRTH_UPDATE>(ea);
+        int start_update = get<COST_START_UPDATE>(ea);
         if (get<IND_REP_THRESHOLD>(ea, 0.0) > -1) {
-            int cu =ea.current_update();
-            local_cost = floor(ea.current_update()/10);
+            int cu =ea.current_update() + birth_update;
+            local_cost = floor((cu - start_update)/get<COST_RAMP>(ea,1));
             if (local_cost < 0) { local_cost = 0; }
             if (local_cost > get<IND_REP_THRESHOLD>(ea, 0.0)) { local_cost = get<IND_REP_THRESHOLD>(ea, 0.0); }
         }

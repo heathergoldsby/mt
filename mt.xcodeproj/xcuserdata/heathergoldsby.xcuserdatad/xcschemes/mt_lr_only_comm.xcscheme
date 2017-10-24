@@ -68,7 +68,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-l checkpoint-255500.xml.gz --ea.run.epochs=1 --ea.run.updates=10000 --ea.mt.ind_rep_threshold=250 "
+            argument = "-l checkpoint-255500.xml.gz --ea.run.epochs=1 --ea.run.updates=10000 --ea.mt.ind_rep_threshold=250  --ea.mt.cost_start_update=255500 --ea.mt.cost_ramp=10"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

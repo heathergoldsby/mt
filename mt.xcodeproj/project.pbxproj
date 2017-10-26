@@ -148,6 +148,7 @@
 		4804DF1B1F4F2BCD00B649C8 /* gls_ps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gls_ps.cpp; sourceTree = "<group>"; };
 		4804DF251F4F2C0300B649C8 /* gls_ps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gls_ps; sourceTree = BUILT_PRODUCTS_DIR; };
 		481EFFC71E86F165006786A5 /* mt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mt; sourceTree = BUILT_PRODUCTS_DIR; };
+		483456461FA246FD003E55E0 /* mt_lr_gls_no_soma.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr_gls_no_soma.cpp; sourceTree = "<group>"; };
 		483B73361F61C21C00DE803D /* mt_lr_gls */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mt_lr_gls; sourceTree = BUILT_PRODUCTS_DIR; };
 		483B73371F61C25C00DE803D /* mt_lr_gls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr_gls.cpp; sourceTree = "<group>"; };
 		485E3A441EE85E9E000B699C /* movie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = movie.h; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				483B73371F61C25C00DE803D /* mt_lr_gls.cpp */,
+				483456461FA246FD003E55E0 /* mt_lr_gls_no_soma.cpp */,
 				48BD95071E8559F700C7B0EA /* mt_propagule.h */,
 				48BA62311E89663800FF91C4 /* mt_propagule_orig.h */,
 				48BD95081E8559F700C7B0EA /* mt.cpp */,

@@ -93,3 +93,16 @@ src/mt_lr_gls.cpp
 
 install dist : mt_lr_gls : <location>$(HOME)/bin ;
 
+
+
+
+
+exe mt_lr_gls_no_soma :
+src/mt_lr_gls_no_soma.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_gls_no_soma : <location>$(HOME)/bin ;
+
+

@@ -119,7 +119,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         int local_cost = 0;
         int birth_update = get<IND_BIRTH_UPDATE>(ea);
         int start_update = get<COST_START_UPDATE>(ea);
-        if (get<IND_REP_THRESHOLD>(ea, 0.0) > -1) {
+        if (get<IND_REP_THRESHOLD>(ea, 0.0) > 0) {
             int cu =ea.current_update() + birth_update;
             local_cost = floor((cu - start_update)/get<COST_RAMP>(ea,1));
             if (local_cost < 0) { local_cost = 0; }
@@ -134,7 +134,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         r.resize(parent_size);
         hw.replicated_soft_reset();
         
-        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > local_cost) {
+        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) >= local_cost) {
             // raise flag
             int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - local_cost;
             put<GROUP_RESOURCE_UNITS>(res_amt,ea);

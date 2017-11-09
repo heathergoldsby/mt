@@ -84,7 +84,7 @@ struct lifecycle : public default_lifecycle {
         add_event<task_switching_cost>(ea);
         
         add_event<ts_birth_event>(ea);
-        add_event<task_mutagenesis>(ea);
+        add_event<task_mutagenesis_control>(ea);
         add_event<gs_inherit_event>(ea);
         
         typedef typename EA::task_library_type::task_ptr_type task_ptr_type;
@@ -149,7 +149,7 @@ struct lifecycle : public default_lifecycle {
         task_nor->consumes(resG);
         task_xor->consumes(resH);
         task_equals->consumes(resI);
-
+        
         
         
     }
@@ -247,7 +247,7 @@ public:
         add_option<RES_FRACTION_CONSUMED>(this);
         add_option<COST_RAMP>(this);
         add_option<COST_START_UPDATE>(this);
-
+        
         
         
     }

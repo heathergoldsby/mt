@@ -34,6 +34,11 @@
 			<key>orderHint</key>
 			<integer>26</integer>
 		</dict>
+		<key>mt_lr_gls_control.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>28</integer>
+		</dict>
 		<key>mt_lr_only_comm.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -83,6 +88,11 @@
 			<true/>
 		</dict>
 		<key>483B732D1F61C21C00DE803D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48649A721FB49EDB00CE17DE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

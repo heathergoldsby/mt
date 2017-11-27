@@ -77,8 +77,8 @@ struct lifecycle : public default_lifecycle {
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
-        append_isa<if_res_more_than_thresh>(ea);
-        append_isa<if_res_less_than_thresh>(ea);
+//        append_isa<if_res_more_than_thresh>(ea);
+//        append_isa<if_res_less_than_thresh>(ea);
         
         add_event<task_resource_consumption>(ea);
         add_event<task_switching_cost>(ea);

@@ -189,6 +189,50 @@ struct task_mutagenesis_control : reaction_event<EA> {
     }
 };
 
+
+/*! Triggers a task having a mutagenic effect on an organism in the colony  
+ that has performed the least amount of work so far.
+ Configurable mutagenic rate for all tasks.
+ */
+
+template <typename EA>
+struct task_mutagenesis_control2 : reaction_event<EA> {
+    
+    task_mutagenesis_control2(EA& ea) : reaction_event<EA>(ea) {
+    }
+    
+    virtual ~task_mutagenesis_control2() { }
+    virtual void operator()(typename EA::individual_type& ind, // individual
+                            typename EA::task_library_type::task_ptr_type task, // task pointer
+                            double r, // amount of resource consumed
+                            EA& ea) {
+        
+        
+        double mult = get<TASK_MUTATION_MULT>(*task);
+        double prob = get<TASK_MUTATION_PER_SITE_P>(ea) * mult;
+        int gs_status = get<GERM_STATUS>(ind, true);
+        typename EA::individual_type& sacrificial_org = ind;
+        int smallest_workload = get<WORKLOAD>(ind, 0.0);
+        if (prob > 0) {
+            // search through the ea for an individual of the same g/s status, but
+            // with the lowest workload
+            for(typename EA::population_type::iterator j=ea.population().begin(); j!=ea.population().end(); ++j) {
+                typename EA::individual_type& org=**j;
+                    if (get<WORKLOAD>(org,0.0) < smallest_workload) {
+                        smallest_workload = get<WORKLOAD>(org,0.0);
+                        sacrificial_org = org;
+                    }
+                
+            }
+            
+            configurable_per_site m(prob);
+            mutate(sacrificial_org,m,ea);
+            get<WORKLOAD>(sacrificial_org,0.0) += mult;
+        }
+    }
+};
+
+
 //! Performs group replication using germ lines.
 template <typename EA>
 struct gls_replication : end_of_update_event<EA> {

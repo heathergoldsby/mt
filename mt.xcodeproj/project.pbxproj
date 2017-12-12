@@ -169,6 +169,7 @@
 		4871358A1F93F7390032CEEA /* gls_ps_no_soma.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gls_ps_no_soma.cpp; sourceTree = "<group>"; };
 		4882E1BF1EF1D22E00555DD4 /* mt_lr_no_comm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr_no_comm.cpp; sourceTree = "<group>"; };
 		4882E1C01EF1D39B00555DD4 /* mt_lr_only_comm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr_only_comm.cpp; sourceTree = "<group>"; };
+		488D702B1FE0277600578C3B /* ko.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ko.h; sourceTree = "<group>"; };
 		48BA62311E89663800FF91C4 /* mt_propagule_orig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mt_propagule_orig.h; sourceTree = "<group>"; };
 		48BA62321E89772D00FF91C4 /* mt_lr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr.cpp; sourceTree = "<group>"; };
 		48BA623C1E89778800FF91C4 /* mt_lr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mt_lr; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -325,6 +326,7 @@
 				48BD950D1E8559F700C7B0EA /* ts.h */,
 				42F4EE6916AEE845000123A4 /* all_ones.cpp */,
 				485E3A441EE85E9E000B699C /* movie.h */,
+				488D702B1FE0277600578C3B /* ko.h */,
 				4804DF0E1F4F1E3D00B649C8 /* gls.cpp */,
 				4804DF1B1F4F2BCD00B649C8 /* gls_ps.cpp */,
 				4871358A1F93F7390032CEEA /* gls_ps_no_soma.cpp */,

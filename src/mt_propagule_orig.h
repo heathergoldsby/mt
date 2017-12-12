@@ -486,7 +486,12 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         .add_field("mean_germ_workload_var")
         .add_field("mean_soma_workload")
         .add_field("mean_soma_workload_var")
-        .add_field("replication_count");
+        .add_field("replication_count")
+        .add_field("mean_uni_rep_time")
+        .add_field("mean_mc_rep_time")
+        .add_field("mean_uni_workload")
+        .add_field("mean_mc_workload");
+        
         num_rep = 0;
     }
     
@@ -500,7 +505,10 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         
         
         configurable_per_site m(get<GERM_MUTATION_PER_SITE_P>(mea));
-        
+        accumulator_set<double, stats<tag::mean, tag::variance> > uni_workload_acc;
+        accumulator_set<double, stats<tag::mean, tag::variance> > mc_workload_acc;
+        accumulator_set<double, stats<tag::mean, tag::variance> > uni_rep_time_acc;
+        accumulator_set<double, stats<tag::mean, tag::variance> > mc_rep_time_acc;
         
         // Replicate!
         int ru = 1;
@@ -531,6 +539,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
                     multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
                     multicell_size.push_back(alive_count);
+        
                 }
                 
                 
@@ -548,8 +557,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     int pop_count = 0;
                     accumulator_set<double, stats<tag::mean, tag::variance> > germ_workload_acc;
                     accumulator_set<double, stats<tag::mean, tag::variance> > soma_workload_acc;
-                    
-                    
+
                     
                     
                     
@@ -558,7 +566,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     p->initialize(mea.md());
                     p->reset_rng(mea.rng().seed());
                     
-                    
+                    int total_workload = 0;
                     int num_moved = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                         typename MEA::subpopulation_type::individual_type& org=**j;
@@ -581,10 +589,19 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                             soma_workload_acc(get<WORKLOAD>(org, 0.0));
                         }
                         ++pop_count;
+                        total_workload += get<WORKLOAD>(org, 0.0);
                         
                     }
                     
                     if (!germ_present) continue;
+                    
+                    if (pop_count == 1) { // track as uni
+                        uni_rep_time_acc(get<MULTICELL_REP_TIME>(*i));
+                        uni_workload_acc(total_workload);
+                    } else {
+                        mc_rep_time_acc(get<MULTICELL_REP_TIME>(*i));
+                        mc_workload_acc(total_workload);
+                    }
                     
                     pop_num.push_back(pop_count);
                     germ_num.push_back(germ_count);
@@ -676,7 +693,20 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 
             }
             
+            accumulator_set<double, stats<tag::mean, tag::variance> > uni_workload_acc;
+            accumulator_set<double, stats<tag::mean, tag::variance> > mc_workload_acc;
+            accumulator_set<double, stats<tag::mean, tag::variance> > uni_rep_time_acc;
+            accumulator_set<double, stats<tag::mean, tag::variance> > mc_rep_time_acc;
+            
             _df.write(num_rep)
+            .write(mean(uni_rep_time_acc))
+            .write(mean(mc_rep_time_acc))
+            .write(mean(uni_workload_acc))
+            .write(mean(mc_workload_acc))
+            /*         .add_field("mean_uni_rep_time")
+             .add_field("mean_mc_rep_time")
+             .add_field("mean_uni_workload")
+             .add_field("mean_mc_workload");*/
             .endl();
             num_rep = 0;
             multicell_rep.clear();
@@ -689,6 +719,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
             germ_workload_var.clear();
             soma_workload.clear();
             soma_workload_var.clear();
+
             
             
         }
@@ -706,7 +737,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
     std::deque<double> germ_workload_var;
     std::deque<double> soma_workload;
     std::deque<double> soma_workload_var;
-    
+
+
     int num_rep;
     
     

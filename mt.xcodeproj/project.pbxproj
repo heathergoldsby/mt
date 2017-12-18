@@ -183,6 +183,7 @@
 		48BD95171E855A2800C7B0EA /* ts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ts; sourceTree = BUILT_PRODUCTS_DIR; };
 		48CD1FDE1EA50076003393BB /* mt_lr_perfect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mt_lr_perfect.cpp; sourceTree = "<group>"; };
 		48CD1FE81EA500BB003393BB /* mt_lr_perfect */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mt_lr_perfect; sourceTree = BUILT_PRODUCTS_DIR; };
+		48E4CCCD1FE82C4500BFC78D /* lod_knockouts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lod_knockouts.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +315,7 @@
 				483456461FA246FD003E55E0 /* mt_lr_gls_no_soma.cpp */,
 				48BD95071E8559F700C7B0EA /* mt_propagule.h */,
 				48BA62311E89663800FF91C4 /* mt_propagule_orig.h */,
+				48E4CCCD1FE82C4500BFC78D /* lod_knockouts.h */,
 				48BD95081E8559F700C7B0EA /* mt.cpp */,
 				48BA62321E89772D00FF91C4 /* mt_lr.cpp */,
 				4882E1C01EF1D39B00555DD4 /* mt_lr_only_comm.cpp */,

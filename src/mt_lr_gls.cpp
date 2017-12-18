@@ -8,7 +8,7 @@
 //#include <ea/selection/rank.h>
 //#include <ea/datafiles/fitness.h>
 //#include <ea/digital_evolution/extra_instruction_sets/matrix.h>
-
+#include <ea/metapopulation.h>
 #include "gls.h"
 
 //#include "evolved_striped_ancestor2.h"
@@ -20,6 +20,7 @@
 //#include "ko.h"
 #include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
+#include "lod_knockouts.h"
 
 
 
@@ -255,12 +256,14 @@ public:
     virtual void gather_tools() {
         
         add_tool<movie>(this);
-        //add_tool<ko>(this);
+        add_tool<ealib::analysis::lod_knockouts>(this);
         
     }
     
     virtual void gather_events(EA& ea) {
         add_event<mt_gls_propagule>(ea);
+        add_event<datafiles::mrca_lineage>(ea);
+        add_event<subpopulation_founder_event>(ea);
         //add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         //add_event<dol_tracking>(ea);

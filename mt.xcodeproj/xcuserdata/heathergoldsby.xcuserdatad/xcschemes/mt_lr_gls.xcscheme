@@ -64,7 +64,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-c mt.cfg"
+            argument = "-c ramp.cfg"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

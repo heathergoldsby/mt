@@ -63,6 +63,9 @@ namespace ealib {
             .add_field("fit_uni")
             .add_field("fit_multi")
             .add_field("size_multi")
+            .add_field("num_neg_mut")
+            .add_field("num_neutral_mut")
+            .add_field("num_pos_mut")
            ;
             
             
@@ -102,7 +105,7 @@ namespace ealib {
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
                 int cur_update = 0;
-                int update_max = 1000;
+                int update_max = 2000;
                 // and run till the group amasses the right amount of resources
                 while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
                        (cur_update < update_max)){
@@ -112,7 +115,7 @@ namespace ealib {
                 df.write(cur_update);
                 df.write(control_ea->population().size());
                 
-                
+                float control_fit = cur_update;
 //                // setup send knockout founder
 ////                typename EA::individual_type::individual_ptr_type ko_s =i->copy_individual(**((*i).traits().founder()->population().begin()));
 //                typename EA::individual_type::individual_ptr_type ko_s=i->copy_individual(**(i->population().begin()));
@@ -131,6 +134,9 @@ namespace ealib {
                 float fit_uni = 0;
                 float fit_multi = 0;
                 float size_multi = 0;
+                float num_pos = 0;
+                float num_neg = 0;
+                float num_neutral = 0;
                 
 //                // for each location, knockout!
 //                r[0] =  knockout_rx_ea->isa()["nop_x"];
@@ -155,7 +161,7 @@ namespace ealib {
                     
                     
                         int cur_update = 0;
-                        int update_max = 1000;
+                        int update_max = 2000;
                         // and run till the group amasses the right amount of resources
                         while ((get<GROUP_RESOURCE_UNITS>(*knockout_loc,0) < get<GROUP_REP_THRESHOLD>(*knockout_loc)) &&
                                (cur_update < update_max)){
@@ -171,6 +177,16 @@ namespace ealib {
                             num_multi++;
                             fit_multi += cur_update;
                             size_multi += (knockout_loc->population().size());
+                        }
+                        
+                        if (cur_update == control_fit) {
+                            num_neutral ++;
+                        }
+                        if (cur_update < control_fit) {
+                            num_pos ++;
+                        }
+                        if (cur_update > control_fit) {
+                            num_neg ++;
                         }
                         
                         
@@ -191,6 +207,9 @@ namespace ealib {
                     df.write(0.0)
                     .write(0.0);
                 }
+                df.write (num_neg)
+                .write(num_neutral)
+                .write(num_pos);
             
 
                 

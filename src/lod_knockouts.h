@@ -52,7 +52,7 @@ namespace ealib {
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
-            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
             
             datafile df("lod_knockouts.dat");
             df.add_field("lod_depth")
@@ -79,28 +79,15 @@ namespace ealib {
                 
                 // To replay, need to create new eas for each knockout exper.
                 // setup the population (really, an ea):
-                typename EA::individual_ptr_type control_ea = ea.make_individual();
-                control_ea->initialize(ea.md());
-                control_ea->reset_rng(ea.rng().seed());
-                //control_ea->rng().reset(get<RNG_SEED>(*i));
                 
-                typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual();
-                knockout_rx_ea->initialize(ea.md());
-                knockout_rx_ea->rng().reset(get<RNG_SEED>(ea));
-                knockout<instructions::rx_msg,instructions::nop_x>(*knockout_rx_ea);
-                
-//                typename EA::individual_ptr_type knockout_location_ea = ea.make_individual();
-//                knockout_location_ea->initialize(ea.md());
-//                knockout_location_ea->rng().reset(get<RNG_SEED>(ea));
-//                knockout<instructions::get_xy,instructions::nop_x>(*knockout_location_ea);
-//                
-                // setup the founder
-                //typename EA::individual_type::individual_ptr_type o=i->copy_individual(**((*i).traits().founder()->population().begin()));
-                typename EA::individual_type::individual_ptr_type o=i->copy_individual(**(i->population().begin()));
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
 
                 
-                o->hw().initialize();
-                control_ea->insert(control_ea->end(), o);
+                
+                
+                //typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual();
+                //knockout<instructions::rx_msg,instructions::nop_x>(*knockout_rx_ea);
+                
                 
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
@@ -116,17 +103,10 @@ namespace ealib {
                 df.write(control_ea->population().size());
                 
                 float control_fit = cur_update;
-//                // setup send knockout founder
-////                typename EA::individual_type::individual_ptr_type ko_s =i->copy_individual(**((*i).traits().founder()->population().begin()));
-//                typename EA::individual_type::individual_ptr_type ko_s=i->copy_individual(**(i->population().begin()));
-//
-//                
-//                ko_s->hw().initialize();
-//                knockout_rx_ea->insert(knockout_rx_ea->end(), ko_s);
-//
-//                // get the genome...
-                typename EA::individual_type::individual_ptr_type j = *(i->population().begin());
-                typename EA::subpopulation_type::genome_type r(j->genome().begin(), j->genome().begin()+j->hw().original_size());
+
+                // get the genome...
+//                typename EA::individual_type::individual_ptr_type j = *i->traits().founder()->population().begin();
+//                typename EA::subpopulation_type::genome_type r(j->genome().begin(), j->genome().begin()+j->hw().original_size());
 //
                 
                 float num_uni = 0;
@@ -138,27 +118,21 @@ namespace ealib {
                 float num_neg = 0;
                 float num_neutral = 0;
                 
-//                // for each location, knockout!
-//                r[0] =  knockout_rx_ea->isa()["nop_x"];
                 
                 
                 // ok we need to iterate through size...
-                for (int z =0; z < r.size(); z++) {
+                // fixed size 100 genome...
+                for (int z =0; z < 100; z++) {
                     for (int q = 0; q < control_ea->isa().size(); q++) {
-                        typename EA::individual_ptr_type knockout_loc = ea.make_individual();
-                        knockout_loc->initialize(ea.md());
-                        knockout_rx_ea->rng().reset(get<RNG_SEED>(ea));
-                        typename EA::subpopulation_type::genome_type r2(r);
-                        r2[z] = q;
+                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                        
+                        //typename EA::subpopulation_type::genome_type r2(knockout_loc->population()[0]->genome());
+                        //r);
+                        knockout_loc->population()[0]->genome()[z] = q;
+                        //r2[z] = q;
                     
-                        //typename EA::individual_type::individual_ptr_type ko_l = i->copy_individual(r2);
-                        typename EA::individual_type::individual_ptr_type ko_l = knockout_loc->make_individual(r2);
-                        inherits_from(*j, *ko_l, *i);
+                        //(*(knockout_loc->population().begin()))->genome()[z] = q;
 
-
-                        ko_l->hw().initialize();
-                        knockout_loc->insert(knockout_loc->end(), ko_l);
-                    
                     
                         int cur_update = 0;
                         int update_max = 2000;
@@ -242,6 +216,78 @@ namespace ealib {
                 
                 df.endl();
                 
+                //++lod_depth;
+                lod_depth += 1;
+            }
+            //            }
+            
+            //        };
+        }
+        
+        LIBEA_ANALYSIS_TOOL(lod_knockouts_debug) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            datafile df("lod_knockouts.dat");
+            df.add_field("lod_depth")
+            .add_field("control_fit")
+            .add_field("control_size")
+            .add_field("num_ko_uni")
+            .add_field("num_ko_multi")
+            .add_field("fit_uni")
+            .add_field("fit_multi")
+            .add_field("size_multi")
+            .add_field("num_neg_mut")
+            .add_field("num_neutral_mut")
+            .add_field("num_pos_mut")
+            ;
+            
+            
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+                df.write(lod_depth);
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                
+                // To replay, need to create new eas for each knockout exper.
+                // setup the population (really, an ea):
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+             
+                
+                typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual();
+                knockout_rx_ea->initialize(ea.md());
+                knockout_rx_ea->rng().reset(get<RNG_SEED>(ea));
+                knockout<instructions::rx_msg,instructions::nop_x>(*knockout_rx_ea);
+                
+               
+                //typename EA::individual_type::individual_ptr_type o= i->copy_individual(**(i->population().begin()));
+                
+                
+                //o->hw().initialize();
+                //control_ea->insert(control_ea->end(), o);
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                df.write(control_ea->population().size());
+
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                
+                df.endl();
+                
                 ++lod_depth;
             }
             //            }
@@ -250,4 +296,6 @@ namespace ealib {
         }
     }
 }
+
+
 #endif

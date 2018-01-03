@@ -257,7 +257,7 @@ public:
         
         add_tool<movie>(this);
         add_tool<ealib::analysis::lod_knockouts>(this);
-        
+        add_tool<ealib::analysis::lod_knockouts_debug>(this);
     }
     
     virtual void gather_events(EA& ea) {

@@ -15,7 +15,10 @@
 //#include <ea/digital_evolution/discrete_spatial_environment.h>
 #include <ea/digital_evolution/environment.h>
 
-
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
 
 
 namespace ealib {
@@ -71,7 +74,9 @@ namespace ealib {
             
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
-            for( ; i!=lod.end(); ++i) {
+//            for( ; i!=lod.end(); ++i) {
+            for( ; i!=lod.end(); i++) {
+
                 
                 df.write(lod_depth);
                 
@@ -216,32 +221,29 @@ namespace ealib {
                 
                 df.endl();
                 
-                //++lod_depth;
-                lod_depth += 100;
+                ++lod_depth;
+                
             }
-            //            }
-            
-            //        };
         }
         
-        LIBEA_ANALYSIS_TOOL(lod_knockouts_debug) {
+        LIBEA_ANALYSIS_TOOL(lod_knockouts_capabilities) {
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
             
-            datafile df("lod_knockouts.dat");
+            datafile df("lod_capability_knockout.dat");
             df.add_field("lod_depth")
             .add_field("control_fit")
             .add_field("control_size")
-            .add_field("num_ko_uni")
-            .add_field("num_ko_multi")
-            .add_field("fit_uni")
-            .add_field("fit_multi")
-            .add_field("size_multi")
-            .add_field("num_neg_mut")
-            .add_field("num_neutral_mut")
-            .add_field("num_pos_mut")
+            .add_field("rx_ko_fit")
+            .add_field("rx_ko_size")
+            .add_field("neighbor_ko_fit")
+            .add_field("neighbor_ko_size")
+            .add_field("gs_sense_ko_fit")
+            .add_field("gs_sense_ko_size")
+            .add_field("res_sense_ko_fit")
+            .add_field("res_sense_ko_size")
             ;
             
             
@@ -258,23 +260,26 @@ namespace ealib {
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
              
                 
-                typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual();
-                knockout_rx_ea->initialize(ea.md());
-                knockout_rx_ea->rng().reset(get<RNG_SEED>(ea));
+                typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual(*i->traits().founder());
                 knockout<instructions::rx_msg,instructions::nop_x>(*knockout_rx_ea);
                 
-               
-                //typename EA::individual_type::individual_ptr_type o= i->copy_individual(**(i->population().begin()));
                 
+                typename EA::individual_ptr_type knockout_neighbor_ea = ea.make_individual(*i->traits().founder());
+                knockout<instructions::is_neighbor,instructions::nop_x>(*knockout_neighbor_ea);
                 
-                //o->hw().initialize();
-                //control_ea->insert(control_ea->end(), o);
+                typename EA::individual_ptr_type knockout_sense_gs_ea = ea.make_individual(*i->traits().founder());
+                knockout<if_germ,instructions::nop_x>(*knockout_sense_gs_ea);
+                knockout<if_soma,instructions::nop_x>(*knockout_sense_gs_ea);
+                
+                typename EA::individual_ptr_type knockout_sense_res_ea = ea.make_individual(*i->traits().founder());
+                knockout<if_res_more_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
+                knockout<if_res_less_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
+                
                 
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
                 int cur_update = 0;
                 int update_max = 2000;
-                df.write(control_ea->population().size());
 
                 // and run till the group amasses the right amount of resources
                 while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
@@ -286,14 +291,145 @@ namespace ealib {
                 df.write(control_ea->population().size());
                 
                 
+                cur_update = 0;
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*knockout_rx_ea,0) < get<GROUP_REP_THRESHOLD>(*knockout_rx_ea)) &&
+                       (cur_update < update_max)){
+                    knockout_rx_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(knockout_rx_ea->population().size());
+                
+                
+                cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*knockout_neighbor_ea,0) < get<GROUP_REP_THRESHOLD>(*knockout_neighbor_ea)) &&
+                       (cur_update < update_max)){
+                    knockout_neighbor_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(knockout_neighbor_ea->population().size());
+
+                cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*knockout_sense_gs_ea,0) < get<GROUP_REP_THRESHOLD>(*knockout_sense_gs_ea)) &&
+                       (cur_update < update_max)){
+                    knockout_sense_gs_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(knockout_sense_gs_ea->population().size());
+                cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*knockout_sense_res_ea,0) < get<GROUP_REP_THRESHOLD>(*knockout_sense_res_ea)) &&
+                       (cur_update < update_max)){
+                    knockout_sense_res_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(knockout_sense_res_ea->population().size());
+                
+                
+                
                 df.endl();
                 
                 ++lod_depth;
             }
-            //            }
-            
-            //        };
+
         }
+        
+        LIBEA_ANALYSIS_TOOL(lod_report_gs) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            datafile df("lod_report_gs");
+            df.add_field("lod_depth")
+            .add_field("fit")
+            .add_field("size")
+            .add_field("num_germ")
+            .add_field("num_soma")
+            .add_field("germ_workload")
+            .add_field("germ_workload_var")
+            .add_field("soma_workload")
+            .add_field("soma_workload_var")
+            ;
+            
+            
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+                df.write(lod_depth);
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                
+                // To replay, need to create new eas for each knockout exper.
+                // setup the population (really, an ea):
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                int germ_count = 0;
+                int soma_count = 0;
+                accumulator_set<double, stats<tag::mean, tag::variance> > germ_workload_acc;
+                accumulator_set<double, stats<tag::mean, tag::variance> > soma_workload_acc;
+                
+                for(typename EA::subpopulation_type::population_type::iterator j=control_ea->population().begin(); j!=control_ea->population().end(); ++j) {
+                    
+                    typename EA::subpopulation_type::individual_type& org=**j;
+                    if (get<GERM_STATUS>(org, true)) {
+                        ++germ_count;
+                        germ_workload_acc(get<WORKLOAD>(org, 0.0));
+                    } else {
+                        soma_workload_acc(get<WORKLOAD>(org, 0.0));
+                        ++soma_count;
+                    }
+                }
+                
+                df.write(germ_count)
+                .write(soma_count)
+                .write(mean(germ_workload_acc))
+                .write(mean(soma_workload_acc))
+                ;
+                if (soma_count) {
+                df.write(variance(germ_workload_acc))
+                .write(variance(soma_workload_acc));
+                } else {
+                    df.write(0)
+                    .write(0);
+                }
+                
+                df.endl();
+                
+                ++lod_depth;
+            }
+            
+        }
+
     }
 }
 

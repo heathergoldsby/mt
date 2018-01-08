@@ -16,7 +16,6 @@
 LIBEA_ANALYSIS_TOOL(movie) {
     
     int update_max = 500;
-    int max_fit = 0;
     typename EA::individual_type best_founder = *ea.begin();
     
 //    for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {

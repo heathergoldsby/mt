@@ -564,7 +564,6 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     p->reset_rng(mea.rng().seed());
                     
                     int total_workload = 0;
-                    int num_moved = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                         typename MEA::subpopulation_type::individual_type& org=**j;
                         if (get<GERM_STATUS>(org, true)) {
@@ -593,7 +592,6 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     if (!germ_present) continue;
                     
                     if (pop_count == 1) { // track as uni
-                        int x = get<MULTICELL_REP_TIME>(*i);
                         uni_rep_time_acc.push_back(get<MULTICELL_REP_TIME>(*i));
                         uni_workload_acc.push_back(total_workload);
                     } else {

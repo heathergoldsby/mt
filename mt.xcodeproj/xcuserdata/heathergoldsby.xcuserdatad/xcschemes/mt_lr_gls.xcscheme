@@ -68,7 +68,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-l checkpoint-500000.xml.gz --analyze lod_knockouts --ea.analysis.input.filename  lod-500000.xml.gz"
+            argument = "-l checkpoint-500000.xml.gz --analyze lod_knockouts_capabilities --ea.analysis.input.filename  lod-500000.xml.gz"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

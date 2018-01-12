@@ -61,6 +61,7 @@ namespace ealib {
             df.add_field("lod_depth")
             .add_field("control_fit")
             .add_field("control_size")
+            .add_field("num_ko_inviable")
             .add_field("num_ko_uni")
             .add_field("num_ko_multi")
             .add_field("fit_uni")
@@ -76,7 +77,10 @@ namespace ealib {
             // skip def ancestor (that's what the +1 does)
 //            for( ; i!=lod.end(); ++i) {
             for( ; i!=lod.end(); i++) {
-
+                if ((lod_depth % 10) != 0) {
+                    lod_depth ++;
+                    continue;
+                }
                 
                 df.write(lod_depth);
                 
@@ -113,7 +117,7 @@ namespace ealib {
 //                typename EA::individual_type::individual_ptr_type j = *i->traits().founder()->population().begin();
 //                typename EA::subpopulation_type::genome_type r(j->genome().begin(), j->genome().begin()+j->hw().original_size());
 //
-                
+                float num_inviable = 0;
                 float num_uni = 0;
                 float num_multi = 0;
                 float fit_uni = 0;
@@ -149,6 +153,10 @@ namespace ealib {
                         }
                         // assess:
                         
+                        if (cur_update == update_max){
+                            num_inviable++;
+                        } else {
+                        
                         if (knockout_loc->population().size() < 1.5) {
                             num_uni ++;
                             fit_uni += cur_update;
@@ -167,11 +175,13 @@ namespace ealib {
                         if (cur_update > control_fit) {
                             num_neg ++;
                         }
+                        }
                         
                         
                     }
                 }
-                df.write(num_uni)
+                df.write(num_inviable)
+                .write(num_uni)
                 .write(num_multi);
                 if (num_uni > 0) {
                     df.write(fit_uni / num_uni);
@@ -230,7 +240,7 @@ namespace ealib {
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
-            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
             
             datafile df("lod_capability_knockout.dat");
             df.add_field("lod_depth")
@@ -249,9 +259,11 @@ namespace ealib {
             
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
-            for( ; i!=lod.end(); ++i) {
+            for( ; i!=lod.end(); i++) {
+                
                 
                 df.write(lod_depth);
+                
                 
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 

@@ -422,13 +422,23 @@ namespace ealib {
                     }
                 }
                 
+                /*
+                 .add_field("fit")
+                 .add_field("size")
+                 .add_field("num_germ")
+                 .add_field("num_soma")
+                 .add_field("germ_workload")
+                 .add_field("germ_workload_var")
+                 .add_field("soma_workload")
+                 .add_field("soma_workload_var")*/
+                
                 df.write(germ_count)
                 .write(soma_count)
                 .write(mean(germ_workload_acc))
-                .write(mean(soma_workload_acc))
+                .write(variance(germ_workload_acc))
                 ;
                 if (soma_count) {
-                df.write(variance(germ_workload_acc))
+                df.write(mean(soma_workload_acc))
                 .write(variance(soma_workload_acc));
                 } else {
                     df.write(0)

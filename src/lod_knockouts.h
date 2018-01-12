@@ -365,7 +365,7 @@ namespace ealib {
             
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
             
-            datafile df("lod_report_gs");
+            datafile df("lod_report_gs.dat");
             df.add_field("lod_depth")
             .add_field("fit")
             .add_field("size")
@@ -431,12 +431,18 @@ namespace ealib {
                  .add_field("germ_workload_var")
                  .add_field("soma_workload")
                  .add_field("soma_workload_var")*/
-                
-                df.write(germ_count)
-                .write(soma_count)
-                .write(mean(germ_workload_acc))
-                .write(variance(germ_workload_acc))
-                ;
+                if (germ_count) {
+                    df.write(germ_count)
+                    .write(soma_count)
+                    .write(mean(germ_workload_acc))
+                    .write(variance(germ_workload_acc))
+                    ;
+                } else {
+                    df.write(0)
+                    .write(0)
+                    .write(0)
+                    .write(0);
+                }
                 if (soma_count) {
                 df.write(mean(soma_workload_acc))
                 .write(variance(soma_workload_acc));

@@ -29,7 +29,7 @@ using namespace ealib;
 // RES_UPDATE, MULTICELL_REP_TIME, DIVIDE_REMOTE
 
 LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 divide
-LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divide; 1 divide
+LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 
 
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);

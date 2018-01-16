@@ -32,7 +32,7 @@ using namespace ealib;
 LIBEA_MD_DECL(DIVIDE_REMOTE, "ea.mt.divide_remote", int); // 0 = no divide; 1 divide
 LIBEA_MD_DECL(DIVIDE_ALT, "ea.mt.divide_alt", int); // 0 = remote; 1 local
 LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
-LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int); // 0 = no divide; 1 divide
+LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int);
 LIBEA_MD_DECL(COST_START_UPDATE, "ea.mt.cost_start_update", int);
 LIBEA_MD_DECL(COST_RAMP, "ea.mt.cost_ramp", int);
 
@@ -176,6 +176,8 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         r.resize(parent_size);
         hw.replicated_soft_reset();
+        
+        int indrep = get<IND_REP_THRESHOLD>(ea, 0.0);
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<IND_REP_THRESHOLD>(ea, 0.0)) {
             // raise flag

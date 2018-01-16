@@ -134,6 +134,8 @@ namespace ealib {
                 for (int z =0; z < 100; z++) {
                     for (int q = 0; q < control_ea->isa().size(); q++) {
                         typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                        put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
+
                         
                         //typename EA::subpopulation_type::genome_type r2(knockout_loc->population()[0]->genome());
                         //r);
@@ -270,22 +272,28 @@ namespace ealib {
                 // To replay, need to create new eas for each knockout exper.
                 // setup the population (really, an ea):
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *control_ea);
              
                 
                 typename EA::individual_ptr_type knockout_rx_ea = ea.make_individual(*i->traits().founder());
                 knockout<instructions::rx_msg,instructions::nop_x>(*knockout_rx_ea);
-                
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_rx_ea);
+
                 
                 typename EA::individual_ptr_type knockout_neighbor_ea = ea.make_individual(*i->traits().founder());
                 knockout<instructions::is_neighbor,instructions::nop_x>(*knockout_neighbor_ea);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_neighbor_ea);
+
                 
                 typename EA::individual_ptr_type knockout_sense_gs_ea = ea.make_individual(*i->traits().founder());
                 knockout<if_germ,instructions::nop_x>(*knockout_sense_gs_ea);
                 knockout<if_soma,instructions::nop_x>(*knockout_sense_gs_ea);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_sense_gs_ea);
                 
                 typename EA::individual_ptr_type knockout_sense_res_ea = ea.make_individual(*i->traits().founder());
                 knockout<if_res_more_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
                 knockout<if_res_less_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_sense_res_ea);
                 
                 
                 // replay! till the group amasses the right amount of resources

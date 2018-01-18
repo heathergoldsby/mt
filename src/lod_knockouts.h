@@ -262,7 +262,10 @@ namespace ealib {
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
             for( ; i!=lod.end(); i++) {
-                
+                if ((lod_depth % 10) != 0) {
+                    lod_depth ++;
+                    continue;
+                }
                 
                 df.write(lod_depth);
                 
@@ -367,6 +370,73 @@ namespace ealib {
 
         }
         
+        LIBEA_ANALYSIS_TOOL(lod_transition) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            datafile df("lod_transition.dat");
+            df.add_field("lod_depth")
+            .add_field("fit")
+            .add_field("size")
+            .add_field("not")
+            .add_field("nand")
+            .add_field("and")
+            .add_field("ornot")
+            .add_field("or")
+            .add_field("andnot")
+            .add_field("nor")
+            .add_field("equals")
+            ;
+            
+            
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+                df.write(lod_depth);
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                
+                // To replay, need to create new eas for each knockout exper.
+                // setup the population (really, an ea):
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                df.write(get<TASK_NOT>(*control_ea, 0.0))
+                .write(get<TASK_NAND>(*control_ea, 0.0))
+                .write(get<TASK_AND>(*control_ea, 0.0))
+                .write(get<TASK_ORNOT>(*control_ea, 0.0))
+                .write(get<TASK_OR>(*control_ea, 0.0))
+                .write(get<TASK_ANDNOT>(*control_ea, 0.0))
+                .write(get<TASK_NOR>(*control_ea, 0.0))
+                .write(get<TASK_XOR>(*control_ea, 0.0))
+                .write(get<TASK_EQUALS>(*control_ea, 0.0))
+                .endl();
+                
+                ++lod_depth;
+            }
+            
+        }
+
+            
+
+        
         LIBEA_ANALYSIS_TOOL(lod_report_gs) {
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
@@ -430,15 +500,7 @@ namespace ealib {
                     }
                 }
                 
-                /*
-                 .add_field("fit")
-                 .add_field("size")
-                 .add_field("num_germ")
-                 .add_field("num_soma")
-                 .add_field("germ_workload")
-                 .add_field("germ_workload_var")
-                 .add_field("soma_workload")
-                 .add_field("soma_workload_var")*/
+                
                 if (germ_count) {
                     df.write(germ_count)
                     .write(soma_count)

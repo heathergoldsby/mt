@@ -492,7 +492,11 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         .add_field("mean_uni_rep_time")
         .add_field("mean_uni_workload")
         .add_field("mean_mc_rep_time")
-        .add_field("mean_mc_workload");
+        .add_field("mean_mc_workload")
+        .add_field("num_uni")
+        .add_field("num_multi")
+        .add_field("num_uni_repro")
+        .add_field("num_multi_repro");
         
         num_rep = 0;
     }
@@ -508,11 +512,14 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         
         configurable_per_site m(get<GERM_MUTATION_PER_SITE_P>(mea));
 
+        int count_uni = 0;
+        int count_multi = 0;
         
         // Replicate!
         int ru = 1;
         if ((mea.current_update() % ru) == 0) {
-            
+
+
             // See if any subpops have exceeded the resource threshold
             typename MEA::population_type offspring;
             for(typename MEA::iterator i=mea.begin(); i!=mea.end(); ++i) {
@@ -539,6 +546,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
                     multicell_size.push_back(alive_count);
         
+                    if (alive_count == 1) {
+                        count_uni += 1;
+                    } else { count_multi += 1; }
                 }
                 
                 
@@ -709,10 +719,12 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 _df.write(0)
                 .write(0);
             }
-            /*         .add_field("mean_uni_rep_time")
-             .add_field("mean_mc_rep_time")
-             .add_field("mean_uni_workload")
-             .add_field("mean_mc_workload");*/
+            
+            _df.write(count_uni)
+            .write(count_multi)
+            .write(uni_rep_time_acc.size())
+            .write(mc_rep_time_acc.size());
+
             _df.endl();
             num_rep = 0;
             multicell_rep.clear();

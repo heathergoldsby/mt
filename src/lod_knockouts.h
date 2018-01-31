@@ -387,6 +387,7 @@ namespace ealib {
             .add_field("or")
             .add_field("andnot")
             .add_field("nor")
+            .add_field("xor ")
             .add_field("equals")
             ;
             

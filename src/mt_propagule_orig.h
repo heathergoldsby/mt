@@ -35,6 +35,8 @@ LIBEA_MD_DECL(MULTICELL_REP_TIME, "ea.mt.mcreptime", int);
 LIBEA_MD_DECL(IND_REP_THRESHOLD, "ea.mt.ind_rep_threshold", int);
 LIBEA_MD_DECL(COST_START_UPDATE, "ea.mt.cost_start_update", int);
 LIBEA_MD_DECL(COST_RAMP, "ea.mt.cost_ramp", int);
+LIBEA_MD_DECL(LAST_REPLICATION_STATE, "ea.mt.last_rep_state", int); // 0 uni, 1 mc, -1 not set
+LIBEA_MD_DECL(REPLICATION_STATE_INDEX, "ea.mt.rep_state_index", int); // increments based on number of flips
 
 
 //! Execute the next instruction if group resources exceed threshold.
@@ -355,7 +357,6 @@ struct mt_propagule : end_of_update_event<MEA> {
                         if ((*j)->alive()) {
                             alive_count++;
                         }
-                        
                     }
                     
                     multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
@@ -394,6 +395,27 @@ struct mt_propagule : end_of_update_event<MEA> {
                             break;
                         }
                     }
+                    
+                    
+                    
+                    // track last replication state
+                    int rep_size = i->population().size();
+                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
+
+                    if (rep_size > 1) {
+                        put<LAST_REPLICATION_STATE>(1,p);
+                        if (last_rep_state == 0) {
+                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+                        }
+                    } else {
+                        put<LAST_REPLICATION_STATE>(0,p);
+                        if (last_rep_state == 1) {
+                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+                        }
+                    }
+                    put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),p);
+                    
+                    
                     
                     offspring.insert(offspring.end(),p);
                     
@@ -496,7 +518,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         .add_field("num_uni")
         .add_field("num_multi")
         .add_field("num_uni_repro")
-        .add_field("num_multi_repro");
+        .add_field("num_multi_repro")
+        .add_field("mean_uni_index")
+        .add_field("mean_multi_index");
         
         num_rep = 0;
     }
@@ -514,6 +538,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
 
         int count_uni = 0;
         int count_multi = 0;
+        
+        float uni_index = 0;
+        float multi_index = 0;
         
         // Replicate!
         int ru = 1;
@@ -548,7 +575,10 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         
                     if (alive_count == 1) {
                         count_uni += 1;
-                    } else { count_multi += 1; }
+                        uni_index += get<REPLICATION_STATE_INDEX>(*i,0);
+                    } else { count_multi += 1;
+                        multi_index += get<REPLICATION_STATE_INDEX>(*i,0);
+                    }
                 }
                 
                 
@@ -625,6 +655,27 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                         soma_workload_var.push_back(0);
                     }
 
+                    // track last replication state
+                    int rep_size = i->population().size();
+                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
+                    
+                    if (rep_size > 1) {
+                        put<LAST_REPLICATION_STATE>(1,*p);
+                        put<LAST_REPLICATION_STATE>(1,*i);
+
+                        if (last_rep_state == 0) {
+                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+                        }
+                    } else {
+                        put<LAST_REPLICATION_STATE>(0,*p);
+                        put<LAST_REPLICATION_STATE>(0,*i);
+
+                        if (last_rep_state == 1) {
+                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+                        }
+                    }
+                    put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),*p);
+                    
 
                     
                     offspring.insert(offspring.end(),p);
@@ -724,7 +775,19 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
             .write(count_multi)
             .write(uni_rep_time_acc.size())
             .write(mc_rep_time_acc.size());
+            if (uni_index) {
+                _df.write(uni_index / count_uni);
+            } else {
+                _df.write(0);
+            }
+            
+            if (multi_index) {
+                _df.write(multi_index / count_multi);
 
+            } else {
+                _df.write(0);
+            }
+            
             _df.endl();
             num_rep = 0;
             multicell_rep.clear();

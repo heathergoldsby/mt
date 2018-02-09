@@ -65,11 +65,11 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-c ramp.cfg"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l checkpoint-500000.xml.gz --analyze lod_knockouts_capabilities --ea.analysis.input.filename  lod-500000.xml.gz --ea.mt.ind_rep_threshold=25"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

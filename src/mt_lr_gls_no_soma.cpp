@@ -1,4 +1,4 @@
-#include <ea/digital_evolution.h>
+\#include <ea/digital_evolution.h>
 #include <ea/cmdline_interface.h>
 #include <ea/subpopulation_founder.h>
 #include <ea/line_of_descent.h>
@@ -8,7 +8,7 @@
 //#include <ea/selection/rank.h>
 //#include <ea/datafiles/fitness.h>
 //#include <ea/digital_evolution/extra_instruction_sets/matrix.h>
-
+#include <ea/metapopulation.h>
 #include "gls.h"
 
 //#include "evolved_striped_ancestor2.h"
@@ -17,9 +17,10 @@
 //#include "subpopulation_propagule_split.h"
 
 #include "movie.h"
-
+//#include "ko.h"
 #include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
+#include "lod_knockouts.h"
 
 
 
@@ -77,9 +78,8 @@ struct lifecycle : public default_lifecycle {
         //append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
-        
-        //        append_isa<if_res_more_than_thresh>(ea);
-        //        append_isa<if_res_less_than_thresh>(ea);
+        append_isa<if_res_more_than_thresh>(ea);
+        append_isa<if_res_less_than_thresh>(ea);
         
         add_event<task_resource_consumption>(ea);
         add_event<task_switching_cost>(ea);
@@ -256,14 +256,21 @@ public:
     virtual void gather_tools() {
         
         add_tool<movie>(this);
+        add_tool<ealib::analysis::lod_knockouts>(this);
+        add_tool<ealib::analysis::lod_knockouts_capabilities>(this);
+        add_tool<ealib::analysis::lod_report_gs>(this);
+        add_tool<ealib::analysis::lod_transition>(this);
+        
         
     }
     
     virtual void gather_events(EA& ea) {
         add_event<mt_gls_propagule>(ea);
-        add_event<task_performed_tracking>(ea);
-        add_event<task_switch_tracking>(ea);
-        add_event<dol_tracking>(ea);
+        //add_event<datafiles::mrca_lineage>(ea);
+        add_event<subpopulation_founder_event>(ea);
+        //add_event<task_performed_tracking>(ea);
+        //add_event<task_switch_tracking>(ea);
+        //add_event<dol_tracking>(ea);
         
         
     }

@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>28</integer>
 		</dict>
+		<key>mt_lr_gls_no_soma.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>29</integer>
+		</dict>
 		<key>mt_lr_only_comm.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -78,6 +83,11 @@
 			<true/>
 		</dict>
 		<key>4804DF1C1F4F2C0300B649C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48051E8E20409B7900832715</key>
 		<dict>
 			<key>primary</key>
 			<true/>

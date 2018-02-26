@@ -256,6 +256,8 @@ namespace ealib {
             .add_field("gs_sense_ko_size")
             .add_field("res_sense_ko_fit")
             .add_field("res_sense_ko_size")
+            .add_field("soma_ko_fit")
+            .add_field("soma_ko_size")
             ;
             
             
@@ -297,6 +299,11 @@ namespace ealib {
                 knockout<if_res_more_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
                 knockout<if_res_less_than_thresh,instructions::nop_x>(*knockout_sense_res_ea);
                 put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_sense_res_ea);
+                
+                
+                typename EA::individual_ptr_type knockout_soma_ea = ea.make_individual(*i->traits().founder());
+                knockout<become_soma,instructions::nop_x>(*knockout_soma_ea);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_soma_ea);
                 
                 
                 // replay! till the group amasses the right amount of resources
@@ -361,6 +368,19 @@ namespace ealib {
                 df.write(cur_update);
                 df.write(knockout_sense_res_ea->population().size());
                 
+                cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*knockout_soma_ea,0) < get<GROUP_REP_THRESHOLD>(*knockout_soma_ea)) &&
+                       (cur_update < update_max)){
+                    knockout_soma_ea->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(knockout_soma_ea->population().size());
+                
+
                 
                 
                 df.endl();
@@ -528,6 +548,113 @@ namespace ealib {
             }
             
         }
+        
+        
+        LIBEA_ANALYSIS_TOOL(lod_gls_circle_square_plot) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            datafile df("lod_gls_circle_square_plot.dat");
+            df.add_field("lod_depth");
+            
+            
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+                df.write(lod_depth);
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                
+
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                df.write(cur_update);
+                
+                // grab info based on location...
+                for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                    for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                        typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
+                        if (l.occupied()) {
+                            df.write(get<GERM_STATUS>(*l.inhabitant(), 0))
+                            .write(get<WORKLOAD>(*l.inhabitant(),0));
+                        } else {
+                            df.write("2")
+                            .write("0");
+                        }
+                        
+                    }
+                }
+                
+                df.endl();
+                
+                ++lod_depth;
+            }
+        }
+
+        
+        
+        LIBEA_ANALYSIS_TOOL(movie_gs) {
+            
+            int update_max = 2000;
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.end(); --i;
+
+            typename EA::individual_type best_founder = *ea.begin();
+            
+            
+            datafile df("movie.dat");
+            df.write(get<SPATIAL_X>(ea));
+            df.write(get<SPATIAL_Y>(ea));
+            df.endl();
+            
+            typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+
+            for (int j=0; j<=update_max; ++j) {
+                control_ea->update();
+
+                df.write(j);
+                df.write(get<GROUP_RESOURCE_UNITS>(*control_ea,0) ); 
+                df.write(get<MULTICELL_REP_TIME>(best_founder,0));
+                df.write(get<GROUP_RESOURCE_UNITS>(best_founder,0));
+                // grab info based on location...
+                for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                    for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                        
+                        //typename EA::individual_type::environment_type::location_type* l = &best_founder.traits().founder()->env().location(x,y);
+                        typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
+                        if (l.occupied()) {
+                            df.write(get<GERM_STATUS>(*l.inhabitant(), 0))
+                            .write(get<WORKLOAD>(*l.inhabitant(),0));
+                        } else {
+                            df.write("2")
+                            .write("0");
+                        }
+                        
+                    }
+                }
+                df.endl();
+                
+            }
+            
+            df.endl();
+            
+        }
+
 
     }
 }

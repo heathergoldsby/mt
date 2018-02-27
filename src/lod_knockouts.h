@@ -581,7 +581,7 @@ namespace ealib {
                     control_ea->update();
                     ++cur_update;
                 }
-                df.write(cur_update);
+                //df.write(cur_update);
                 
                 // grab info based on location...
                 for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
@@ -628,7 +628,7 @@ namespace ealib {
                 control_ea->update();
 
                 df.write(j);
-                df.write(get<GROUP_RESOURCE_UNITS>(*control_ea,0) ); 
+                df.write(get<GROUP_RESOURCE_UNITS>(*control_ea,0) );
                 df.write(get<MULTICELL_REP_TIME>(best_founder,0));
                 df.write(get<GROUP_RESOURCE_UNITS>(best_founder,0));
                 // grab info based on location...

@@ -588,7 +588,7 @@ namespace ealib {
                     for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
                         typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
                         if (l.occupied()) {
-                            df.write(get<GERM_STATUS>(*l.inhabitant(), 0))
+                            df.write(get<GERM_STATUS>(*l.inhabitant(), true))
                             .write(get<WORKLOAD>(*l.inhabitant(),0));
                         } else {
                             df.write("2")
@@ -638,7 +638,7 @@ namespace ealib {
                         //typename EA::individual_type::environment_type::location_type* l = &best_founder.traits().founder()->env().location(x,y);
                         typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
                         if (l.occupied()) {
-                            df.write(get<GERM_STATUS>(*l.inhabitant(), 0))
+                            df.write(get<GERM_STATUS>(*l.inhabitant(), true))
                             .write(get<WORKLOAD>(*l.inhabitant(),0));
                         } else {
                             df.write("2")

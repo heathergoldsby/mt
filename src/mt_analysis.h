@@ -29,6 +29,8 @@ namespace ealib {
             typename EA::individual_type best_founder = *ea.begin();
             int update_max = 500;
             int best_update = 500;
+            int ind_count = 0;
+            int best_ind = 0;
 
             for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
                 typename EA::individual_ptr_type test_ea = ea.make_individual(*i->traits().founder());
@@ -43,9 +45,34 @@ namespace ealib {
                     ++cur_update;
                 }
                 
-                if (cur_update < best_update) {
-                    best_update = cur_update;
-                    best_founder = *i;
+                if (cur_update < best_update)  {
+                    int germ_count = 0;
+                    for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                        for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                            
+                            typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
+                            if (l.occupied()) {
+                                if (get<GERM_STATUS>(*l.inhabitant(), true)) {
+                                    germ_count++;
+                                }
+                            }
+                        }
+                        
+                    }
+
+                    if (germ_count) {
+                        best_update = cur_update;
+                        best_ind = ind_count;
+                    }
+                }
+                ind_count++;
+            }
+            
+            int count = 0;
+            for (typename EA::iterator j=ea.begin(); j!=ea.end(); ++j)  {
+                if (count == best_ind) {
+                    best_founder = *j;
+                    break;
                 }
             }
             

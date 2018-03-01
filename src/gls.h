@@ -67,6 +67,8 @@ LIBEA_MD_DECL(NUM_PROPAGULE_CELL, "ea.gls.num_propagule_cell", int);
  */
 
 DIGEVO_INSTRUCTION_DECL(become_soma) {
+    get<TASK_PROFILE>(*p,"") += "S";
+
     put<GERM_STATUS>(false,*p);
 }
 

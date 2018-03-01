@@ -65,6 +65,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-c ramp.cfg"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-l checkpoint-1000000.xml.gz --analyze task_profile"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

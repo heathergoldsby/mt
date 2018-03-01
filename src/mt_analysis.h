@@ -68,12 +68,14 @@ namespace ealib {
                 ind_count++;
             }
             
-            int count = 0;
-            for (typename EA::iterator j=ea.begin(); j!=ea.end(); ++j)  {
-                if (count == best_ind) {
-                    best_founder = *j;
+            int cur_ind_count = 0;
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                
+                if (cur_ind_count == best_ind) {
+                    best_founder = *i;
                     break;
                 }
+                cur_ind_count++;
             }
             
             datafile df("task_profile.dat");
@@ -119,6 +121,7 @@ namespace ealib {
             
             df.write(cur_update);
             df.write(control_ea->population().size());
+            df.write(best_ind);
             df.endl();
             
         }

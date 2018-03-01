@@ -82,6 +82,7 @@ namespace ealib {
             df.add_field("x_position")
             .add_field("y_position")
             .add_field("gs")
+            .add_field("workload")
             .add_field("task_profile");
             
             
@@ -107,9 +108,11 @@ namespace ealib {
                     typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
                     if (l.occupied()) {
                         df.write(get<GERM_STATUS>(*l.inhabitant(), true))
+                        .write(get<WORKLOAD>(*l.inhabitant(), 0))
                         .write(get<TASK_PROFILE>(*l.inhabitant(),""));
                     } else {
                         df.write("2")
+                        .write("0")
                         .write("-");
                     }
                     df.endl();

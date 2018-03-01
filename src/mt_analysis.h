@@ -128,13 +128,59 @@ namespace ealib {
         
         LIBEA_ANALYSIS_TOOL(movie_gs) {
             
-            int update_max = 2000;
-            
-            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
-            
-            typename line_of_descent<EA>::iterator i=lod.end(); --i;
-            
+            // find the best...
             typename EA::individual_type best_founder = *ea.begin();
+            int update_max = 2000;
+            int best_update = 2000;
+            int ind_count = 0;
+            int best_ind = 0;
+            
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                typename EA::individual_ptr_type test_ea = ea.make_individual(*i->traits().founder());
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*test_ea,0) < get<GROUP_REP_THRESHOLD>(*test_ea)) &&
+                       (cur_update < update_max)){
+                    test_ea->update();
+                    ++cur_update;
+                }
+                
+                if (cur_update < best_update)  {
+                    int germ_count = 0;
+                    for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                        for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                            
+                            typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
+                            if (l.occupied()) {
+                                if (get<GERM_STATUS>(*l.inhabitant(), true)) {
+                                    germ_count++;
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    if (germ_count) {
+                        best_update = cur_update;
+                        best_ind = ind_count;
+                    }
+                }
+                ind_count++;
+            }
+            
+            int cur_ind_count = 0;
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                
+                if (cur_ind_count == best_ind) {
+                    best_founder = *i;
+                    break;
+                }
+                cur_ind_count++;
+            }
+
             
             
             datafile df("movie.dat");
@@ -142,7 +188,7 @@ namespace ealib {
             df.write(get<SPATIAL_Y>(ea));
             df.endl();
             
-            typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+            typename EA::individual_ptr_type control_ea = ea.make_individual(*best_founder.traits().founder());
             
             for (int j=0; j<=update_max; ++j) {
                 control_ea->update();

@@ -22,6 +22,7 @@
 #include "multi_birth_selfrep_not_remote_ancestor.h"
 #include "lod_knockouts.h"
 
+#include "mt_analysis.h"
 
 
 
@@ -260,7 +261,8 @@ public:
         add_tool<ealib::analysis::lod_knockouts_capabilities>(this);
         add_tool<ealib::analysis::lod_report_gs>(this);
         add_tool<ealib::analysis::lod_transition>(this);
-        
+        add_tool<ealib::analysis::movie_gs>(this);
+        add_tool<ealib::analysis::task_profile>(this);
         
     }
     

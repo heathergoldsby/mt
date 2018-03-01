@@ -99,7 +99,8 @@ namespace ealib {
                 control_ea->update();
                 ++cur_update;
             }
-            
+            accumulator_set<double, stats<tag::mean, tag::variance> > workload;
+
             for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
                 for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
                     df.write(x);
@@ -110,6 +111,7 @@ namespace ealib {
                         df.write(get<GERM_STATUS>(*l.inhabitant(), true))
                         .write(get<WORKLOAD>(*l.inhabitant(), 0))
                         .write(get<TASK_PROFILE>(*l.inhabitant(),""));
+                        workload(get<WORKLOAD>(*l.inhabitant(), 0));
                     } else {
                         df.write("2")
                         .write("0")
@@ -121,10 +123,11 @@ namespace ealib {
                 
             }
             df.endl();
-            
             df.write(cur_update);
             df.write(control_ea->population().size());
             df.write(best_ind);
+            df.write(variance(workload));
+
             df.endl();
             
         }
@@ -190,7 +193,7 @@ namespace ealib {
             df.write(get<SPATIAL_X>(ea));
             df.write(get<SPATIAL_Y>(ea));
             df.endl();
-            
+
             typename EA::individual_ptr_type control_ea = ea.make_individual(*best_founder.traits().founder());
             
             for (int j=0; j<=update_max; ++j) {
@@ -209,6 +212,7 @@ namespace ealib {
                         if (l.occupied()) {
                             df.write(get<GERM_STATUS>(*l.inhabitant(), true))
                             .write(get<WORKLOAD>(*l.inhabitant(),0));
+                            
                         } else {
                             df.write("2")
                             .write("0");

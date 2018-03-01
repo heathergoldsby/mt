@@ -434,8 +434,10 @@ namespace ealib {
                             df.write("2")
                             .write("-");
                         }
-                        
+                        df.endl();
+
                     }
+
                 }
                 df.endl();
             

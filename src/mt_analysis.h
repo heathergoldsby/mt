@@ -27,8 +27,8 @@ namespace ealib {
             
             // find the best...
             typename EA::individual_type best_founder = *ea.begin();
-            int update_max = 500;
-            int best_update = 500;
+            int update_max = 2000;
+            int best_update = 2000;
             int ind_count = 0;
             int best_ind = 0;
 

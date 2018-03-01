@@ -405,7 +405,8 @@ namespace ealib {
             typename line_of_descent<EA>::iterator i=lod.end(); --i;
             
             typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-            
+            control_ea->resources().reset();
+
             // replay! till the group amasses the right amount of resources
             // or exceeds its window...
             int cur_update = 0;

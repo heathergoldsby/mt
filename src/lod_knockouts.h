@@ -395,7 +395,7 @@ namespace ealib {
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
             
-            datafile df("lod_transition.dat");
+            datafile df("task_profile.dat");
             df.add_field("x_position")
             .add_field("y_position")
             .add_field("gs")

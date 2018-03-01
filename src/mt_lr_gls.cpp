@@ -21,6 +21,7 @@
 #include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
 #include "lod_knockouts.h"
+#include "mt_analysis.h"
 
 
 
@@ -264,7 +265,7 @@ public:
         add_tool<ealib::analysis::lod_transition>(this);
         add_tool<ealib::analysis::lod_gls_circle_square_plot>(this);
         add_tool<ealib::analysis::movie_gs>(this);
-        add_tool<ealib::analysis::lod_task_profile>(this);
+        add_tool<ealib::analysis::task_profile>(this);
         
     }
     

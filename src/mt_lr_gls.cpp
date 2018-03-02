@@ -275,7 +275,7 @@ public:
         add_event<subpopulation_founder_event>(ea);
         add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
-        //add_event<dol_tracking>(ea);
+        add_event<dol_tracking>(ea);
         
         
     }

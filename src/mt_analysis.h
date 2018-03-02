@@ -195,12 +195,15 @@ namespace ealib {
             df.write(get<SPATIAL_Y>(ea));
             df.endl();
 
+            int cur_update = 0;
             typename EA::individual_ptr_type control_ea = ea.make_individual(*best_founder.traits().founder());
             
-            for (int j=0; j<=update_max; ++j) {
+            while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                   (cur_update < update_max)){
                 control_ea->update();
+                cur_update++;
                 
-                df.write(j);
+                df.write(cur_update);
 //                df.write(get<GROUP_RESOURCE_UNITS>(*control_ea,0) );
 //                df.write(get<MULTICELL_REP_TIME>(best_founder,0));
 //                df.write(get<GROUP_RESOURCE_UNITS>(best_founder,0));

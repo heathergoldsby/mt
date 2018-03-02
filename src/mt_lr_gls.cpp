@@ -273,7 +273,7 @@ public:
         add_event<mt_gls_propagule>(ea);
         //add_event<datafiles::mrca_lineage>(ea);
         add_event<subpopulation_founder_event>(ea);
-        //add_event<task_performed_tracking>(ea);
+        add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         //add_event<dol_tracking>(ea);
         

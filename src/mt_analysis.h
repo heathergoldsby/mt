@@ -186,11 +186,11 @@ namespace ealib {
                 }
                 cur_ind_count++;
             }
-
+            
             
             
             datafile df("movie.dat");
-\
+
             df.write(get<SPATIAL_X>(ea));
             df.write(get<SPATIAL_Y>(ea));
             df.endl();

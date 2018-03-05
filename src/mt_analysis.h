@@ -772,7 +772,7 @@ namespace ealib {
                 df.write (num_neg)
                 .write(num_neutral)
                 .write(num_pos);
-                
+            df.endl();
                 
                 
         }

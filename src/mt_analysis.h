@@ -709,7 +709,7 @@ namespace ealib {
                 // fixed size 100 genome...
                 for (int z =0; z < 100; z++) {
                     for (int q = 0; q < control_ea->isa().size(); q++) {
-                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*best_founder->traits().founder());
+                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*best_founder.traits().founder());
                         put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
                         
                         

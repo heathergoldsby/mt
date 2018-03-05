@@ -266,6 +266,7 @@ public:
         add_tool<ealib::analysis::movie_gs>(this);
         add_tool<ealib::analysis::task_profile2>(this);
         add_tool<ealib::analysis::temporal_poly>(this);
+        add_tool<ealib::analysis::dom_mutational_analysis>(this);
 
         
     }

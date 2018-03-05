@@ -40,7 +40,6 @@ namespace ealib {
             accumulator_set<double, stats<tag::mean, tag::variance, tag::count> > equals_age;
 
             
-            // find the best...
             typename EA::individual_type best_founder = *ea.begin();
             int update_max = 2000;
             int best_update = 2000;
@@ -59,6 +58,52 @@ namespace ealib {
                        (cur_update < update_max)){
                     test_ea->update();
                     ++cur_update;
+                }
+                
+                if (cur_update < best_update)  {
+                    int germ_count = 0;
+                    for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                        for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                            
+                            typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
+                            if (l.occupied()) {
+                                if (get<GERM_STATUS>(*l.inhabitant(), true)) {
+                                    germ_count++;
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    if (germ_count) {
+                        best_update = cur_update;
+                        best_ind = ind_count;
+                    }
+                }
+                ind_count++;
+            }
+            
+            int cur_ind_count = 0;
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                
+                if (cur_ind_count == best_ind) {
+                    best_founder = *i;
+                    break;
+                }
+                cur_ind_count++;
+            }
+            
+        
+            
+            typename EA::individual_ptr_type control_ea = ea.make_individual(*best_founder.traits().founder());
+            control_ea->resources().reset();
+            
+            int cur_update = 0; 
+            // and run till the group amasses the right amount of resources
+            while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
                     
                     
                     // see what the org did...
@@ -67,7 +112,7 @@ namespace ealib {
                     for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
                         for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
                             
-                            typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
+                            typename EA::individual_type::environment_type::location_type l = control_ea->env().location(x,y);
                             if (l.occupied()) {
                                 // org age?
                                 int age = cur_update - get<IND_BIRTH_UPDATE>(*l.inhabitant(),0);
@@ -113,7 +158,7 @@ namespace ealib {
                         
                     }
                 }
-            }
+            
             datafile _df("temporal_poly.dat");
             _df.add_field("mean_not_age")
             .add_field("var_not_age")
@@ -557,6 +602,181 @@ namespace ealib {
             df.endl();
             
         }
+        LIBEA_ANALYSIS_TOOL(dom_mutational_analysis) {
+            
+            // find the best...
+            typename EA::individual_type best_founder = *ea.begin();
+            int update_max = 2000;
+            int best_update = 2000;
+            int ind_count = 0;
+            int best_ind = 0;
+            
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                typename EA::individual_ptr_type test_ea = ea.make_individual(*i->traits().founder());
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*test_ea,0) < get<GROUP_REP_THRESHOLD>(*test_ea)) &&
+                       (cur_update < update_max)){
+                    test_ea->update();
+                    ++cur_update;
+                }
+                
+                if (cur_update < best_update)  {
+                    int germ_count = 0;
+                    for (int x=0; x < get<SPATIAL_X>(ea); ++x) {
+                        for (int y=0; y<get<SPATIAL_Y>(ea); ++y){
+                            
+                            typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
+                            if (l.occupied()) {
+                                if (get<GERM_STATUS>(*l.inhabitant(), true)) {
+                                    germ_count++;
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    if (germ_count) {
+                        best_update = cur_update;
+                        best_ind = ind_count;
+                    }
+                }
+                ind_count++;
+            }
+            
+            int cur_ind_count = 0;
+            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                
+                if (cur_ind_count == best_ind) {
+                    best_founder = *i;
+                    break;
+                }
+                cur_ind_count++;
+            }
+            
+            
+        
+            int cur_update = 0;
+            typename EA::individual_ptr_type control_ea = ea.make_individual(*best_founder.traits().founder());
+            
+            
+            datafile df("mutational_analysis");
+            df.add_field("control_fit")
+            .add_field("control_size")
+            .add_field("num_ko_inviable")
+            .add_field("num_ko_uni")
+            .add_field("num_ko_multi")
+            .add_field("fit_uni")
+            .add_field("fit_multi")
+            .add_field("size_multi")
+            .add_field("num_neg_mut")
+            .add_field("num_neutral_mut")
+            .add_field("num_pos_mut")
+            ;
+            
+            
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                float control_fit = cur_update;
+                
+            
+                //
+                float num_inviable = 0;
+                float num_uni = 0;
+                float num_multi = 0;
+                float fit_uni = 0;
+                float fit_multi = 0;
+                float size_multi = 0;
+                float num_pos = 0;
+                float num_neg = 0;
+                float num_neutral = 0;
+                
+                
+                
+                // ok we need to iterate through size...
+                // fixed size 100 genome...
+                for (int z =0; z < 100; z++) {
+                    for (int q = 0; q < control_ea->isa().size(); q++) {
+                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*best_founder->traits().founder());
+                        put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
+                        
+                        
+                       
+                        knockout_loc->population()[0]->genome()[z] = q;
+                        
+                        int cur_update = 0;
+                        int update_max = 2000;
+                        // and run till the group amasses the right amount of resources
+                        while ((get<GROUP_RESOURCE_UNITS>(*knockout_loc,0) < get<GROUP_REP_THRESHOLD>(*knockout_loc)) &&
+                               (cur_update < update_max)){
+                            knockout_loc->update();
+                            ++cur_update;
+                        }
+                        // assess:
+                        
+                        if (cur_update == update_max){
+                            num_inviable++;
+                        } else {
+                            
+                            if (knockout_loc->population().size() < 1.5) {
+                                num_uni ++;
+                                fit_uni += cur_update;
+                            } else {
+                                num_multi++;
+                                fit_multi += cur_update;
+                                size_multi += (knockout_loc->population().size());
+                            }
+                            
+                            if (cur_update == control_fit) {
+                                num_neutral ++;
+                            }
+                            if (cur_update < control_fit) {
+                                num_pos ++;
+                            }
+                            if (cur_update > control_fit) {
+                                num_neg ++;
+                            }
+                        }
+                        
+                        
+                    }
+                }
+                df.write(num_inviable)
+                .write(num_uni)
+                .write(num_multi);
+                if (num_uni > 0) {
+                    df.write(fit_uni / num_uni);
+                } else {
+                    df.write(0.0);
+                }
+                
+                if (num_multi > 0) {
+                    df.write(fit_multi / num_multi)
+                    .write(size_multi / num_multi);
+                } else {
+                    df.write(0.0)
+                    .write(0.0);
+                }
+                df.write (num_neg)
+                .write(num_neutral)
+                .write(num_pos);
+                
+                
+                
+        }
+        
 
 
     }

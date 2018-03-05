@@ -68,7 +68,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-l checkpoint-1000000.xml.gz --analyze task_profile"
+            argument = "-l checkpoint-1000000.xml.gz --analyze task_profile2"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

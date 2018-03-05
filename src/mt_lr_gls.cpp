@@ -265,7 +265,7 @@ public:
         add_tool<ealib::analysis::lod_transition>(this);
         add_tool<ealib::analysis::lod_gls_circle_square_plot>(this);
         add_tool<ealib::analysis::movie_gs>(this);
-        add_tool<ealib::analysis::task_profile>(this);
+        add_tool<ealib::analysis::task_profile2>(this);
         
     }
     

@@ -134,12 +134,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/mt_analysis.h"
-            timestampString = "541622483.317734"
+            timestampString = "541907169.67695"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(task_profile)"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "LIBEA_ANALYSIS_TOOL(task_profile2)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/mt_analysis.h"
+            timestampString = "541907439.333469"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
+            landmarkName = "LIBEA_ANALYSIS_TOOL(task_profile2)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/mt_analysis.h"
+            timestampString = "541907769.176916"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
+            landmarkName = "LIBEA_ANALYSIS_TOOL(task_profile2)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

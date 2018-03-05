@@ -14,11 +14,14 @@
 #include <ea/digital_evolution/instruction_set.h>
 //#include <ea/digital_evolution/discrete_spatial_environment.h>
 #include <ea/digital_evolution/environment.h>
+#include <ea/math/information.h>
 
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/accumulators/statistics/variance.hpp>
+
+using namespace ealib::math;
 
 
 namespace ealib {
@@ -31,6 +34,7 @@ namespace ealib {
             int best_update = 2000;
             int ind_count = 0;
             int best_ind = 0;
+            std::vector<std::string> tps;
 
             for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
                 typename EA::individual_ptr_type test_ea = ea.make_individual(*i->traits().founder());
@@ -112,6 +116,7 @@ namespace ealib {
                         .write(get<WORKLOAD>(*l.inhabitant(), 0))
                         .write(get<TASK_PROFILE>(*l.inhabitant(),""));
                         workload(get<WORKLOAD>(*l.inhabitant(), 0));
+                        tps.push_back(get<TASK_PROFILE>(*l.inhabitant(),""));
                     } else {
                         df.write("2")
                         .write("0")
@@ -123,10 +128,21 @@ namespace ealib {
                 
             }
             df.endl();
+            
+            float shannon_sum = 0;
+            for (int m = 0; m < tps.size(); m++) {
+                for (int n = m+1; n < tps.size(); n++){
+                    shannon_sum += mutual_information(tps[m], tps[n]);
+                }
+            }
+            
             df.write(cur_update);
             df.write(control_ea->population().size());
             df.write(best_ind);
             df.write(variance(workload));
+            df.write(shannon_sum);
+            df.write(shannon_sum / tps.size());
+            
 
             df.endl();
             

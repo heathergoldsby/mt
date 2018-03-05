@@ -85,7 +85,7 @@ struct lifecycle : public default_lifecycle {
         add_event<task_resource_consumption>(ea);
         add_event<task_switching_cost>(ea);
         add_event<task_profile_tracking>(ea);
-        add_event<task_profile_birth_event>(ea);
+        //add_event<task_profile_birth_event>(ea);
         
         add_event<ts_birth_event>(ea);
         add_event<task_mutagenesis>(ea);

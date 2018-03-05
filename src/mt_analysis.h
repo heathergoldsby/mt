@@ -249,7 +249,7 @@ namespace ealib {
                 
             }
             df.endl();
-            int max_size = 100;
+            int max_size = 200;
             for (int m = 0; m < tps.size(); m++) {
                 tps[m].resize(max_size);
             }

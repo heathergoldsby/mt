@@ -70,42 +70,42 @@ namespace ealib {
                             typename EA::individual_type::environment_type::location_type l = test_ea->env().location(x,y);
                             if (l.occupied()) {
                                 // org age?
-                                int age = cur_update - get<IND_BIRTH_UPDATE>(l,0);
-                                while(get<TASK_NOT>(l,0.0) > 0) {
+                                int age = cur_update - get<IND_BIRTH_UPDATE>(*l.inhabitant(),0);
+                                while(get<TASK_NOT>(*l.inhabitant(),0.0) > 0) {
                                     not_age(age);
-                                    get<TASK_NOT>(l,0.0)--;
+                                    get<TASK_NOT>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_NAND>(l,0.0) > 0) {
+                                while(get<TASK_NAND>(*l.inhabitant(),0.0) > 0) {
                                     nand_age(age);
-                                    get<TASK_NAND>(l,0.0)--;
+                                    get<TASK_NAND>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_AND>(l,0.0) > 0) {
+                                while(get<TASK_AND>(*l.inhabitant(),0.0) > 0) {
                                     and_age(age);
-                                    get<TASK_AND>(l,0.0)--;
+                                    get<TASK_AND>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_ORNOT>(l,0.0) > 0) {
+                                while(get<TASK_ORNOT>(*l.inhabitant(),0.0) > 0) {
                                     ornot_age(age);
-                                    get<TASK_ORNOT>(l,0.0)--;
+                                    get<TASK_ORNOT>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_OR>(l,0.0) > 0) {
+                                while(get<TASK_OR>(*l.inhabitant(),0.0) > 0) {
                                     or_age(age);
-                                    get<TASK_OR>(l,0.0)--;
+                                    get<TASK_OR>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_ANDNOT>(l,0.0) > 0) {
+                                while(get<TASK_ANDNOT>(*l.inhabitant(),0.0) > 0) {
                                     andnot_age(age);
-                                    get<TASK_ANDNOT>(l,0.0)--;
+                                    get<TASK_ANDNOT>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_NOR>(l,0.0) > 0) {
+                                while(get<TASK_NOR>(*l.inhabitant(),0.0) > 0) {
                                     nor_age(age);
-                                    get<TASK_NOR>(l,0.0)--;
+                                    get<TASK_NOR>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_XOR>(l,0.0) > 0) {
+                                while(get<TASK_XOR>(*l.inhabitant(),0.0) > 0) {
                                     xor_age(age);
-                                    get<TASK_XOR>(l,0.0)--;
+                                    get<TASK_XOR>(*l.inhabitant(),0.0)--;
                                 }
-                                while(get<TASK_EQUALS>(l,0.0) > 0) {
+                                while(get<TASK_EQUALS>(*l.inhabitant(),0.0) > 0) {
                                     equals_age(age);
-                                    get<TASK_EQUALS>(l,0.0)--;
+                                    get<TASK_EQUALS>(*l.inhabitant(),0.0)--;
                                 }
                                 
                             }
@@ -205,7 +205,7 @@ namespace ealib {
                 _df.write(0)
                 .write(0);
             }
-            
+            _df.endl();
             
         }
         

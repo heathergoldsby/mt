@@ -679,6 +679,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                         }
                     }
                     put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),*p);
+                    put<ARCHIVE_MARK>(get<ARCHIVE_MARK>(*i,0),*p);
                     
 
                     

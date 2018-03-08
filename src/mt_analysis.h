@@ -777,9 +777,120 @@ namespace ealib {
                 
         }
         
+        
+        /*! Prints information about the mean number of task-switches
+         */
+        
+        
+        template <typename EA>
+        struct mark_tracking : end_of_update_event<EA> {
+            mark_tracking(EA& ea) : end_of_update_event<EA>(ea), _df("mark.dat") {
+                _df.add_field("update")
+                .add_field("mark_1")
+                .add_field("mark_2")
+                .add_field("unmarked");
+                
+            }
+            
+            //! Destructor.
+            virtual ~mark_tracking() {
+            }
+            
+            //! Track how many task-switches are being performed!
+            virtual void operator()(EA& ea) {
+                if ((ea.current_update() % 100) == 0) {
+                    int mark_1 = 0;
+                    int mark_2 = 0;
+                    int unmarked = 0;
+                    for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+                    
+                            int mark = get<ARCHIVE_MARK>(*i,0);
+                            if (mark == 1) { mark_1 ++; continue; }
+                            else if (mark == 2) { mark_2 ++; continue; }
+                            else { unmarked++; }
+                    
+                    }
+                    _df.write(ea.current_update())
+                    .write(mark_1)
+                    .write(mark_2)
+                    .write(unmarked)
+                    .endl();
+                }
+                
+            }
+            datafile _df;    
+            
+        };
 
+        
 
+//        /*! Run an archived population in an EA. Used for competition assays
+//         */
+//        LIBEA_ANALYSIS_TOOL(run_archive) {
+//            // load the output archive, it it exists:
+//            typename EA::population_type input;
+//            archive::load_if(get<ARCHIVE_INPUT>(ea), input, ea);
+//            ea.population().swap(input);
+//            ea.initialize();
+//            //ea.after_initialization(ea);
+//            //ea.gather_events(ea);
+//            
+//            datafile df("competition_assay.dat");
+//            df.add_field("mark_1")
+//            .add_field("mark_2")
+//            .add_field("unmarked");
+//
+//            
+//            int cur_update =0;
+//            int max_update =get<RUN_UPDATES>(ea);
+//            while (cur_update < max_update) {
+//                ea.lifecycle().advance_epoch(1,ea);
+//                if ((cur_update % 100) == 0){
+//                    int mark_1 = 0;
+//                    int mark_2 = 0;
+//                    int unmarked = 0;
+//                    for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+//                        
+//                        int mark = get<ARCHIVE_MARK>(*i,0);
+//                        if (mark == 1) { mark_1 ++; continue; }
+//                        else if (mark == 2) { mark_2 ++; continue; }
+//                        else { unmarked++; }
+//                        
+//                    }
+//                    df.write(mark_1)
+//                    .write(mark_2)
+//                    .write(unmarked)
+//                    .endl();
+//                }
+//            }
+//            
+//            
+//        }
+//
     }
 }
+//
+///*! An organism rotates to face its parent....
+// */
+//template <typename EA>
+//struct mark_birth_event : birth_event<EA> {
+//    
+//    //! Constructor.
+//    mark_birth_event(EA& ea) : birth_event<EA>(ea) {
+//    }
+//    
+//    //! Destructor.
+//    virtual ~mark_birth_event() {
+//    }
+//    
+//    /*! Called for every inheritance event. We are using the orientation of the first parent...
+//     */
+//    virtual void operator()(typename EA::individual_type& offspring, // individual offspring
+//                            typename EA::individual_type& parent, // individual parent
+//                            EA& ea) {
+//        
+//    }
+//};
+
 
 #endif

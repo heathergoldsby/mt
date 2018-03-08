@@ -253,6 +253,9 @@ public:
         add_option<COST_RAMP>(this);
         add_option<COST_START_UPDATE>(this);
 
+        add_option<ARCHIVE_INPUT>(this);
+        add_option<ARCHIVE_OUTPUT>(this);
+        add_option<ARCHIVE_MARK>(this);
         
         
     }
@@ -269,7 +272,8 @@ public:
         add_tool<ealib::analysis::task_profile2>(this);
         add_tool<ealib::analysis::temporal_poly>(this);
         add_tool<ealib::analysis::dom_mutational_analysis>(this);
-        
+        add_tool<ealib::analysis::merge_archives>(this);
+        add_tool<ealib::analysis::archive_population>(this);
     }
     
     virtual void gather_events(EA& ea) {
@@ -279,6 +283,7 @@ public:
         add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         add_event<dol_tracking>(ea);
+        add_event<ealib::analysis::mark_tracking>(ea); 
         
         
     }

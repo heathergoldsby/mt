@@ -69,6 +69,22 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l checkpoint-1000000.xml.gz --analyze temporal_poly"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "  -l checkpoint-1000000.xml.gz  --analyze archive_population --ea.archive.output=ar1.xml --ea.archive.mark=1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "  -l checkpoint-1000000.xml.gz  --analyze archive_population --ea.archive.output=ar2.xml --ea.archive.mark=2"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "  -l checkpoint-1000000.xml.gz  --analyze merge_archives --ea.archive.input=ar1.xml --ea.archive.output=ar3.xml"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--merge_checkpoint checkpoint-1000000.xml.gz -c ramp_big.cfg --ea.archive.input=ar3.xml --ea.metapopulation.size=2000"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

@@ -65,7 +65,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-c ramp.cfg"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l checkpoint-1000000.xml.gz --analyze temporal_poly"
@@ -85,7 +85,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--merge_checkpoint checkpoint-1000000.xml.gz -c ramp_big.cfg --ea.archive.input=ar3.xml --ea.metapopulation.size=2000"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l checkpoint-500000.xml.gz --analyze lod_knockouts_capabilities --ea.analysis.input.filename  lod-500000.xml.gz --ea.mt.ind_rep_threshold=25"

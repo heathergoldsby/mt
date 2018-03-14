@@ -98,8 +98,10 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
 
 
 /* changed to using ramped costs... */
-/*
+
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
+ get<TASK_PROFILE>(*p,"") += "R";
+
     if(hw.age() >= (0.8 * hw.original_size())) {
         typename Hardware::genome_type& r=hw.repr();
         
@@ -148,10 +150,10 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         
     }
-}*/
+}
 
 
-
+/*
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
     get<TASK_PROFILE>(*p,"") += "R";
 
@@ -195,7 +197,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         
     }
-}
+}*/
 
 
 /* Divide remote only works if there are enough resources... */

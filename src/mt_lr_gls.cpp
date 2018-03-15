@@ -88,7 +88,7 @@ struct lifecycle : public default_lifecycle {
         add_event<task_profile_birth_event>(ea);
         
 
-        //add_event<ts_birth_event>(ea);
+        add_event<ts_birth_event>(ea);
         add_event<task_mutagenesis>(ea);
         add_event<gs_inherit_event>(ea);
         

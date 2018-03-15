@@ -187,10 +187,9 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         int indrep = get<IND_REP_THRESHOLD>(ea, 0.0);
         
-        
-        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > indrep) {
+        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<IND_REP_THRESHOLD>(ea, 0.0)) {
             // raise flag
-            int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - indrep;
+            int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<IND_REP_THRESHOLD>(ea, 0.0);
             put<GROUP_RESOURCE_UNITS>(res_amt,ea);
             replicate(p, offr, ea);
             

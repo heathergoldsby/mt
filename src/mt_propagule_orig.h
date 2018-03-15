@@ -187,12 +187,6 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         int indrep = get<IND_REP_THRESHOLD>(ea, 0.0);
         
-        int start_update = get<COST_START_UPDATE>(ea);
-        int cu =ea.current_update();
-
-        if (cu < start_update) {
-            indrep = 0;
-        }
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > indrep) {
             // raise flag

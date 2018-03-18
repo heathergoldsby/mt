@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/mt_propagule_orig.h"
-            timestampString = "542748430.255582"
+            timestampString = "543027732.506007"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "DIGEVO_INSTRUCTION_DECL(h_alt_divide)"
             landmarkType = "9">
          </BreakpointContent>

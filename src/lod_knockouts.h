@@ -608,8 +608,92 @@ namespace ealib {
             }
         }
 
-        
-       
+        LIBEA_ANALYSIS_TOOL(lod_archive_reversion) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            int lod_length = lod.size();
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            
+            
+            int lod_depth = 0;
+            int gone_mc = 0;
+            int flag_one = -1;
+            int flag_two = lod_length - 1;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                
+                
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                
+                if (!gone_mc && (control_ea->size() > 1)){
+                    gone_mc = 1;
+                }
+                
+                if (gone_mc && (control_ea->size() == 1))  {
+                    typename EA::population_type output;
+                    std::string fname = "archive_revert.xml";
+                    archive::load_if(fname, output, ea);
+                    
+                    int archive_mark = get<ARCHIVE_MARK>(ea,0);
+                    // copy the population:
+                    typename EA::individual_ptr_type arch_ind = ea.make_individual(*i->traits().founder());
+
+                    get<ARCHIVE_MARK>(*arch_ind,0) = archive_mark;
+
+                    for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                        output.insert(output.end(), ea.copy_individual(*arch_ind));
+                    }
+                    
+                    // save the output archive:
+                    archive::save(get<ARCHIVE_OUTPUT>(ea), output, ea);
+                    flag_one = floor((lod_length - lod_depth)/2);
+                    
+                }
+                
+                if ((lod_depth == flag_one) || (lod_depth == flag_two)) {
+                    typename EA::population_type output;
+                    std::string fname = "archive_revert_";
+
+                    if (lod_depth == flag_one) {
+                        fname += "1.xml";
+                    } else {
+                        fname += "2.xml";
+                    }
+                   
+                    
+                    int archive_mark = get<ARCHIVE_MARK>(ea,0);
+                    // copy the population:
+                    get<ARCHIVE_MARK>(*i,0) = archive_mark;
+                    
+                    for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                        output.insert(output.end(), ea.copy_individual(*i));
+                    }
+                    
+                    // save the output archive:
+                    archive::save(fname, output, ea);
+                }
+                
+                ++lod_depth;
+            }
+        }
+
         
         
 

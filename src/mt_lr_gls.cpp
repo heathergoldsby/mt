@@ -274,6 +274,7 @@ public:
         add_tool<ealib::analysis::dom_mutational_analysis>(this);
         add_tool<ealib::analysis::merge_archives>(this);
         add_tool<ealib::analysis::archive_population>(this);
+        add_tool<ealib::analysis::lod_archive_reversion>(this);
     }
     
     virtual void gather_events(EA& ea) {
@@ -283,7 +284,8 @@ public:
         add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         add_event<dol_tracking>(ea);
-        add_event<ealib::analysis::mark_tracking>(ea); 
+        add_event<ealib::analysis::mark_tracking>(ea);
+        
         
         
     }

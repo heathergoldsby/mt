@@ -244,27 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/lod_knockouts.h"
-            timestampString = "543166759.680988"
+            timestampString = "543176008.492684"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "650"
-            endingLineNumber = "650"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/lod_knockouts.h"
-            timestampString = "543166761.865158"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "671"
-            endingLineNumber = "671"
+            startingLineNumber = "675"
+            endingLineNumber = "675"
             landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
             landmarkType = "9">
          </BreakpointContent>
@@ -282,38 +266,6 @@
             startingLineNumber = "92"
             endingLineNumber = "92"
             landmarkName = "LIBEA_ANALYSIS_TOOL(lod_knockouts)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/lod_knockouts.h"
-            timestampString = "543172031.0053591"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "656"
-            endingLineNumber = "656"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/lod_knockouts.h"
-            timestampString = "543172037.825161"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "630"
-            endingLineNumber = "630"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

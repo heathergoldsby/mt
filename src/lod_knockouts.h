@@ -572,7 +572,8 @@ namespace ealib {
                 
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-                
+                control_ea->resources().reset();
+
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
                 int cur_update = 0;
@@ -628,7 +629,7 @@ namespace ealib {
                 
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-                
+                control_ea->resources().reset();
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
                 int cur_update = 0;

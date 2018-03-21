@@ -621,81 +621,83 @@ namespace ealib {
             
             
             int lod_depth = 0;
-            int gone_mc = 0;
+            int revert = false;
             int flag_one = -1;
             int flag_two = lod_length - 1;
             // skip def ancestor (that's what the +1 does)
             for( ; i!=lod.end(); ++i) {
                 
-                
-                // **i is the EA, AS OF THE TIME THAT IT DIED!
-                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-                //put<RNG_SEED>(s,*this); // save the seed!
-                put<RNG_SEED>(get<RNG_SEED>(*i->traits().founder()), *control_ea);
+                int bupdate = get<IND_BIRTH_UPDATE>(*i);
+                // if birth update > 1000000 look for reversion.
+                ++lod_depth;
 
-                // replay! till the group amasses the right amount of resources
-                // or exceeds its window...
-                int cur_update = 0;
-                int update_max = 2000;
+                if (bupdate > 1000000) {
+                    // **i is the EA, AS OF THE TIME THAT IT DIED!
+                    typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                    put<RNG_SEED>(get<RNG_SEED>(*i->traits().founder()), *control_ea);
+
+                    // replay! till the group amasses the right amount of resources
+                    // or exceeds its window...
+                    int cur_update = 0;
+                    int update_max = 2000;
                 
                 
-                // and run till the group amasses the right amount of resources
-                //while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
-                while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
+                    // and run till the group amasses the right amount of resources
+                    //while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                    while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
                        (cur_update < update_max)){
-                    control_ea->update();
-                    ++cur_update;
-                }
-                
-                if (!gone_mc && (control_ea->size() > 1)){
-                    gone_mc = 1;
-                }
-                
-                if (gone_mc && (control_ea->size() == 1))  {
-                    typename EA::population_type output;
-                    std::string fname = "archive_revert.xml";
-                    archive::load_if(fname, output, ea);
-                    
-                    int archive_mark = get<ARCHIVE_MARK>(ea,0);
-                    // copy the population:
-                    typename EA::individual_ptr_type arch_ind = ea.make_individual(*i->traits().founder());
-
-                    get<ARCHIVE_MARK>(*arch_ind,0) = archive_mark;
-
-                    for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
-                        output.insert(output.end(), ea.copy_individual(*arch_ind));
+                        control_ea->update();
+                        ++cur_update;
                     }
-                    
-                    // save the output archive:
-                    archive::save(get<ARCHIVE_OUTPUT>(ea), output, ea);
-                    flag_one = floor((lod_length - lod_depth)/2);
-                    
-                }
                 
-                if ((lod_depth == flag_one) || (lod_depth == flag_two)) {
-                    typename EA::population_type output;
-                    std::string fname = "archive_revert_";
+                    
+                
+                    if ((control_ea->size() == 1) && (revert==false)) {
+                        revert = true;
+                        typename EA::population_type output;
+                        std::string fname = "archive_revert.xml";
+                        archive::load_if(fname, output, ea);
+                    
+                        int archive_mark = get<ARCHIVE_MARK>(ea,0);
+                        // copy the population:
+                        typename EA::individual_ptr_type arch_ind = ea.make_individual(*i->traits().founder());
 
-                    if (lod_depth == flag_one) {
-                        fname += "1.xml";
-                    } else {
-                        fname += "2.xml";
+                        get<ARCHIVE_MARK>(*arch_ind,0) = archive_mark;
+
+                        for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                            output.insert(output.end(), ea.copy_individual(*arch_ind));
+                        }
+                    
+                        // save the output archive:
+                        archive::save(fname, output, ea);
+                        flag_one = floor((lod_length - lod_depth)/2) + lod_depth;
+                    
                     }
+                
+                    if ((lod_depth == flag_one) || (lod_depth == flag_two)) {
+                        typename EA::population_type output;
+                        std::string fname = "archive_revert_";
+
+                        if (lod_depth == flag_one) {
+                            fname += "1.xml";
+                        } else {
+                            fname += "2.xml";
+                        }
                    
                     
-                    int archive_mark = get<ARCHIVE_MARK>(ea,0);
-                    // copy the population:
-                    get<ARCHIVE_MARK>(*i,0) = archive_mark;
+                        int archive_mark = get<ARCHIVE_MARK>(ea,0);
+                        // copy the population:
+                        get<ARCHIVE_MARK>(*i,0) = archive_mark;
                     
-                    for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
-                        output.insert(output.end(), ea.copy_individual(*i));
+                        for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                            output.insert(output.end(), ea.copy_individual(*i));
+                        }
+                    
+                        // save the output archive:
+                        archive::save(fname, output, ea);
                     }
-                    
-                    // save the output archive:
-                    archive::save(fname, output, ea);
                 }
                 
-                ++lod_depth;
             }
         }
 

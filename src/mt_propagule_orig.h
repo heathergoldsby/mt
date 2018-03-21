@@ -646,6 +646,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     
                     if (!germ_present) continue;
                     
+                                       
                     if (pop_count == 1) { // track as uni
                         uni_rep_time_acc.push_back(get<MULTICELL_REP_TIME>(*i));
                         uni_workload_acc.push_back(total_workload);

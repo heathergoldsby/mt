@@ -73,6 +73,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-l checkpoint-1100000.xml.gz --analyze lod_gls_circle_square_plot --ea.analysis.input.filename=lod-1100000.xml.gz"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-l checkpoint-1100000.xml.gz --ea.mt.cost_start_update=0  --analyze lod_archive_reversion --ea.analysis.input.filename=lod-1100000.xml.gz"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

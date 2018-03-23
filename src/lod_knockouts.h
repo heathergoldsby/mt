@@ -20,6 +20,8 @@
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/accumulators/statistics/variance.hpp>
 
+LIBEA_MD_DECL(ARCHIVE_OUTPUT_SIZE, "ea.mt.archive_output_size", int);
+
 
 namespace ealib {
     namespace analysis {
@@ -613,7 +615,7 @@ namespace ealib {
         LIBEA_ANALYSIS_TOOL(lod_archive_reversion) {
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
-            
+            int arch_size = get<ARCHIVE_OUTPUT_SIZE>(ea);
             int lod_length = lod.size();
             
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
@@ -664,7 +666,7 @@ namespace ealib {
 
                         get<ARCHIVE_MARK>(*arch_ind,0) = archive_mark;
 
-                        for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                        for(int k=0; k < arch_size; k++) {
                             output.insert(output.end(), ea.copy_individual(*arch_ind));
                         }
                     

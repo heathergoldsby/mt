@@ -691,7 +691,7 @@ namespace ealib {
                         // copy the population:
                         get<ARCHIVE_MARK>(*i,0) = archive_mark;
                     
-                        for(int k=0; k < get<METAPOPULATION_SIZE>(ea); k++) {
+                        for(int k=0; k < arch_size; k++) {
                             output.insert(output.end(), ea.copy_individual(*i));
                         }
                     

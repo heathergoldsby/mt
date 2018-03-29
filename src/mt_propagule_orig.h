@@ -533,7 +533,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         .add_field("num_uni_repro")
         .add_field("num_multi_repro")
         .add_field("mean_uni_index")
-        .add_field("mean_multi_index");
+        .add_field("mean_multi_index")
+        .add_field("num_orgs");
         
         num_rep = 0;
     }
@@ -802,7 +803,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
             } else {
                 _df.write(0);
             }
-            
+            _df.write(mea.size());
             _df.endl();
             num_rep = 0;
             multicell_rep.clear();

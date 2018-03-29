@@ -824,35 +824,42 @@ namespace ealib {
 
         
 
-        /*! Run an archived population in an EA. Used for competition assays
-         */
-        LIBEA_ANALYSIS_TOOL(run_archive) {
-            // load the output archive, it it exists:
-            typename EA::population_type input;
-            archive::load_if(get<ARCHIVE_INPUT>(ea), input, ea);
-            ea.population().swap(input);
-            ea.initialize();
-            //ea.after_initialization(ea);
-            //ea.gather_events(ea);
-            
-            datafile df("pop_size.dat");
-            df.add_field("update")
-            .add_field("pop_size");
-
-            
-            int cur_update =0;
-            int max_update =get<RUN_UPDATES>(ea);
-            while (cur_update < max_update) {
-                ea.lifecycle().advance_epoch(1,ea);
-                df.write(cur_update)
-                .write(ea.size())
-                .endl();
-                cur_update++;
-                
-            }
-            
-            
-        }
+//        /*! Run an archived population in an EA. Used for competition assays
+//         */
+//        LIBEA_ANALYSIS_TOOL(run_archive) {
+//            // load the output archive, it it exists:
+//            typename EA::population_type input;
+//            archive::load_if(get<ARCHIVE_INPUT>(ea), input, ea);
+//            ea.population().swap(input);
+//            ea.initialize();
+//
+//            after_initialization(ea);
+//            gather_events(ea);
+//
+//            //ea.lifecycle().advance_all(ea);
+//
+//            
+//            //ea.after_initialization(ea);
+//            //ea.gather_events(ea);
+//            
+//            datafile df("pop_size.dat");
+//            df.add_field("update")
+//            .add_field("pop_size");
+//
+//            
+//            int cur_update =0;
+//            int max_update =get<RUN_UPDATES>(ea);
+//            while (cur_update < max_update) {
+//                ea.lifecycle().advance_epoch(1,ea);
+//                df.write(cur_update)
+//                .write(ea.population().size())
+//                .endl();
+//                cur_update++;
+//                
+//            }
+//            
+//            
+//        }
 
     }
 }

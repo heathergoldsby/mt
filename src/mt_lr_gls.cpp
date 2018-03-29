@@ -276,7 +276,6 @@ public:
         add_tool<ealib::analysis::merge_archives>(this);
         add_tool<ealib::analysis::archive_population>(this);
         add_tool<ealib::analysis::lod_archive_reversion>(this);
-        add_tool<ealib::analysis::run_archive>(this);
 
     }
     

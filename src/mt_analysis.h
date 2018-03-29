@@ -824,49 +824,36 @@ namespace ealib {
 
         
 
-//        /*! Run an archived population in an EA. Used for competition assays
-//         */
-//        LIBEA_ANALYSIS_TOOL(run_archive) {
-//            // load the output archive, it it exists:
-//            typename EA::population_type input;
-//            archive::load_if(get<ARCHIVE_INPUT>(ea), input, ea);
-//            ea.population().swap(input);
-//            ea.initialize();
-//            //ea.after_initialization(ea);
-//            //ea.gather_events(ea);
-//            
-//            datafile df("competition_assay.dat");
-//            df.add_field("mark_1")
-//            .add_field("mark_2")
-//            .add_field("unmarked");
-//
-//            
-//            int cur_update =0;
-//            int max_update =get<RUN_UPDATES>(ea);
-//            while (cur_update < max_update) {
-//                ea.lifecycle().advance_epoch(1,ea);
-//                if ((cur_update % 100) == 0){
-//                    int mark_1 = 0;
-//                    int mark_2 = 0;
-//                    int unmarked = 0;
-//                    for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
-//                        
-//                        int mark = get<ARCHIVE_MARK>(*i,0);
-//                        if (mark == 1) { mark_1 ++; continue; }
-//                        else if (mark == 2) { mark_2 ++; continue; }
-//                        else { unmarked++; }
-//                        
-//                    }
-//                    df.write(mark_1)
-//                    .write(mark_2)
-//                    .write(unmarked)
-//                    .endl();
-//                }
-//            }
-//            
-//            
-//        }
-//
+        /*! Run an archived population in an EA. Used for competition assays
+         */
+        LIBEA_ANALYSIS_TOOL(run_archive) {
+            // load the output archive, it it exists:
+            typename EA::population_type input;
+            archive::load_if(get<ARCHIVE_INPUT>(ea), input, ea);
+            ea.population().swap(input);
+            ea.initialize();
+            //ea.after_initialization(ea);
+            //ea.gather_events(ea);
+            
+            datafile df("pop_size.dat");
+            df.add_field("update")
+            .add_field("pop_size");
+
+            
+            int cur_update =0;
+            int max_update =get<RUN_UPDATES>(ea);
+            while (cur_update < max_update) {
+                ea.lifecycle().advance_epoch(1,ea);
+                df.write(cur_update)
+                .write(ea.size())
+                .endl();
+                cur_update++;
+                
+            }
+            
+            
+        }
+
     }
 }
 //

@@ -195,8 +195,7 @@ typedef metapopulation
 , generational_models::isolated_subpopulations
 , ancestors::default_subpopulation
 , dont_stop
-//, fill_metapopulation
-,generate_single_ancestor
+, fill_metapopulation
 , default_lifecycle
 , subpop_trait
 > mea_type;

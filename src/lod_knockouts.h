@@ -575,6 +575,9 @@ namespace ealib {
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
                 control_ea->resources().reset();
+                put<RNG_SEED>(get<RNG_SEED>(*i->traits().founder()), *control_ea);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *control_ea);
+
 
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...

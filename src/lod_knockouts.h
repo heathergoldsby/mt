@@ -501,7 +501,7 @@ namespace ealib {
                 int update_max = 2000;
                 
                 // and run till the group amasses the right amount of resources
-                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
                        (cur_update < update_max)){
                     control_ea->update();
                     ++cur_update;

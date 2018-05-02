@@ -676,7 +676,7 @@ namespace ealib {
                         // save the output archive:
                         archive::save(fname, output, ea);
                         //flag_one = floor((lod_length - lod_depth)/2) + lod_depth;
-                        next_flag = lod_depth + 10;
+                        next_flag = lod_depth + 5;
                     
                     }
                 
@@ -687,6 +687,7 @@ namespace ealib {
                         ss << arch_count;
                         std::string str = ss.str();
                         std::string fname = "archive_revert_" + str + ".xml";
+                        next_flag = next_flag += 5;
 
                     
                         int archive_mark = get<ARCHIVE_MARK>(ea,0);

@@ -627,8 +627,8 @@ namespace ealib {
             
             int lod_depth = 0;
             int revert = false;
-            int flag_one = -1;
-            int flag_two = lod_length - 1;
+            int next_flag = -1;
+            int arch_count = 0;
             // skip def ancestor (that's what the +1 does)
             for( ; i!=lod.end(); ++i) {
                 
@@ -675,20 +675,16 @@ namespace ealib {
                     
                         // save the output archive:
                         archive::save(fname, output, ea);
-                        flag_one = floor((lod_length - lod_depth)/2) + lod_depth;
+                        //flag_one = floor((lod_length - lod_depth)/2) + lod_depth;
+                        next_flag = lod_depth + 10;
                     
                     }
                 
-                    if ((lod_depth == flag_one) || (lod_depth == flag_two)) {
+                    if (lod_depth == next_flag ) {
                         typename EA::population_type output;
-                        std::string fname = "archive_revert_";
+                        arch_count ++;
+                        std::string fname = "archive_revert_" + std::to_string(arch_count) + ".xml";
 
-                        if (lod_depth == flag_one) {
-                            fname += "1.xml";
-                        } else {
-                            fname += "2.xml";
-                        }
-                   
                     
                         int archive_mark = get<ARCHIVE_MARK>(ea,0);
                         // copy the population:

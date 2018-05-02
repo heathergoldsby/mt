@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <cmath>
 #include <vector>
 #include <ea/datafile.h>
@@ -684,7 +683,10 @@ namespace ealib {
                     if (lod_depth == next_flag ) {
                         typename EA::population_type output;
                         arch_count ++;
-                        std::string fname = "archive_revert_" + std::to_string(arch_count) + ".xml";
+                        std::stringstream ss ;
+                        ss << arch_count;
+                        std::string str = ss.str();
+                        std::string fname = "archive_revert_" + str + ".xml";
 
                     
                         int archive_mark = get<ARCHIVE_MARK>(ea,0);

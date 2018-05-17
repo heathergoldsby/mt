@@ -272,7 +272,8 @@ namespace ealib {
                 // setup the population (really, an ea):
                 
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-            
+            put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_ea);
+
                 // replay! till the group amasses the right amount of resources
                 // or exceeds its window...
                 int cur_update = 0;
@@ -319,6 +320,7 @@ namespace ealib {
                     for (int q = 0; q < control_ea->isa().size(); q++) {
                         typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
                         put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
+                        put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
                         
 
                         knockout_loc->population()[0]->genome()[z] = q;

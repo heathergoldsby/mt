@@ -268,7 +268,7 @@ namespace ealib {
             
             int mc = 0;
             for( ; i!=lod.end(); i++) {
-                if ((lod_depth % 10) != 0) {
+                if ((lod_depth % 100) != 0) {
                     lod_depth ++;
                     continue;
                 }
@@ -303,7 +303,8 @@ namespace ealib {
                 }
                 
                 if (mc == 0) {
-                    continue; 
+                    lod_depth++;
+                    continue;
                 }
             df2.write(lod_depth);
             df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
@@ -377,8 +378,8 @@ namespace ealib {
                 }
                 
             }
-            df2.write(control_fit)
-            .write(control_size)
+            df2.write(control_size)
+            .write(control_fit)
             .write(control_workload)
             .write(controL_mean_workload);
             df2.write(count)

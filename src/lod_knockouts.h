@@ -264,6 +264,8 @@ namespace ealib {
             .add_field("num_viable_higher_rep_time")
             .add_field("num_viable_higher_workload")
             .add_field("num_viable_no_workload")
+            .add_field("uni_fit")
+            .add_field("uni_workload")
             ;
             
             int mc = 0;
@@ -324,6 +326,8 @@ namespace ealib {
             int higher_cell_workload = 0;
             int no_workload = 0;
             int count = 0;
+                float uni_fit = 0;
+                float uni_workload = 0;
             
             
             // ok we need to iterate through size...
@@ -361,6 +365,8 @@ namespace ealib {
                         if (cur_update == update_max) {
                             inviable++;
                         } else {
+                            uni_fit += cur_update;
+                            uni_workload += total_workload;
                             if (cur_update > control_fit) {
                                 higher_rep_time++;
                             }
@@ -387,7 +393,9 @@ namespace ealib {
             .write(inviable)
             .write(higher_rep_time)
             .write(higher_cell_workload)
-            .write(no_workload);
+            .write(no_workload)
+            .write(uni_fit)
+            .write(uni_workload);
             df2.endl();
             }
             

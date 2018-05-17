@@ -278,7 +278,7 @@ public:
         add_tool<ealib::analysis::archive_population>(this);
         add_tool<ealib::analysis::lod_archive_reversion>(this);
         add_tool<ealib::analysis::archive_dominant>(this);
-        add_tool<ealib::analysis::lod_last_knockouts>(this);
+        add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
         add_tool<ealib::analysis::lod_last_knockouts_line>(this);
 
     }

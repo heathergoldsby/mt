@@ -240,166 +240,148 @@ namespace ealib {
             }
         }
         
-        LIBEA_ANALYSIS_TOOL(lod_last_knockouts) {
-
+        LIBEA_ANALYSIS_TOOL(lod_last_knockouts_uni_analysis) {
+            
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
-            typename line_of_descent<EA>::iterator i=lod.end(); --i;
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
+ 
             
-            datafile df("lod_last_knockouts.dat");
-            df.add_field("control_fit")
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            //            for( ; i!=lod.end(); ++i) {
+          
+            datafile df2("lod_last_knockouts_line_summary.dat");
+            df2.add_field("lod_depth")
+            .add_field("update")
             .add_field("control_size")
+            .add_field("control_fit")
             .add_field("control_workload")
             .add_field("control_mean_workload")
-            .add_field("num_ko_inviable")
-            .add_field("num_ko_uni")
-            .add_field("num_ko_multi")
-            .add_field("fit_uni")
-            .add_field("workload_uni")
-            .add_field("fit_multi")
-            .add_field("workload_multi")
-            .add_field("workload_mean_multi")
-            .add_field("size_multi")
+            .add_field("total_count")
+            .add_field("num_inviable")
+            .add_field("num_viable_higher_rep_time")
+            .add_field("num_viable_higher_workload")
+            .add_field("num_viable_no_workload")
             ;
             
-            
-                            
-            
-                // **i is the EA, AS OF THE TIME THAT IT DIED!
+            for( ; i!=lod.end(); i++) {
+                if ((lod_depth % 10) != 0) {
+                    lod_depth ++;
+                    continue;
+                }
                 
-                // To replay, need to create new eas for each knockout exper.
-                // setup the population (really, an ea):
-                
-                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                df2.write(lod_depth);
+                df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
+                lod_depth++;
+            
+            // **i is the EA, AS OF THE TIME THAT IT DIED!
+            
+            // To replay, need to create new eas for each knockout exper.
+            // setup the population (really, an ea):
+            
+            typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
             put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_ea);
-
-                // replay! till the group amasses the right amount of resources
-                // or exceeds its window...
-                int cur_update = 0;
-                int update_max = 10000;
-                // and run till the group amasses the right amount of resources
+            
+            // replay! till the group amasses the right amount of resources
+            // or exceeds its window...
+            int cur_update = 0;
+            int update_max = 10000;
+            // and run till the group amasses the right amount of resources
             while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
                    (cur_update < update_max)){
                 
-
-                    control_ea->update();
-                    ++cur_update;
-                }
-                df.write(cur_update);
-                df.write(control_ea->population().size());
+                
+                control_ea->update();
+                ++cur_update;
+            }
             
-            int total_workload = 0;
+            int control_fit = cur_update;
+            int control_size = control_ea->population().size();
+            
+            float control_workload = 0;
             typedef typename EA::subpopulation_type::population_type propagule_type;
-
+            
             for(typename propagule_type::iterator m=control_ea->population().begin(); m!=control_ea->population().end(); ++m) {
                 typename EA::subpopulation_type::individual_type& org=**m;
-                total_workload += get<WORKLOAD>(org, 0.0);
+                control_workload += get<WORKLOAD>(org, 0.0);
             }
-            df.write(total_workload);
-            df.write(total_workload/control_ea->population().size());
+            float controL_mean_workload = control_workload/control_size;
             
-            float control_fit = cur_update;
+            int inviable = 0;
+            int higher_rep_time = 0;
+            int higher_cell_workload = 0;
+            int no_workload = 0;
+            int count = 0;
             
-
-            float num_inviable = 0;
-            float num_uni = 0;
-            float uni_workload = 0;
-            float num_multi = 0;
-            float multi_workload = 0;
-            float mean_multi_workload = 0;
-            float fit_uni = 0;
-            float fit_multi = 0;
-            float size_multi = 0;
-
-                
-                
-                // ok we need to iterate through size...
-                // fixed size 100 genome...
-                for (int z =0; z < 100; z++) {
-                    for (int q = 0; q < control_ea->isa().size(); q++) {
-                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
-                        put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
-                        put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
-                        
-
-                        knockout_loc->population()[0]->genome()[z] = q;
-                        
-                        
-                        int cur_update = 0;
-                        int update_max = 10000;
-                        // and run till the group amasses the right amount of resources
-                        while ((get<DIVIDE_REMOTE>(*knockout_loc,0) == 0) &&
-                               (cur_update < update_max)){
-                            knockout_loc->update();
-                            ++cur_update;
+            
+            // ok we need to iterate through size...
+            // fixed size 100 genome...
+            for (int z =0; z < 100; z++) {
+                for (int q = 0; q < control_ea->isa().size(); q++) {
+                    typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
+                    put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
+                    
+                    
+                    knockout_loc->population()[0]->genome()[z] = q;
+                    
+                    
+                    int cur_update = 0;
+                    int update_max = 10000;
+                    // and run till the group amasses the right amount of resources
+                    while ((get<DIVIDE_REMOTE>(*knockout_loc,0) == 0) &&
+                           (cur_update < update_max)){
+                        knockout_loc->update();
+                        ++cur_update;
+                    }
+                    // assess:
+                    
+                    float total_workload = 0;
+                    
+                    for(typename propagule_type::iterator m=knockout_loc->population().begin(); m!=knockout_loc->population().end(); ++m) {
+                        typename EA::subpopulation_type::individual_type& org=**m;
+                        total_workload += get<WORKLOAD>(org, 0.0);
+                    }
+                    
+                    if (knockout_loc->population().size() < 2) {
+                        count ++;
+                        // inviable
+                        if (cur_update == update_max) {
+                            inviable++;
                         }
-                        // assess:
-                        
-                        total_workload = 0;
-                        
-                        for(typename propagule_type::iterator m=knockout_loc->population().begin(); m!=knockout_loc->population().end(); ++m) {
-                            typename EA::subpopulation_type::individual_type& org=**m;
-                            total_workload += get<WORKLOAD>(org, 0.0);
+                        if (cur_update > control_fit) {
+                            higher_rep_time++;
                         }
-                        
-                        
-                        if (cur_update == update_max){
-                            num_inviable++;
-                        } else {
-                            
-                            if (knockout_loc->population().size() < 1.5) {
-                                num_uni ++;
-                                fit_uni += cur_update;
-                                uni_workload += total_workload;
-                            } else {
-                                num_multi++;
-                                fit_multi += cur_update;
-                                size_multi += (knockout_loc->population().size());
-                                multi_workload += total_workload;
-                                mean_multi_workload += (total_workload / knockout_loc->population().size());
+                        if (total_workload > controL_mean_workload) {
+                            higher_cell_workload++;
+                        }
+                        if (total_workload == 0) {
+                            no_workload++;
+                        }
 
-                            }
-                            
-                           
-                        }
-                        
                         
                     }
+                    
+                    
                 }
-                df.write(num_inviable)
-                .write(num_uni)
-                .write(num_multi);
-                if (num_uni > 0) {
-                    df.write(fit_uni / num_uni);
-                    df.write(uni_workload / num_uni);
-                } else {
-                    df.write(0.0);
-                    df.write(0.0);
-                }
-            
-                if (num_multi > 0) {
-                    df.write(fit_multi / num_multi);
-                    df.write(multi_workload / num_multi);
-                    df.write(mean_multi_workload / num_multi);
-                    df.write(size_multi / num_multi);
-                } else {
-                    df.write(0.0)
-                    .write(0.0)
-                    .write(0.0)
-                    .write(0.0);
-
-                }
-
                 
-                
-            
-                df.endl();
-                
-            
+            }
+            df2.write(control_fit)
+            .write(control_size)
+            .write(control_workload)
+            .write(controL_mean_workload);
+            df2.write(count)
+            .write(inviable)
+            .write(higher_rep_time)
+            .write(higher_cell_workload)
+            .write(no_workload);
+            df2.endl();
+            }
             
         }
-        
+
         
         LIBEA_ANALYSIS_TOOL(lod_last_knockouts_line) {
             
@@ -532,8 +514,8 @@ namespace ealib {
                     
                     
                 }
+                
             }
-            
             df2.write(count)
             .write(inviable)
             .write(higher_rep_time)
@@ -541,6 +523,7 @@ namespace ealib {
             .write(no_workload);
             df2.endl();
             
+
         }
 
 

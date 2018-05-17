@@ -261,6 +261,7 @@ namespace ealib {
             .add_field("control_mean_workload")
             .add_field("total_count")
             .add_field("num_inviable")
+            .add_field("num_viable")
             .add_field("num_viable_higher_rep_time")
             .add_field("num_viable_higher_workload")
             .add_field("num_viable_no_workload")
@@ -309,7 +310,7 @@ namespace ealib {
                         continue;
                     }
                 
-                    if ((mc == 1) && i != lod.end()--) {
+                    if ((mc == 1) && (i != (lod.end()--))) {
                         lod_depth++;
                         continue;
                     }
@@ -329,6 +330,7 @@ namespace ealib {
             float controL_mean_workload = control_workload/control_size;
             
             int inviable = 0;
+                int viable = 0;
             int higher_rep_time = 0;
             int higher_cell_workload = 0;
             int no_workload = 0;
@@ -372,6 +374,7 @@ namespace ealib {
                         if (cur_update == update_max) {
                             inviable++;
                         } else {
+                            viable++;
                             uni_fit += cur_update;
                             uni_workload += total_workload;
                             if (cur_update > control_fit) {
@@ -398,11 +401,12 @@ namespace ealib {
             .write(controL_mean_workload);
             df2.write(count)
             .write(inviable)
+            .write(viable)
             .write(higher_rep_time)
             .write(higher_cell_workload)
             .write(no_workload)
-            .write(uni_fit)
-            .write(uni_workload);
+            .write(uni_fit/viable)
+            .write(uni_workload/viable);
             df2.endl();
             }
             

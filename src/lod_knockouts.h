@@ -539,6 +539,7 @@ namespace ealib {
             .write(higher_rep_time)
             .write(higher_cell_workload)
             .write(no_workload);
+            df2.endl();
             
         }
 

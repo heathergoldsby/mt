@@ -360,15 +360,16 @@ namespace ealib {
                         // inviable
                         if (cur_update == update_max) {
                             inviable++;
-                        }
-                        if (cur_update > control_fit) {
-                            higher_rep_time++;
-                        }
-                        if (total_workload > controL_mean_workload) {
-                            higher_cell_workload++;
-                        }
-                        if (total_workload == 0) {
-                            no_workload++;
+                        } else {
+                            if (cur_update > control_fit) {
+                                higher_rep_time++;
+                            }
+                            if (total_workload > controL_mean_workload) {
+                                higher_cell_workload++;
+                            }
+                            if (total_workload == 0) {
+                                no_workload++;
+                            }
                         }
 
                         

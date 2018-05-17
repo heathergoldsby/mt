@@ -270,7 +270,7 @@ namespace ealib {
             
             int mc = 0;
             for( ; i!=lod.end(); i++) {
-                if ((lod_depth % 100) != 0) {
+                if ((lod_depth % 1) != 0) {
                     lod_depth ++;
                     continue;
                 }
@@ -308,6 +308,12 @@ namespace ealib {
                     lod_depth++;
                     continue;
                 }
+                
+                if ((mc == 1) && i != lod.end()--) {
+                    lod_depth++;
+                    continue;
+                }
+                
             df2.write(lod_depth);
             df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
             lod_depth++;

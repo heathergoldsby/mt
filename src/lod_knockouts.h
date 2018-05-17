@@ -302,16 +302,17 @@ namespace ealib {
             
                 if ((control_size > 1) && (mc == 0) ) {
                     mc = 1;
-                }
+                } else {
                 
-                if (mc == 0) {
-                    lod_depth++;
-                    continue;
-                }
+                    if (mc == 0) {
+                        lod_depth++;
+                        continue;
+                    }
                 
-                if ((mc == 1) && i != lod.end()--) {
-                    lod_depth++;
-                    continue;
+                    if ((mc == 1) && i != lod.end()--) {
+                        lod_depth++;
+                        continue;
+                    }
                 }
                 
             df2.write(lod_depth);

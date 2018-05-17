@@ -266,16 +266,14 @@ namespace ealib {
             .add_field("num_viable_no_workload")
             ;
             
+            int mc = 0;
             for( ; i!=lod.end(); i++) {
                 if ((lod_depth % 10) != 0) {
                     lod_depth ++;
                     continue;
                 }
                 
-                df2.write(lod_depth);
-                df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
-                lod_depth++;
-            
+                
             // **i is the EA, AS OF THE TIME THAT IT DIED!
             
             // To replay, need to create new eas for each knockout exper.
@@ -300,6 +298,17 @@ namespace ealib {
             int control_fit = cur_update;
             int control_size = control_ea->population().size();
             
+                if ((control_size > 1) && (mc == 0) ) {
+                    mc = 1;
+                }
+                
+                if (mc == 0) {
+                    continue; 
+                }
+            df2.write(lod_depth);
+            df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
+            lod_depth++;
+
             float control_workload = 0;
             typedef typename EA::subpopulation_type::population_type propagule_type;
             

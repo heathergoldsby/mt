@@ -420,6 +420,14 @@ namespace ealib {
             ;
             
             
+            datafile df2("lod_last_knockouts_line_summary.dat");
+            df2.add_field("total_count")
+            .add_field("num_inviable")
+            .add_field("num_viable_higher_rep_time")
+            .add_field("num_viable_higher_workload")
+            .add_field("num_viable_no_workload")
+            ;
+            
             
             
             // **i is the EA, AS OF THE TIME THAT IT DIED!
@@ -456,6 +464,10 @@ namespace ealib {
             float controL_mean_workload = control_workload/control_size;
             
             int inviable = 0;
+            int higher_rep_time = 0;
+            int higher_cell_workload = 0;
+            int no_workload = 0;
+            int count = 0;
             
             
             // ok we need to iterate through size...
@@ -488,12 +500,12 @@ namespace ealib {
                     }
                     
                     if (knockout_loc->population().size() < 2) {
-                        df.write(z)
+                        df.write(count)
                         .write(control_fit)
                         .write(control_size)
                         .write(control_workload)
                         .write(controL_mean_workload);
-                        
+                        count ++;
                         // inviable
                         if (cur_update == update_max) {
                             df.write(1);
@@ -503,7 +515,17 @@ namespace ealib {
                         }
                         
                         df.write(cur_update);
+                        if (cur_update > control_fit) {
+                            higher_rep_time++;
+                        }
+                        
                         df.write(total_workload);
+                        if (total_workload > controL_mean_workload) {
+                            higher_cell_workload++;
+                        }
+                        if (total_workload == 0) {
+                            no_workload++;
+                        }
                         df.endl();
                         
                     }
@@ -512,7 +534,11 @@ namespace ealib {
                 }
             }
             
-            
+            df2.write(count)
+            .write(inviable)
+            .write(higher_rep_time)
+            .write(higher_cell_workload)
+            .write(no_workload);
             
         }
 

@@ -341,7 +341,7 @@ namespace ealib {
             df2.write(lod_depth);
             df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
                 
-            next_lod = lod_depth += 50;
+            next_lod = lod_depth + 50;
             lod_depth++;
 
             float control_workload = 0;

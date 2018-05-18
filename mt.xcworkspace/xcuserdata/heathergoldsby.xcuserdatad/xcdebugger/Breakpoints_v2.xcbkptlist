@@ -251,7 +251,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "638"
             endingLineNumber = "638"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
+            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_knockouts_capabilities)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -267,7 +267,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "658"
             endingLineNumber = "658"
-            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_archive_reversion)"
+            landmarkName = "LIBEA_ANALYSIS_TOOL(lod_knockouts_capabilities)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

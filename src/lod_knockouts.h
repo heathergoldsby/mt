@@ -240,6 +240,7 @@ namespace ealib {
             }
         }
         
+        // hjg
         LIBEA_ANALYSIS_TOOL(lod_last_knockouts_uni_analysis) {
             
             
@@ -267,6 +268,23 @@ namespace ealib {
             .add_field("num_viable_no_workload")
             .add_field("uni_fit")
             .add_field("uni_workload")
+            .add_field("control_not")
+            .add_field("control_nand")
+            .add_field("control_and")
+            .add_field("control_ornot")
+            .add_field("control_or")
+            .add_field("control_andnot")
+            .add_field("control_nor")
+            .add_field("control_xor")
+            .add_field("control_equals")
+            .add_field("uni_not")
+            .add_field("uni_nand")
+            .add_field("uni_and")
+            .add_field("uni_ornot")
+            .add_field("uni_or")
+            .add_field("uni_andnot")
+            .add_field("uni_nor")
+            .add_field("uni_xor")
             ;
             
             int mc = 0;
@@ -303,17 +321,21 @@ namespace ealib {
             
                 if ((control_size > 1) && (mc == 0) ) {
                     mc = 1;
+                    
                 } else {
                 
                     if (mc == 0) {
                         lod_depth++;
                         continue;
                     }
+                    
                 
             }
                 
             df2.write(lod_depth);
             df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
+                
+
             lod_depth++;
 
             float control_workload = 0;
@@ -333,6 +355,16 @@ namespace ealib {
             int count = 0;
                 float uni_fit = 0;
                 float uni_workload = 0;
+                
+                float total_not = 0;
+                float total_nand = 0;
+                float total_and = 0;
+                float total_ornot = 0;
+                float total_or = 0;
+                float total_andnot = 0;
+                float total_nor = 0;
+                float total_xor = 0;
+                float total_equals = 0;
             
             
             // ok we need to iterate through size...
@@ -382,6 +414,16 @@ namespace ealib {
                             if (total_workload == 0) {
                                 no_workload++;
                             }
+                            total_not += get<TASK_NOT>(*knockout_loc, 0.0);
+                            total_nand += get<TASK_NAND>(*knockout_loc, 0.0);
+                            total_and += get<TASK_AND>(*knockout_loc, 0.0);
+                            total_or += get<TASK_OR>(*knockout_loc, 0.0);
+                            total_ornot += get<TASK_ORNOT>(*knockout_loc, 0.0);
+                            total_andnot += get<TASK_ANDNOT>(*knockout_loc, 0.0);
+                            total_nor += get<TASK_NOR>(*knockout_loc, 0.0);
+                            total_xor += get<TASK_XOR>(*knockout_loc, 0.0);
+                            total_equals += get<TASK_EQUALS>(*knockout_loc, 0.0);
+
                         }
 
                         
@@ -403,12 +445,27 @@ namespace ealib {
             .write(no_workload)
             .write(uni_fit/viable)
             .write(uni_workload/viable);
-            df2.endl();
-                        
-                        if (mc == 1) {
-                            i=lod.end(); --i;  --i;
-                            mc = 2;
-                        }
+                df2.write(get<TASK_NOT>(*control_ea, 0.0))
+                .write(get<TASK_NAND>(*control_ea, 0.0))
+                .write(get<TASK_AND>(*control_ea, 0.0))
+                .write(get<TASK_ORNOT>(*control_ea, 0.0))
+                .write(get<TASK_OR>(*control_ea, 0.0))
+                .write(get<TASK_ANDNOT>(*control_ea, 0.0))
+                .write(get<TASK_NOR>(*control_ea, 0.0))
+                .write(get<TASK_XOR>(*control_ea, 0.0))
+                .write(get<TASK_EQUALS>(*control_ea, 0.0));
+
+                df2.write(total_not / viable)
+                .write(total_nand / viable)
+                .write(total_and / viable)
+                .write(total_ornot / viable)
+                .write(total_or / viable)
+                .write(total_andnot / viable)
+                .write(total_nor / viable)
+                .write(total_xor / viable)
+                .write(total_equals / viable);
+                           df2.endl();
+                
             }
             
         }

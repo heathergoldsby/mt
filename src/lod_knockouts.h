@@ -310,11 +310,7 @@ namespace ealib {
                         continue;
                     }
                 
-                    if ((mc == 1) && (i != (lod.end()--))) {
-                        lod_depth++;
-                        continue;
-                    }
-                }
+            }
                 
             df2.write(lod_depth);
             df2.write(get<IND_BIRTH_UPDATE>(*i->traits().founder()));
@@ -408,6 +404,11 @@ namespace ealib {
             .write(uni_fit/viable)
             .write(uni_workload/viable);
             df2.endl();
+                        
+                        if (mc == 1) {
+                            i=lod.end(); --i;  --i;
+                            mc = 2;
+                        }
             }
             
         }

@@ -819,7 +819,7 @@ namespace ealib {
                 int update_max = 2000;
                 
                 // and run till the group amasses the right amount of resources
-                while ((get<DIVIDE_REMOTE>(*knockout_loc,0) == 0) &&
+                while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
                        (cur_update < update_max)){
                     control_ea->update();
                     ++cur_update;

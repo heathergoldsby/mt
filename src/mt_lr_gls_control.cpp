@@ -17,6 +17,7 @@
 //#include "subpopulation_propagule_split.h"
 
 #include "movie.h"
+#include "lod_knockouts.h"
 
 #include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
@@ -255,7 +256,9 @@ public:
     virtual void gather_tools() {
         
         add_tool<movie>(this);
-        
+        add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
+        add_tool<ealib::analysis::lod_transition>(this);
+
     }
     
     virtual void gather_events(EA& ea) {

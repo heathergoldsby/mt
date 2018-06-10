@@ -258,6 +258,7 @@ public:
         add_tool<movie>(this);
         add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
         add_tool<ealib::analysis::lod_transition>(this);
+        add_tool<ealib::analysis::lod_archive_reversion>(this);
 
     }
     

@@ -997,6 +997,71 @@ namespace ealib {
                 ++lod_depth;
             }
         }
+        
+        
+        LIBEA_ANALYSIS_TOOL(lod_archive_trans) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            int arch_size = get<ARCHIVE_OUTPUT_SIZE>(ea);
+            int lod_length = lod.size();
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i;
+            
+            
+            
+            int lod_depth = 0;
+                        // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); ++i) {
+                
+
+                ++lod_depth;
+                
+                    // **i is the EA, AS OF THE TIME THAT IT DIED!
+                    typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                    put<RNG_SEED>(get<RNG_SEED>(*i->traits().founder()), *control_ea);
+                    
+                    // replay! till the group amasses the right amount of resources
+                    // or exceeds its window...
+                    int cur_update = 0;
+                    int update_max = 2000;
+                    
+                    
+                    // and run till the group amasses the right amount of resources
+                    //while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                    while ((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
+                           (cur_update < update_max)){
+                        control_ea->update();
+                        ++cur_update;
+                    }
+                    
+                    
+                    
+                    if (control_ea->size() > 2) {
+                        typename EA::population_type output;
+                        std::string fname = "archive_trans.xml";
+                        archive::load_if(fname, output, ea);
+                        
+                        int archive_mark = get<ARCHIVE_MARK>(ea,0);
+                        // copy the population:
+                        typename EA::individual_ptr_type arch_ind = ea.make_individual(*i->traits().founder());
+                        
+                        get<ARCHIVE_MARK>(*arch_ind,0) = archive_mark;
+                        
+                        for(int k=0; k < arch_size; k++) {
+                            output.insert(output.end(), ea.copy_individual(*arch_ind));
+                        }
+                        
+                        // save the output archive:
+                        archive::save(fname, output, ea);
+                        return;
+                        
+                    }
+                
+                }
+                
+            
+        }
+
 
         LIBEA_ANALYSIS_TOOL(lod_archive_reversion) {
             

@@ -280,6 +280,7 @@ public:
         add_tool<ealib::analysis::archive_dominant>(this);
         add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
         add_tool<ealib::analysis::lod_last_knockouts_line>(this);
+        add_tool<ealib::analysis::lod_archive_trans>(this);
 
     }
     

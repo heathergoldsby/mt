@@ -250,6 +250,10 @@ public:
         add_option<COST_START_UPDATE>(this);
         
         
+        add_option<ARCHIVE_INPUT>(this);
+        add_option<ARCHIVE_OUTPUT>(this);
+        add_option<ARCHIVE_MARK>(this);
+        add_option<ARCHIVE_OUTPUT_SIZE>(this);
         
     }
     

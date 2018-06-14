@@ -281,7 +281,7 @@ public:
         add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
         add_tool<ealib::analysis::lod_last_knockouts_line>(this);
         add_tool<ealib::analysis::lod_archive_trans>(this);
-
+        add_tool<ealib::analysis::lod_forced_uni>(this);
     }
     
     virtual void gather_events(EA& ea) {

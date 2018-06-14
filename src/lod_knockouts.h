@@ -775,6 +775,82 @@ namespace ealib {
 
         }
         
+        
+        LIBEA_ANALYSIS_TOOL(lod_forced_uni) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
+            
+            datafile df("lod_capability_knockout.dat");
+            df.add_field("lod_depth")
+            .add_field("control_fit")
+            .add_field("control_size")
+            .add_field("uni_fit")
+            .add_field("uni_size")
+            ;
+            
+            
+            int lod_depth = 0;
+            // skip def ancestor (that's what the +1 does)
+            for( ; i!=lod.end(); i++) {
+                if ((lod_depth % 10) != 0) {
+                    lod_depth ++;
+                    continue;
+                }
+                
+                df.write(lod_depth);
+                
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                
+                // To replay, need to create new eas for each knockout exper.
+                // setup the population (really, an ea):
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *control_ea);
+                
+                
+                typename EA::individual_ptr_type forced_uni = ea.make_individual(*i->traits().founder());
+                knockout<instructions::h_divide_local,instructions::nop_x>(*forced_uni);
+                put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *forced_uni);
+                
+                
+                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 10000;
+                
+                // and run till the group amasses the right amount of resources
+                while(get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
+                (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                
+                cur_update = 0;
+                // and run till the group amasses the right amount of resources
+                while(get<DIVIDE_REMOTE>(*forced_uni,0) == 0) &&
+                    (cur_update < update_max)){
+                        forced_uni->update();
+                    ++cur_update;
+                }
+                
+                df.write(cur_update);
+                df.write(forced_uni->population().size());
+                
+                
+                
+                
+                df.endl();
+                
+                ++lod_depth;
+            }
+            
+        }
+
                 
 
         
@@ -1023,7 +1099,7 @@ namespace ealib {
                     // replay! till the group amasses the right amount of resources
                     // or exceeds its window...
                     int cur_update = 0;
-                    int update_max = 2000;
+                    int update_max = 10000;
                     
                     
                     // and run till the group amasses the right amount of resources

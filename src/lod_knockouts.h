@@ -809,12 +809,14 @@ namespace ealib {
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
                 put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *control_ea);
                 put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_ea);
+                put<TASK_MUTATION_PER_SITE_P>(get<TASK_MUTATION_PER_SITE_P>(ea,0), *control_ea);
 
                 
                 typename EA::individual_ptr_type forced_uni = ea.make_individual(*i->traits().founder());
                 knockout<h_divide_local,instructions::nop_x>(*forced_uni);
                 put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *forced_uni);
                 put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *forced_uni);
+                put<TASK_MUTATION_PER_SITE_P>(get<TASK_MUTATION_PER_SITE_P>(ea,0), *forced_uni);
 
                 
                 

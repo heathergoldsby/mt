@@ -811,7 +811,7 @@ namespace ealib {
                 
                 
                 typename EA::individual_ptr_type forced_uni = ea.make_individual(*i->traits().founder());
-                knockout<instructions::h_divide_local,instructions::nop_x>(*forced_uni);
+                knockout<h_divide_local,instructions::nop_x>(*forced_uni);
                 put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *forced_uni);
                 
                 
@@ -821,7 +821,7 @@ namespace ealib {
                 int update_max = 10000;
                 
                 // and run till the group amasses the right amount of resources
-                while(get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
+                while((get<DIVIDE_REMOTE>(*control_ea,0) == 0) &&
                 (cur_update < update_max)){
                     control_ea->update();
                     ++cur_update;
@@ -832,7 +832,7 @@ namespace ealib {
                 
                 cur_update = 0;
                 // and run till the group amasses the right amount of resources
-                while(get<DIVIDE_REMOTE>(*forced_uni,0) == 0) &&
+                while((get<DIVIDE_REMOTE>(*forced_uni,0) == 0) &&
                     (cur_update < update_max)){
                         forced_uni->update();
                     ++cur_update;

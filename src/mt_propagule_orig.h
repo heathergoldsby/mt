@@ -413,20 +413,20 @@ struct mt_propagule : end_of_update_event<MEA> {
                     
                     // track last replication state
                     int rep_size = i->population().size();
-                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
-
-                    if (rep_size > 1) {
-                        put<LAST_REPLICATION_STATE>(1,p);
-                        if (last_rep_state == 0) {
-                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
-                        }
-                    } else {
-                        put<LAST_REPLICATION_STATE>(0,p);
-                        if (last_rep_state == 1) {
-                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
-                        }
-                    }
-                    put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),p);
+//                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
+//
+//                    if (rep_size > 1) {
+//                        put<LAST_REPLICATION_STATE>(1,p);
+//                        if (last_rep_state == 0) {
+//                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+//                        }
+//                    } else {
+//                        put<LAST_REPLICATION_STATE>(0,p);
+//                        if (last_rep_state == 1) {
+//                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
+//                        }
+//                    }
+//                    put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),p);
                     
                     
                     

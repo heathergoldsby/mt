@@ -37,7 +37,7 @@
 #include <ea/datafiles/fitness.h>
 //#include <ea/digital_evolution/population_founder.h>
 #include <ea/line_of_descent.h>
-#include "mt_propagule.h"
+#include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
 
 
@@ -88,7 +88,9 @@ struct lifecycle : public default_lifecycle {
         append_isa<jump_head>(ea);
         append_isa<is_neighbor>(ea);
         append_isa<h_divide_remote>(ea);
-        append_isa<h_alt_divide>(ea);
+        append_isa<h_divide_local>(ea);
+
+        //append_isa<h_alt_divide>(ea);
         
         
         add_event<task_resource_consumption>(ea);

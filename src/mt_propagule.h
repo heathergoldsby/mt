@@ -270,7 +270,7 @@ struct mt_propagule : end_of_update_event<MEA> {
                     }
                     
                     // hjg
-                    put<MULTICELL_PARENT_SIZE>(p,(*i).size());
+                    //put<MULTICELL_PARENT_SIZE>(p,(*i).size());
                     
                     offspring.insert(offspring.end(),p);
                     

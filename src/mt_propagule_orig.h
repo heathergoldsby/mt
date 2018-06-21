@@ -37,6 +37,7 @@ LIBEA_MD_DECL(COST_START_UPDATE, "ea.mt.cost_start_update", int);
 LIBEA_MD_DECL(COST_RAMP, "ea.mt.cost_ramp", int);
 LIBEA_MD_DECL(LAST_REPLICATION_STATE, "ea.mt.last_rep_state", int); // 0 uni, 1 mc, -1 not set
 LIBEA_MD_DECL(REPLICATION_STATE_INDEX, "ea.mt.rep_state_index", int); // increments based on number of flips
+LIBEA_MD_DECL(GENERATION, "ea.mt.rep_state_index", int); // increments based on number of flips
 
 
 //! Execute the next instruction if group resources exceed threshold.
@@ -534,7 +535,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         .add_field("num_multi_repro")
         .add_field("mean_uni_index")
         .add_field("mean_multi_index")
-        .add_field("num_orgs");
+        .add_field("num_orgs")
+        .add_field("mean_generation");
         
         num_rep = 0;
     }
@@ -555,6 +557,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
         
         float uni_index = 0;
         float multi_index = 0;
+        accumulator_set<double, stats<tag::mean> > gen;
+
         
         // Replicate!
         int ru = 1;
@@ -567,6 +571,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 
                 // track time since group rep
                 get<MULTICELL_REP_TIME>(*i,0) +=1;
+                gen(get<IND_GENERATION>(*i));
+
                 
                 // figure out which individuals from the parent comprise the propagule:
                 typedef typename MEA::subpopulation_type::population_type propagule_type;
@@ -804,6 +810,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 _df.write(0);
             }
             _df.write(mea.size());
+            _df.write(mean(gen));
+
             _df.endl();
             num_rep = 0;
             multicell_rep.clear();

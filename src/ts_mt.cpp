@@ -207,6 +207,7 @@ public:
         add_option<RNG_SEED>(this);
         add_option<RECORDING_PERIOD>(this);
         
+        
         add_option<ANALYSIS_INPUT>(this);
         
         // ts specific options
@@ -216,6 +217,7 @@ public:
         add_option<NUM_SWITCHES>(this);
         add_option<GERM_MUTATION_PER_SITE_P>(this);
         
+        
         add_option<NUM_PROPAGULE_GERM>(this);
         
         
@@ -224,6 +226,8 @@ public:
         add_option<RES_INFLOW_AMOUNT>(this);
         add_option<RES_OUTFLOW_FRACTION>(this);
         add_option<RES_FRACTION_CONSUMED>(this);
+        add_option<COST_START_UPDATE>(this);
+
     }
     
     virtual void gather_tools() {

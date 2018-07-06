@@ -332,7 +332,8 @@ struct mt_propagule : end_of_update_event<MEA> {
         .add_field("mean_rep_time")
         .add_field("mean_res")
         .add_field("mean_multicell_size")
-        .add_field("replication_count");
+        .add_field("replication_count")
+        .add_field("mean_generation");
         num_rep = 0;
     }
     
@@ -346,6 +347,7 @@ struct mt_propagule : end_of_update_event<MEA> {
         
         
         configurable_per_site m(get<GERM_MUTATION_PER_SITE_P>(mea));
+        accumulator_set<double, stats<tag::mean> > gen;
         
         
         // Replicate!
@@ -358,7 +360,7 @@ struct mt_propagule : end_of_update_event<MEA> {
                 
                 // track time since group rep
                 get<MULTICELL_REP_TIME>(*i,0) +=1;
-                
+                gen(get<IND_GENERATION>(*i));
                 // figure out which individuals from the parent comprise the propagule:
                 typedef typename MEA::subpopulation_type::population_type propagule_type;
                 
@@ -478,6 +480,7 @@ struct mt_propagule : end_of_update_event<MEA> {
                 .write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
                 .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size())
                 .write(num_rep)
+                .write(mean(gen))
                 .endl();
                 num_rep = 0;
                 multicell_rep.clear();
@@ -489,6 +492,7 @@ struct mt_propagule : end_of_update_event<MEA> {
                 .write(0.0)
                 .write(0.0)
                 .write(num_rep)
+                .write(mean(gen))
                 .endl();
             }
         }

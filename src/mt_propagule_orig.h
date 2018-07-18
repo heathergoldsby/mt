@@ -154,7 +154,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
 }
 */
 
-
+/*
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
     get<TASK_PROFILE>(*p,"") += "R";
 
@@ -205,7 +205,54 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         
     }
+}*/
+
+DIGEVO_INSTRUCTION_DECL(h_divide_local) {
+    get<TASK_PROFILE>(*p,"") += "R";
+    
+    if(hw.age() >= (0.8 * hw.original_size())) {
+        typename Hardware::genome_type& r=hw.repr();
+        
+        // Check to see if the offspring would be a good length.
+        int divide_pos = hw.getHeadLocation(Hardware::RH);
+        int extra_lines = r.size() - hw.getHeadLocation(Hardware::WH);
+        
+        int child_size = r.size() - divide_pos - extra_lines;
+        int parent_size = r.size() - child_size - extra_lines;
+        double ratio = 2.0;
+        
+        if ((child_size < (hw.original_size()/ratio)) ||
+            (child_size > (hw.original_size()*ratio)) ||
+            (parent_size < (hw.original_size()/ratio)) ||
+            (parent_size > (hw.original_size()*ratio))){
+            // fail!
+            return;
+        }
+        
+        
+        typename Hardware::genome_type::iterator f=r.begin(),l=r.begin();
+        std::advance(f, hw.getHeadLocation(Hardware::RH));
+        std::advance(l, hw.getHeadLocation(Hardware::WH));
+        typename Hardware::genome_type offr(f, l);
+        
+        r.resize(parent_size);
+        hw.replicated_soft_reset();
+        
+        int indrep = get<IND_REP_THRESHOLD>(ea, 0.0);
+        
+        if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<IND_REP_THRESHOLD>(ea, 0.0)) {
+            // raise flag
+            int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<IND_REP_THRESHOLD>(ea, 0.0);
+            put<GROUP_RESOURCE_UNITS>(res_amt,ea);
+            replicate(p, offr, ea);
+            
+        }
+        
+        
+    }
 }
+
+
 
 
 /* Divide remote only works if there are enough resources... */

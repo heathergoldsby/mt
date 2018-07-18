@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/mt_propagule_orig.h"
-            timestampString = "543027732.506007"
+            timestampString = "553550515.0556771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "DIGEVO_INSTRUCTION_DECL(h_alt_divide)"
             landmarkType = "9">
          </BreakpointContent>
@@ -278,12 +278,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/mt_propagule_orig.h"
-            timestampString = "544039875.7745171"
+            timestampString = "553550515.0556771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
-            landmarkName = "operator()(MEA&amp; mea)"
+            startingLineNumber = "598"
+            endingLineNumber = "598"
+            landmarkName = "~mt_gls_propagule()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

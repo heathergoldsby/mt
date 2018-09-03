@@ -58,6 +58,7 @@ namespace ealib {
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
+            typename line_of_descent<EA>::iterator iend=lod.end(); --i;
             
             datafile df("lod_knockouts.dat");
             df.add_field("lod_depth")
@@ -79,6 +80,7 @@ namespace ealib {
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
 //            for( ; i!=lod.end(); ++i) {
+            
             for( ; i!=lod.end(); i++) {
                 if ((lod_depth % 1) != 0) {
                     lod_depth ++;
@@ -118,6 +120,10 @@ namespace ealib {
                     
                 } else {
                     if (mc == 0) {
+                        lod_depth++;
+                        continue;
+                    }
+                    if (i != iend) {
                         lod_depth++;
                         continue;
                     }

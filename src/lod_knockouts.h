@@ -117,9 +117,10 @@ namespace ealib {
                     mc = 1;
                     
                 } else {
-                    
+                    if (mc == 0) {
                         lod_depth++;
                         continue;
+                    }
                 }
 
                 df.write(lod_depth);

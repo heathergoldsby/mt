@@ -74,17 +74,17 @@ namespace ealib {
             .add_field("num_pos_mut")
            ;
             
-            
+            int mc = 0;
+
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
 //            for( ; i!=lod.end(); ++i) {
             for( ; i!=lod.end(); i++) {
-                if ((lod_depth % 10) != 0) {
+                if ((lod_depth % 1) != 0) {
                     lod_depth ++;
                     continue;
                 }
                 
-                df.write(lod_depth);
                 
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 
@@ -110,6 +110,20 @@ namespace ealib {
                     control_ea->update();
                     ++cur_update;
                 }
+                
+                int control_size = control_ea->population().size();
+                
+                if ((control_size > 1) && (mc == 0) ) {
+                    mc = 1;
+                    
+                } else {
+                    
+                        lod_depth++;
+                        continue;
+                }
+
+                df.write(lod_depth);
+                
                 df.write(cur_update);
                 df.write(control_ea->population().size());
                 

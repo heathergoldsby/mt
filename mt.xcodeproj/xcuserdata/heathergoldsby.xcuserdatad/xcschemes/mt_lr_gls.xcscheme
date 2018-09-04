@@ -68,44 +68,8 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-l /Users/heathergoldsby/Desktop/1216/checkpoint-1000000.xml.gz --ea.run.epochs=1 --ea.run.updates=100000 --ea.mt.cost_start_update=1000000 --ea.mt.ind_rep_threshold=160"
+            argument = "-l checkpoint-1000000.xml.gz --analyze lod_knockouts --ea.analysis.input.filename lod-1000000.xml.gz --ea.mt.cost_start_update=1000000"
             isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-l checkpoint-1000000.xml.gz  --ea.mt.cost_start_update=1000002 --ea.mt.ind_rep_threshold=5"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-l checkpoint-1100000.xml.gz --analyze lod_gls_circle_square_plot --ea.analysis.input.filename=lod-1100000.xml.gz"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-l checkpoint-1100000.xml.gz --ea.mt.cost_start_update=1000000  --analyze lod_archive_reversion --ea.analysis.input.filename=lod-1100000.xml.gz"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--merge_checkpoint  checkpoint-1100000.xml.gz  --ea.archive.input=archive_revert_1.xml.gz --ea.run.updates=10000"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "  -l checkpoint-1000000.xml.gz  --analyze archive_population --ea.archive.output=ar1.xml --ea.archive.mark=1"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "  -l checkpoint-1000000.xml.gz  --analyze archive_population --ea.archive.output=ar2.xml --ea.archive.mark=2"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "  -l checkpoint-1000000.xml.gz  --analyze merge_archives --ea.archive.input=ar1.xml --ea.archive.output=ar3.xml"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--merge_checkpoint checkpoint-1000000.xml.gz -c ramp_big.cfg --ea.archive.input=ar3.xml --ea.metapopulation.size=2000"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-l checkpoint-500000.xml.gz --analyze lod_knockouts_capabilities --ea.analysis.input.filename  lod-500000.xml.gz --ea.mt.ind_rep_threshold=25"
-            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

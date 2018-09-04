@@ -49,7 +49,7 @@ namespace ealib {
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
-            typename line_of_descent<EA>::iterator iend=lod.end(); --i;
+            typename line_of_descent<EA>::iterator iend=lod.end(); --iend;
             
             datafile df("lod_knockouts.dat");
             df.add_field("lod_depth")
@@ -106,7 +106,7 @@ namespace ealib {
                     mc = 1;
                     
                 } else {
-                    if (lod_depth != 0) {
+                    if (lod_depth != 1) {
                         // not the first step along the line of descent and also not a transition point...
                         if (mc == 0) {
                             lod_depth++;

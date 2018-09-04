@@ -45,15 +45,6 @@ namespace ealib {
          
          */
         LIBEA_ANALYSIS_TOOL(lod_knockouts) {
-            //        template <typename EA>
-            //        struct lod_knockouts : public unary_function<EA> {
-            //        struct lod_knockouts : public ealib::analysis::unary_function<EA> {
-            
-            //            static const char* name() { return "lod_knockouts"; }
-            //
-            //            virtual void operator()(EA& ea) {
-            //                using namespace ealib;
-            //                using namespace ealib::analysis;
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             
@@ -82,11 +73,7 @@ namespace ealib {
 //            for( ; i!=lod.end(); ++i) {
             
             for( ; i!=lod.end(); i++) {
-                if ((lod_depth % 1) != 0) {
-                    lod_depth ++;
-                    continue;
-                }
-                
+
                 
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 
@@ -119,13 +106,17 @@ namespace ealib {
                     mc = 1;
                     
                 } else {
-                    if (mc == 0) {
-                        lod_depth++;
-                        continue;
-                    }
-                    if (i != iend) {
-                        lod_depth++;
-                        continue;
+                    if (lod_depth != 0) {
+                        // not the first step along the line of descent and also not a transition point...
+                        if (mc == 0) {
+                            lod_depth++;
+                            continue;
+                        }
+                        if (i != iend) {
+                            lod_depth++;
+                            continue;
+                        }
+   
                     }
                 }
 

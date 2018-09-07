@@ -1070,7 +1070,7 @@ namespace ealib {
                     control_ea->update();
                     ++cur_update;
                 }
-                //df.write(cur_update);
+                df.write(cur_update);
                 
                 // grab info based on location...
                 for (int x=0; x < get<SPATIAL_X>(ea); ++x) {

@@ -154,7 +154,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
 }
 */
 
-/*
+
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
     get<TASK_PROFILE>(*p,"") += "R";
 
@@ -205,8 +205,8 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
         
     }
-}*/
-
+}
+/*
 DIGEVO_INSTRUCTION_DECL(h_divide_local) {
     get<TASK_PROFILE>(*p,"") += "R";
     
@@ -251,7 +251,7 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         
     }
 }
-
+*/
 
 
 

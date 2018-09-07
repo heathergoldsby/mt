@@ -1040,6 +1040,7 @@ namespace ealib {
             
             datafile df("lod_gls_circle_square_plot.dat");
             df.add_field("lod_depth");
+            df.add_field("update");
             
             
             int lod_depth = 0;
@@ -1051,6 +1052,7 @@ namespace ealib {
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
                 control_ea->resources().reset();
+                df.write(get<IND_BIRTH_UPDATE>(*i->traits().founder(),0));
                 put<RNG_SEED>(get<RNG_SEED>(*i->traits().founder()), *control_ea);
                 put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *control_ea);
 

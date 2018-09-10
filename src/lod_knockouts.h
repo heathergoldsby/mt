@@ -948,6 +948,7 @@ namespace ealib {
             
             datafile df("lod_report_gs.dat");
             df.add_field("lod_depth")
+            .add_field("update")
             .add_field("fit")
             .add_field("size")
             .add_field("num_germ")
@@ -964,7 +965,8 @@ namespace ealib {
             for( ; i!=lod.end(); ++i) {
                 
                 df.write(lod_depth);
-                
+                df.write(get<IND_BIRTH_UPDATE>(*i->traits().founder(),0));
+
                 // **i is the EA, AS OF THE TIME THAT IT DIED!
                 
                 // To replay, need to create new eas for each knockout exper.

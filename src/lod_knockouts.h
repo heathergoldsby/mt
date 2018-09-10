@@ -67,6 +67,7 @@ namespace ealib {
            ;
             
             int mc = 0;
+            int end = 0;
 
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
@@ -112,9 +113,17 @@ namespace ealib {
                             lod_depth++;
                             continue;
                         }
-                        if (i != iend) {
+                        //if (i != iend) {
+                        int birth_up = get<IND_BIRTH_UPDATE>(*i->traits().founder(),0);
+                        if (birth_up < 99900) {
                             lod_depth++;
                             continue;
+                        } else {
+                            if (end == 0) {
+                                end = 1;
+                            } else {
+                                continue;
+                            }
                         }
    
                     }

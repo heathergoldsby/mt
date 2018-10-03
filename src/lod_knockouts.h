@@ -261,6 +261,174 @@ namespace ealib {
             }
         }
         
+        
+        LIBEA_ANALYSIS_TOOL(lod_knockouts2) {
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            
+            typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
+            typename line_of_descent<EA>::iterator iend=lod.end(); --iend;
+            
+            datafile df("lod_knockouts.dat");
+            df.add_field("lod_depth")
+            .add_field("control_fit")
+            .add_field("control_size")
+            .add_field("num_ko_inviable")
+            .add_field("num_ko_uni")
+            .add_field("num_ko_multi")
+            .add_field("fit_uni")
+            .add_field("fit_multi")
+            .add_field("size_multi")
+            .add_field("num_neg_mut")
+            .add_field("num_neutral_mut")
+            .add_field("num_pos_mut")
+            ;
+            
+            int mc = 0;
+            int end = 0;
+            
+            int lod_depth = 0;
+            int next_lod = 0;
+            // skip def ancestor (that's what the +1 does)
+            //            for( ; i!=lod.end(); ++i) {
+            
+            for( ; i!=lod.end(); i++) {
+                
+                if (lod_depth != next_lod) {
+                    lod_depth++;
+                    continue;
+                }
+                
+                next_lod += 100;
+                
+                // **i is the EA, AS OF THE TIME THAT IT DIED!
+                
+                // To replay, need to create new eas for each knockout exper.
+                // setup the population (really, an ea):
+                
+                typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+                
+                
+                                // replay! till the group amasses the right amount of resources
+                // or exceeds its window...
+                int cur_update = 0;
+                int update_max = 2000;
+                // and run till the group amasses the right amount of resources
+                while ((get<GROUP_RESOURCE_UNITS>(*control_ea,0) < get<GROUP_REP_THRESHOLD>(*control_ea)) &&
+                       (cur_update < update_max)){
+                    control_ea->update();
+                    ++cur_update;
+                }
+                
+                int control_size = control_ea->population().size();
+                
+        
+            
+                
+                df.write(lod_depth);
+                
+                df.write(cur_update);
+                df.write(control_ea->population().size());
+                
+                float control_fit = cur_update;
+                
+
+                //
+                float num_inviable = 0;
+                float num_uni = 0;
+                float num_multi = 0;
+                float fit_uni = 0;
+                float fit_multi = 0;
+                float size_multi = 0;
+                float num_pos = 0;
+                float num_neg = 0;
+                float num_neutral = 0;
+                
+                
+                
+                // ok we need to iterate through size...
+                // fixed size 100 genome...
+                for (int z =0; z < 100; z++) {
+                    for (int q = 0; q < control_ea->isa().size(); q++) {
+                        typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                        put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
+                        
+                        
+                        //typename EA::subpopulation_type::genome_type r2(knockout_loc->population()[0]->genome());
+                        //r);
+                        knockout_loc->population()[0]->genome()[z] = q;
+                        //r2[z] = q;
+                        
+                        //(*(knockout_loc->population().begin()))->genome()[z] = q;
+                        
+                        
+                        int cur_update = 0;
+                        int update_max = 2000;
+                        // and run till the group amasses the right amount of resources
+                        while ((get<GROUP_RESOURCE_UNITS>(*knockout_loc,0) < get<GROUP_REP_THRESHOLD>(*knockout_loc)) &&
+                               (cur_update < update_max)){
+                            knockout_loc->update();
+                            ++cur_update;
+                        }
+                        // assess:
+                        
+                        if (cur_update == update_max){
+                            num_inviable++;
+                        } else {
+                            
+                            if (knockout_loc->population().size() < 1.5) {
+                                num_uni ++;
+                                fit_uni += cur_update;
+                            } else {
+                                num_multi++;
+                                fit_multi += cur_update;
+                                size_multi += (knockout_loc->population().size());
+                            }
+                            
+                            if (cur_update == control_fit) {
+                                num_neutral ++;
+                            }
+                            if (cur_update < control_fit) {
+                                num_pos ++;
+                            }
+                            if (cur_update > control_fit) {
+                                num_neg ++;
+                            }
+                        }
+                        
+                        
+                    }
+                }
+                df.write(num_inviable)
+                .write(num_uni)
+                .write(num_multi);
+                if (num_uni > 0) {
+                    df.write(fit_uni / num_uni);
+                } else {
+                    df.write(0.0);
+                }
+                
+                if (num_multi > 0) {
+                    df.write(fit_multi / num_multi)
+                    .write(size_multi / num_multi);
+                } else {
+                    df.write(0.0)
+                    .write(0.0);
+                }
+                df.write (num_neg)
+                .write(num_neutral)
+                .write(num_pos);
+                
+                
+                
+                df.endl();
+                
+                ++lod_depth;
+                
+            }
+        }
+
+        
         // hjg
         LIBEA_ANALYSIS_TOOL(lod_last_knockouts_uni_analysis) {
             

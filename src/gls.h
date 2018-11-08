@@ -91,6 +91,52 @@ DIGEVO_INSTRUCTION_DECL(if_soma){
     }
 }
 
+/*! Output ?BX?.
+ 
+ Executing this instruction triggers task evaluation on this output value
+ and the last two input values.  Regardless of the specific cataylst type,
+ fitness changes from multiple tasks are multiplied together.
+ */
+DIGEVO_INSTRUCTION_DECL(output_res_moderated_by_group_size) {
+    p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
+    p->outputs().resize(1);
+    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+}
+
+//! Send a message to the currently-faced neighbor.
+DIGEVO_INSTRUCTION_DECL(tx_msg_check_task_res_moderated_by_group_size) {
+    typename EA::environment_type::location_type& l=*ea.env().neighbor(p);
+    if(l.occupied()) {
+        int rbx = hw.modifyRegister();
+        int rcx = hw.nextRegister(rbx);
+        l.inhabitant()->hw().deposit_message(hw.getRegValue(rbx), hw.getRegValue(rcx));
+    }
+    p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
+    p->outputs().resize(1);
+    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+}
+
+
+//! Broadcast a message.
+DIGEVO_INSTRUCTION_DECL(bc_msg_check_task_res_moderated_by_group_size) {
+    int rbx = hw.modifyRegister();
+    int rcx = hw.nextRegister(rbx);
+    
+    typedef typename EA::environment_type::neighborhood_iterator neighborhood_iterator;
+    std::pair<neighborhood_iterator,neighborhood_iterator> ni=ea.env().neighborhood(*p);
+    for(; ni.first!=ni.second; ++ni.first) {
+        typename EA::environment_type::location_type& l=*ni.first;
+        if(l.occupied()) {
+            l.inhabitant()->hw().deposit_message(hw.getRegValue(rbx), hw.getRegValue(rcx));
+        }
+    }
+    
+    p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
+    p->outputs().resize(1);
+    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+}
+
+
 
 // Events!
 

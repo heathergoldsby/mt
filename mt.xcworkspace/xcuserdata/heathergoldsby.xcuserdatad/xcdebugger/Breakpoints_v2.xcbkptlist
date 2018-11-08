@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gls.h"
-            timestampString = "525704167.10039"
+            timestampString = "563390298.813035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "operator()(EA&amp; ea)"
             landmarkType = "9">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gls.h"
-            timestampString = "525704214.199648"
+            timestampString = "563390298.813035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "506"
-            endingLineNumber = "506"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "operator()(EA&amp; ea)"
             landmarkType = "9">
          </BreakpointContent>
@@ -221,6 +221,113 @@
             endingLineNumber = "670"
             landmarkName = "LIBEA_ANALYSIS_TOOL(lod_knockouts_capabilities)"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::lod_last_knockouts_line()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.064576"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::name()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.070347"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "11">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::lod_last_knockouts_line()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.075339"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::~lod_last_knockouts_line()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.080052"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::~lod_last_knockouts_line()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.0847909"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "15">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::operator()(ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt;&amp;)"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.089642"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "673"
+                  endingLineNumber = "673"
+                  offsetFromSymbolStart = "39">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ealib::analysis::lod_last_knockouts_line&lt;ealib::metapopulation&lt;ealib::digital_evolution&lt;lifecycle, ealib::recombination::asexual, ealib::weighted_round_robin&lt;ealib::access::unit_priority&gt;, ealib::multibirth_selfrep_not_remote_ancestor_mod_resources, ealib::empty_facing_neighbor, ealib::dont_stop, ealib::generate_single_ancestor, ealib::null_trait&gt;, ealib::quiet_nan, ealib::mutation::operators::no_mutation, ealib::quiet_nan, ealib::generational_models::isolated_subpopulations, ealib::ancestors::default_subpopulation, ealib::dont_stop, ealib::fill_metapopulation, ealib::default_lifecycle, subpop_trait&gt; &gt;::~lod_last_knockouts_line()"
+                  moduleName = "mt_lr_gls_control_mc"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/heathergoldsby/Desktop/research/code/mt/src/lod_knockouts.h"
+                  timestampString = "563390480.094463"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "670"
+                  endingLineNumber = "670"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

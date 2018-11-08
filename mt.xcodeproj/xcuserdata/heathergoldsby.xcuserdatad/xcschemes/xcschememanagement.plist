@@ -24,6 +24,11 @@
 			<key>orderHint</key>
 			<integer>21</integer>
 		</dict>
+		<key>mt_lr copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
 		<key>mt_lr.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -38,6 +43,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>28</integer>
+		</dict>
+		<key>mt_lr_gls_control_mc.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>31</integer>
 		</dict>
 		<key>mt_lr_gls_no_soma.xcscheme</key>
 		<dict>
@@ -108,6 +118,16 @@
 			<true/>
 		</dict>
 		<key>4869C2F91F9A34570094E1A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48B671432194A5E6008A0B33</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48B6714D2194A5F5008A0B33</key>
 		<dict>
 			<key>primary</key>
 			<true/>

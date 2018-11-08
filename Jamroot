@@ -96,6 +96,17 @@ install dist : mt_lr_gls : <location>$(HOME)/bin ;
 
 
 
+exe mt_lr_gls_control_mc :
+src/mt_lr_gls_control_mc.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : mt_lr_gls_control_mc : <location>$(HOME)/bin ;
+
+
+
+
 
 exe mt_lr_gls_control :
 src/mt_lr_gls_control.cpp

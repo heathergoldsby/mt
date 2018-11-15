@@ -100,7 +100,7 @@ DIGEVO_INSTRUCTION_DECL(if_soma){
 DIGEVO_INSTRUCTION_DECL(output_res_moderated_by_group_size) {
     p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
     p->outputs().resize(1);
-    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+    ea.tasklib().check_tasks_moderate_amount(*p,ea);
 }
 
 //! Send a message to the currently-faced neighbor.
@@ -113,7 +113,7 @@ DIGEVO_INSTRUCTION_DECL(tx_msg_check_task_res_moderated_by_group_size) {
     }
     p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
     p->outputs().resize(1);
-    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+    ea.tasklib().check_tasks_moderate_amount(*p,ea);
 }
 
 
@@ -133,7 +133,7 @@ DIGEVO_INSTRUCTION_DECL(bc_msg_check_task_res_moderated_by_group_size) {
     
     p->outputs().push_front(hw.getRegValue(hw.modifyRegister()));
     p->outputs().resize(1);
-    ea.tasklib().check_tasks_moderate_group_size(*p,ea);
+    ea.tasklib().check_tasks_moderate_amount(*p,ea);
 }
 
 

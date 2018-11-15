@@ -3,6 +3,7 @@
 #include <ea/subpopulation_founder.h>
 #include <ea/line_of_descent.h>
 #include <ea/analysis/archive.h>
+#include <ea/digital_evolution/task_library.h>
 //#include <ea/generational_models/periodic_competition.h>
 //#include <ea/generational_models/moran_process.h>
 //#include <ea/selection/rank.h>
@@ -258,6 +259,11 @@ public:
         add_option<ARCHIVE_OUTPUT>(this);
         add_option<ARCHIVE_MARK>(this);
         add_option<ARCHIVE_OUTPUT_SIZE>(this);
+        add_option<RESOURCE_GROUP_SIZE_THRESH>(this);
+        add_option<RESOURCE_FRACTION>(this);
+        /*
+         LIBEA_MD_DECL(RESOURCE_GROUP_SIZE_THRESH, "ea.resource.group_size_thresh", int);
+         LIBEA_MD_DECL(RESOURCE_FRACTION, "ea.resource.fraction", int);*/
         
         
     }

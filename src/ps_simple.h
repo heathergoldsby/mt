@@ -98,6 +98,8 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                     int num_alive = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                         if ((*j)->alive()) {
+                            if (get<GERM_STATUS>(**j, true)) {
+
                             typename MEA::subpopulation_type::genome_type r((*j)->genome().begin(),
                                                                             (*j)->genome().begin()+(*j)->hw().original_size());
                             typename MEA::subpopulation_type::individual_ptr_type q = p->make_individual(r);
@@ -109,6 +111,7 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             p->insert(p->end(), q);
                             
                             ++num_moved;
+                            }
                             ++num_alive;
                             
                         }
@@ -182,9 +185,14 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
             
             if (multicell_rep.size() > 0) {
                 _df.write(mea.current_update())
-                .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size())
-                .write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
-                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size());
+                .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size());
+                if (multicell_res.size() > 0) {
+                    _df.write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
+                    .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size());
+                } else {
+                    _df.write(0.0)
+                    .write(0.0);
+                }
                 if (multicell_prop_size.size() > 0) {
                     _df.write(std::accumulate(multicell_prop_size.begin(), multicell_prop_size.end(), 0.0)/multicell_prop_size.size());
                 } else {

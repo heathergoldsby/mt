@@ -4,7 +4,7 @@
 #include <ea/line_of_descent.h>
 #include <ea/analysis/archive.h>
 
-
+#include "gls.h"
 #include "mt_propagule_orig.h"
 #include "ps_simple.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
@@ -61,6 +61,12 @@ struct lifecycle : public default_lifecycle {
         append_isa<is_neighbor>(ea);
         append_isa<h_divide_remote>(ea);
         append_isa<h_alt_divide>(ea);
+        append_isa<become_soma>(ea);
+        append_isa<if_germ>(ea);
+        append_isa<if_soma>(ea);
+        
+        add_event<gs_inherit_event>(ea);
+
         
         
     }

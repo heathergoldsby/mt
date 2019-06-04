@@ -148,7 +148,7 @@ public:
     }
     
     virtual void gather_events(EA& ea) {
-        add_event<mt_propagule>(ea);
+        add_event<mt_ps_propagule>(ea);
         add_event<size_based_resources>(ea);
         
     }

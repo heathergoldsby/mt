@@ -79,17 +79,8 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                 // track multicells (even those that don't replicate)
                 if ((mea.current_update() % 100) == 0) {
                     
-                    int alive_count = 0;
-                    
-                    for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
-                        if ((*j)->alive()) {
-                            alive_count++;
-                        }
-                    }
-                    
                     multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
                     multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
-                    multicell_size.push_back(alive_count);
                 }
                 
                 
@@ -104,6 +95,7 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                     p->reset_rng(mea.rng().seed());
                     
                     int num_moved = 0;
+                    int num_alive = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                         if ((*j)->alive()) {
                             typename MEA::subpopulation_type::genome_type r((*j)->genome().begin(),
@@ -117,14 +109,17 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             p->insert(p->end(), q);
                             
                             ++num_moved;
+                            ++num_alive;
                             
                         }
-                       
                     }
                     multicell_prop_size.push_back(num_moved);
-                    put<START_PROPAGULE_SIZE>(*p, num_moved);
+                    multicell_size.push_back(num_alive);
+
+
+                    put<START_PROPAGULE_SIZE>(num_moved, *p);
                     
-                    
+
                     // track last replication state
                     int rep_size = i->population().size();
                     //                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
@@ -189,10 +184,14 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                 _df.write(mea.current_update())
                 .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size())
                 .write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
-                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size())
-                .write(std::accumulate(multicell_prop_size.begin(), multicell_prop_size.end(), 0.0)/multicell_prop_size.size())
+                .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size());
+                if (multicell_prop_size.size() > 0) {
+                    _df.write(std::accumulate(multicell_prop_size.begin(), multicell_prop_size.end(), 0.0)/multicell_prop_size.size());
+                } else {
+                    _df.write(0.0);
+                }
 
-                .write(num_rep)
+                _df.write(num_rep)
                 .write(mean(gen))
                 .endl();
                 num_rep = 0;

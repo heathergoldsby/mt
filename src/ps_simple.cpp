@@ -65,6 +65,8 @@ struct lifecycle : public default_lifecycle {
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
         append_isa<get_germ_size>(ea);
+        append_isa<if_member_start_propagule>(ea);
+        append_isa<if_not_member_start_propagule>(ea);
         
         add_event<gs_inherit_event>(ea);
 

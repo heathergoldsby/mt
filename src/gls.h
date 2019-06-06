@@ -59,6 +59,7 @@ LIBEA_MD_DECL(NOR_MUTATION_MULT, "ea.gls.nor_mutation_mult", double);
 LIBEA_MD_DECL(XOR_MUTATION_MULT, "ea.gls.xor_mutation_mult", double);
 LIBEA_MD_DECL(EQUALS_MUTATION_MULT, "ea.gls.equals_mutation_mult", double);
 LIBEA_MD_DECL(NUM_PROPAGULE_CELL, "ea.gls.num_propagule_cell", int);
+LIBEA_MD_DECL(CURR_SOMA_SIZE, "ea.gls.curr_soma_size", int);
 
 
 // Germ instructions!
@@ -70,7 +71,10 @@ DIGEVO_INSTRUCTION_DECL(become_soma) {
     get<TASK_PROFILE>(*p,"") += "S";
 
     put<GERM_STATUS>(false,*p);
+    get<CURR_SOMA_SIZE>(ea,0) += 1;
 }
+
+
 
 
 /*! Execute the next instruction if the organism is marked as germ.
@@ -90,6 +94,7 @@ DIGEVO_INSTRUCTION_DECL(if_soma){
         hw.advanceHead(Hardware::IP);
     }
 }
+
 
 /*! Output ?BX?.
  

@@ -64,6 +64,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
+        append_isa<get_germ_size>(ea);
         
         add_event<gs_inherit_event>(ea);
 

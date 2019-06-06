@@ -31,6 +31,35 @@
 using namespace ealib;
 
 LIBEA_MD_DECL(START_PROPAGULE_SIZE, "ea.mt.start_propagule_size", int);
+LIBEA_MD_DECL(MEMBER_START_PROPAGULE, "ea.mt.member_start_propagule", int);
+
+
+/*! Execute the next instruction if the cell was part of the propagule
+ */
+DIGEVO_INSTRUCTION_DECL(if_member_start_propagule) {
+    if(!get<MEMBER_START_PROPAGULE>(*p,0)) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+
+/*! Execute the next instruction if the cell was not part of the propagule
+ */
+DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
+    if(get<MEMBER_START_PROPAGULE>(*p,0)) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+/*! Get number of germ cells
+ */
+DIGEVO_INSTRUCTION_DECL(get_germ_size) {
+    int germ_size = ea.size() - get<CURR_SOMA_SIZE>(ea,0);
+    
+    hw.setRegValue(hw.modifyRegister(), germ_size);
+}
+
+
 
 // make sure resources are moved to multi. check gls for example
 
@@ -106,7 +135,7 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             
                             inherits_from(**j, *q, *p);
                             mutate(*q,m,*p);
-                            
+                            put<MEMBER_START_PROPAGULE>(1,*q);
                             
                             p->insert(p->end(), q);
                             
@@ -116,6 +145,8 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             
                         }
                     }
+                    
+                    if (num_moved == 0) { continue; }
                     multicell_prop_size.push_back(num_moved);
                     multicell_size.push_back(num_alive);
 
@@ -124,22 +155,7 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                     
 
                     // track last replication state
-                    int rep_size = i->population().size();
-                    //                    int last_rep_state = get<LAST_REPLICATION_STATE>(*i,0);
-                    //
-                    //                    if (rep_size > 1) {
-                    //                        put<LAST_REPLICATION_STATE>(1,p);
-                    //                        if (last_rep_state == 0) {
-                    //                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
-                    //                        }
-                    //                    } else {
-                    //                        put<LAST_REPLICATION_STATE>(0,p);
-                    //                        if (last_rep_state == 1) {
-                    //                            get<REPLICATION_STATE_INDEX>(*i,0) += 1;
-                    //                        }
-                    //                    }
-                    //                    put<REPLICATION_STATE_INDEX>(get<REPLICATION_STATE_INDEX>(*i,0),p);
-                    
+                    //int rep_size = i->population().size();
                     
                     
                     offspring.insert(offspring.end(),p);
@@ -187,8 +203,8 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                 _df.write(mea.current_update())
                 .write(std::accumulate(multicell_rep.begin(), multicell_rep.end(), 0.0)/multicell_rep.size());
                 if (multicell_res.size() > 0) {
-                    _df.write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0)/multicell_res.size())
-                    .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0)/multicell_size.size());
+                    _df.write(std::accumulate(multicell_res.begin(), multicell_res.end(), 0.0) /multicell_res.size())
+                    .write(std::accumulate(multicell_size.begin(), multicell_size.end(), 0.0) /multicell_size.size());
                 } else {
                     _df.write(0.0)
                     .write(0.0);
@@ -251,6 +267,7 @@ struct size_based_resources : end_of_update_event<EA> {
         for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
             float start_size = get<START_PROPAGULE_SIZE>(*i, 1);
             float current_size = i->population().size();
+            float amt = current_size/start_size;
             get<GROUP_RESOURCE_UNITS>(*i, 0) += (current_size/start_size);
         }
     }

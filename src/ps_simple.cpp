@@ -64,7 +64,10 @@ struct lifecycle : public default_lifecycle {
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
-        append_isa<get_germ_size>(ea);
+        append_isa<flag_0>(ea);
+        append_isa<flag_1>(ea);
+        append_isa<unlock_flag>(ea);
+        append_isa<lock_flag>(ea);
         append_isa<if_member_start_propagule>(ea);
         append_isa<if_not_member_start_propagule>(ea);
         
@@ -158,7 +161,8 @@ public:
     
     virtual void gather_events(EA& ea) {
         add_event<mt_ps_propagule>(ea);
-        add_event<germ_soma_based_resources>(ea);
+        add_event<flag_based_resources>(ea);
+//        add_event<germ_soma_based_resources>(ea); # does not work. wrong accounting on soma size...
         
 //        add_event<size_based_resources>(ea);
         

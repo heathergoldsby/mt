@@ -32,6 +32,8 @@ using namespace ealib;
 
 LIBEA_MD_DECL(START_PROPAGULE_SIZE, "ea.mt.start_propagule_size", int);
 LIBEA_MD_DECL(MEMBER_START_PROPAGULE, "ea.mt.member_start_propagule", int);
+LIBEA_MD_DECL(FLAG, "ea.mt.flag", int);
+LIBEA_MD_DECL(FLAG_LOCK, "ea.mt.flag_lock", int);
 
 
 /*! Execute the next instruction if the cell was part of the propagule
@@ -51,15 +53,25 @@ DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
     }
 }
 
-/*! Get number of germ cells
- */
-DIGEVO_INSTRUCTION_DECL(get_germ_size) {
-    int germ_size = ea.size() - get<CURR_SOMA_SIZE>(ea,0);
-    
-    hw.setRegValue(hw.modifyRegister(), germ_size);
+DIGEVO_INSTRUCTION_DECL(flag_0) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 0;
+    }
 }
 
+DIGEVO_INSTRUCTION_DECL(flag_1) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 1;
+    }
+}
 
+DIGEVO_INSTRUCTION_DECL(unlock_flag) {
+    get<FLAG_LOCK>(*p,0) = 0;
+}
+
+DIGEVO_INSTRUCTION_DECL(lock_flag) {
+    get<FLAG_LOCK>(*p,0) = 1;
+}
 
 // make sure resources are moved to multi. check gls for example
 
@@ -274,7 +286,7 @@ struct size_based_resources : end_of_update_event<EA> {
     datafile _df;
 
 };
-
+/*
 template <typename EA>
 struct germ_soma_based_resources : end_of_update_event<EA> {
     //! Constructor.
@@ -302,8 +314,47 @@ struct germ_soma_based_resources : end_of_update_event<EA> {
     }
     datafile _df;
     
+};*/
+
+
+template <typename EA>
+struct flag_based_resources : end_of_update_event<EA> {
+    //! Constructor.
+    flag_based_resources(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
+        
+    }
+    
+    
+    //! Destructor.
+    virtual ~flag_based_resources() {
+    }
+    
+    //! Give resources to populations
+    virtual void operator()(EA& ea) {
+        
+        typename EA::population_type offspring;
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            float reward = 1;
+            float num_0 = 0;
+            float num_1 = 0;
+            for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                if (get<FLAG>(**j,0) == 0){
+                    num_0++;
+                } else {
+                    num_1++;
+                }
+                
+            }
+            if (num_0) {
+                reward += ((num_1 + 1)/num_0);
+            }
+            get<GROUP_RESOURCE_UNITS>(*i, 0) += reward;
+        }
+    }
+    datafile _df;
+    
 };
 
-        
+
 
 #endif /* ps_simple_h */

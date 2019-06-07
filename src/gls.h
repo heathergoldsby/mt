@@ -70,8 +70,11 @@ LIBEA_MD_DECL(CURR_SOMA_SIZE, "ea.gls.curr_soma_size", int);
 DIGEVO_INSTRUCTION_DECL(become_soma) {
     get<TASK_PROFILE>(*p,"") += "S";
 
+    if (get<GERM_STATUS>(*p, true) == true) {
+        get<CURR_SOMA_SIZE>(ea,0) += 1;
+    }
+    
     put<GERM_STATUS>(false,*p);
-    get<CURR_SOMA_SIZE>(ea,0) += 1;
 }
 
 

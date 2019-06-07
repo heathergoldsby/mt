@@ -275,6 +275,35 @@ struct size_based_resources : end_of_update_event<EA> {
 
 };
 
+template <typename EA>
+struct germ_soma_based_resources : end_of_update_event<EA> {
+    //! Constructor.
+    germ_soma_based_resources(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
+        
+    }
+    
+    
+    //! Destructor.
+    virtual ~germ_soma_based_resources() {
+    }
+    
+    //! Give resources to populations
+    virtual void operator()(EA& ea) {
+        
+        typename EA::population_type offspring;
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            float num_germ = i->population().size() - get<CURR_SOMA_SIZE>(*i,0.0);
+            float reward = 0;
+            if (num_germ) {
+                reward =  i->population().size() / (num_germ);
+            }
+            get<GROUP_RESOURCE_UNITS>(*i, 0) += reward;
+        }
+    }
+    datafile _df;
+    
+};
+
         
 
 #endif /* ps_simple_h */

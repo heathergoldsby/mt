@@ -154,7 +154,9 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             ++num_moved;
                             }
                             ++num_alive;
-                            
+                            if (num_moved > (i->population().size()/2.0)) {
+                                continue; 
+                            } 
                         }
                     }
                     

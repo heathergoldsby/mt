@@ -138,6 +138,10 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                     int num_moved = 0;
                     int num_alive = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                        if (num_moved > ((i->population().size() + 1.0)/2.0)) {
+                            break;
+                        }
+
                         if ((*j)->alive()) {
                             if (get<GERM_STATUS>(**j, true)) {
 
@@ -154,9 +158,6 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                             ++num_moved;
                             }
                             ++num_alive;
-                            if (num_moved > (i->population().size()/2.0)) {
-                                continue; 
-                            } 
                         }
                     }
                     

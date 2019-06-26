@@ -410,7 +410,7 @@ struct flag_based_resources2 : end_of_update_event<EA> {
             float num_germ = 0;
 
             for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
-                if (get<GERM_STATUS>(*p, true) == true) {
+                if (get<GERM_STATUS>(**j, true) == true) {
                     num_germ++;
                     continue;
                 }

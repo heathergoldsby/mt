@@ -378,6 +378,74 @@ struct flag_based_resources : end_of_update_event<EA> {
 
 };
 
+template <typename EA>
+struct flag_based_resources2 : end_of_update_event<EA> {
+    //! Constructor.
+    flag_based_resources2(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
+        _df.add_field("update")
+        .add_field("mean_prop")
+        .add_field("mean_flag_0")
+        .add_field("mean_flag_1")
+        .add_field("mean_res");
+        
+    }
+    
+    
+    //! Destructor.
+    virtual ~flag_based_resources2() {
+    }
+    
+    //! Give resources to populations
+    virtual void operator()(EA& ea) {
+        
+        typename EA::population_type offspring;
+        float flag_0 = 0;
+        float flag_1 = 0;
+        float germ = 0;
+        float res = 0;
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            float reward = 1;
+            float num_0 = 0;
+            float num_1 = 0;
+            float num_germ = 0;
+
+            for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                if (get<GERM_STATUS>(*p, true) == true) {
+                    num_germ++;
+                    continue;
+                }
+                if (get<FLAG>(**j,0) == 0){
+                    num_0++;
+                } else {
+                    num_1++;
+                }
+                
+            }
+            if (num_0) {
+                reward += ((num_1 + 1)/num_0);
+            }
+            flag_0 += num_0;
+            flag_1 += num_1;
+            germ += num_germ;
+            res += reward;
+            get<GROUP_RESOURCE_UNITS>(*i, 0) += reward;
+        }
+        if ((ea.current_update() % 100) == 0) {
+            
+            _df.write(ea.current_update())
+            .write(flag_0/ea.population().size())
+            .write(flag_1/ea.population().size())
+            .write(germ/ea.population().size())
+            .write(res/ea.population().size())
+            .endl();
+        }
+        
+        
+    }
+    datafile _df;
+    
+};
+
 
 
 #endif /* ps_simple_h */

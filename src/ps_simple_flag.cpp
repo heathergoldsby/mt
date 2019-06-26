@@ -42,9 +42,9 @@ struct lifecycle : public default_lifecycle {
         append_isa<swap>(ea);
         append_isa<inc>(ea);
         append_isa<dec>(ea);
-        //append_isa<tx_msg>(ea);
-        //append_isa<rx_msg>(ea);
-        //append_isa<bc_msg>(ea);
+        append_isa<tx_msg>(ea);
+        append_isa<rx_msg>(ea);
+        append_isa<bc_msg>(ea);
         append_isa<rotate>(ea);
         append_isa<rotate_cw>(ea);
         append_isa<rotate_ccw>(ea);
@@ -72,7 +72,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<if_not_member_start_propagule>(ea);
         
         add_event<gs_inherit_event>(ea);
-
+        
         
         
     }
@@ -161,10 +161,10 @@ public:
     
     virtual void gather_events(EA& ea) {
         add_event<mt_ps_propagule>(ea);
-        add_event<flag_based_resources>(ea);
-//        add_event<germ_soma_based_resources>(ea); # does not work. wrong accounting on soma size...
+        add_event<flag_based_resources2>(ea);
+        //        add_event<germ_soma_based_resources>(ea); # does not work. wrong accounting on soma size...
         
-//        add_event<size_based_resources>(ea);
+        //        add_event<size_based_resources>(ea);
         
     }
 };

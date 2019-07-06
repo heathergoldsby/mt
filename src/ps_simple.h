@@ -45,6 +45,7 @@ DIGEVO_INSTRUCTION_DECL(if_member_start_propagule) {
 }
 
 
+
 /*! Execute the next instruction if the cell was not part of the propagule
  */
 DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
@@ -52,6 +53,11 @@ DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
         hw.advanceHead(Hardware::IP);
     }
 }
+
+DIGEVO_INSTRUCTION_DECL(get_flag) {
+    hw.setRegValue(hw.modifyRegister(), get<FLAG>(*p,0));
+}
+
 
 DIGEVO_INSTRUCTION_DECL(flag_0) {
     if (get<FLAG_LOCK>(*p,0) == 0) {
@@ -64,6 +70,50 @@ DIGEVO_INSTRUCTION_DECL(flag_1) {
         get<FLAG>(*p,0) = 1;
     }
 }
+
+DIGEVO_INSTRUCTION_DECL(flag_2) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 2;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_3) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 3;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_4) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 4;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_5) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 5;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_6) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 6;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_7) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 7;
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(flag_8) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 8;
+    }
+}
+
+
 
 DIGEVO_INSTRUCTION_DECL(unlock_flag) {
     get<FLAG_LOCK>(*p,0) = 0;
@@ -377,6 +427,101 @@ struct flag_based_resources : end_of_update_event<EA> {
     datafile _df;
 
 };
+
+
+
+
+template <typename EA>
+struct unqiue_flag_resources : end_of_update_event<EA> {
+    //! Constructor.
+    unqiue_flag_resources(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
+        _df.add_field("update")
+        .add_field("mean_unique_flags")
+        .add_field("mean_res");
+        
+    }
+    
+    
+    //! Destructor.
+    virtual ~unqiue_flag_resources() {
+    }
+    
+    //! Give resources to populations
+    virtual void operator()(EA& ea) {
+        
+        typename EA::population_type offspring;
+        float num_unique_flags = 0;
+        
+        float res = 0;
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            float reward = 1;
+            float flag_0 = 0;
+            float flag_1 = 0;
+            float flag_2 = 0;
+            float flag_3 = 0;
+            float flag_4 = 0;
+            float flag_5 = 0;
+            float flag_6 = 0;
+            float flag_7 = 0;
+            float flag_8 = 0;
+            for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                if (get<FLAG>(**j,0) == 0){
+                    flag_0++;
+                }
+                if (get<FLAG>(**j,0) == 1){
+                    flag_1++;
+                }
+                if (get<FLAG>(**j,0) == 2){
+                    flag_2++;
+                }
+                if (get<FLAG>(**j,0) == 3){
+                    flag_3++;
+                }
+                if (get<FLAG>(**j,0) == 4){
+                    flag_4++;
+                }
+                if (get<FLAG>(**j,0) == 5){
+                    flag_5++;
+                }
+                if (get<FLAG>(**j,0) == 6){
+                    flag_6++;
+                }
+                if (get<FLAG>(**j,0) == 7){
+                    flag_7++;
+                }
+                if (get<FLAG>(**j,0) == 8){
+                    flag_8++;
+                }
+            }
+            if (flag_0) { reward++; }
+            if (flag_1) { reward++; }
+            if (flag_2) { reward++; }
+            if (flag_3) { reward++; }
+            if (flag_4) { reward++; }
+            if (flag_5) { reward++; }
+            if (flag_6) { reward++; }
+            if (flag_7) { reward++; }
+            if (flag_8) { reward++; }
+            
+            res += reward;
+            num_unique_flags += reward - 1;
+            get<GROUP_RESOURCE_UNITS>(*i, 0) += reward;
+        }
+        if ((ea.current_update() % 100) == 0) {
+            
+            _df.write(ea.current_update())
+            .write(num_unique_flags/ea.population().size())
+            .write(res/ea.population().size())
+            .endl();
+        }
+        
+        
+    }
+    datafile _df;
+    
+};
+
+
 
 template <typename EA>
 struct flag_based_resources2 : end_of_update_event<EA> {

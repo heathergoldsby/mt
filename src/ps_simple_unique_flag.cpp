@@ -106,7 +106,7 @@ typedef digital_evolution
 < lifecycle
 , recombination::asexual
 , round_robin
-, multibirth_selfrep_not_remote_unfixed_ancestor
+, multibirth_selfrep_not_remote_ancestor
 , empty_facing_neighbor
 , dont_stop
 , generate_single_ancestor

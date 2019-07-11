@@ -394,6 +394,10 @@ struct flag_based_resources : end_of_update_event<EA> {
         float flag_1 = 0;
         float res = 0;
         for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            if (get<MULTICELL_REP_TIME>(*i,0) < 10) {
+                continue;
+            }
+            
             float reward = 1;
             float num_0 = 0;
             float num_1 = 0;

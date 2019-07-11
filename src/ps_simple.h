@@ -458,6 +458,10 @@ struct unqiue_flag_resources : end_of_update_event<EA> {
         
         float res = 0;
         for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            if (get<MULTICELL_REP_TIME>(*i,0) < 10) {
+                continue;
+            }
+            
             float reward = 1;
             float flag_0 = 0;
             float flag_1 = 0;

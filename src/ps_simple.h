@@ -496,8 +496,8 @@ struct flip_flag_resources : end_of_update_event<EA> {
             
             // get update
             int update = ea.current_update();
-            float rem = floor(update / get<FLIP_PERIOD>(*i, 100)) % 2;
-            if (rem == 0) {
+            int rem = (floor(update / get<FLIP_PERIOD>(*i, 100))); // % 2;
+            if (rem % 2 == 0) {
                 if (flag_1 == 0) {
                     reward += flag_0;
                     num_rewarded++;

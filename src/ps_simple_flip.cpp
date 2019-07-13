@@ -161,7 +161,7 @@ public:
     
     virtual void gather_events(EA& ea) {
         add_event<mt_ps_propagule>(ea);
-        add_event<unique_flag_resources>(ea);
+        add_event<flip_flag_resources>(ea);
         //        add_event<germ_soma_based_resources>(ea); # does not work. wrong accounting on soma size...
         
         //        add_event<size_based_resources>(ea);

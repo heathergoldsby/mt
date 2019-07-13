@@ -64,18 +64,9 @@ struct lifecycle : public default_lifecycle {
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
-        append_isa<flag_0>(ea);
-        append_isa<flag_1>(ea);
-        append_isa<flag_2>(ea);
-        append_isa<flag_3>(ea);
-        append_isa<flag_4>(ea);
-        append_isa<flag_5>(ea);
-        append_isa<flag_6>(ea);
-        append_isa<flag_7>(ea);
-        append_isa<flag_8>(ea);
+        append_isa<lock_flag_0>(ea);
+        append_isa<lock_flag_0>(ea);
         append_isa<get_flag>(ea);
-        append_isa<unlock_flag>(ea);
-        append_isa<lock_flag>(ea);
         append_isa<if_member_start_propagule>(ea);
         append_isa<if_not_member_start_propagule>(ea);
         
@@ -154,6 +145,7 @@ public:
         
         add_option<ANALYSIS_INPUT>(this);
         add_option<DEVELOPMENTAL_PERIOD>(this);
+        add_option<FLIP_PERIOD>(this);
         
         // ts specific options
         add_option<GERM_MUTATION_PER_SITE_P>(this);

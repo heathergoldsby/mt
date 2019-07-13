@@ -34,7 +34,9 @@ LIBEA_MD_DECL(START_PROPAGULE_SIZE, "ea.mt.start_propagule_size", int);
 LIBEA_MD_DECL(MEMBER_START_PROPAGULE, "ea.mt.member_start_propagule", int);
 LIBEA_MD_DECL(FLAG, "ea.mt.flag", int);
 LIBEA_MD_DECL(FLAG_LOCK, "ea.mt.flag_lock", int);
-
+LIBEA_MD_DECL(DEVELOPMENTAL_PERIOD, "ea.mt.developmental_period", int);
+LIBEA_MD_DECL(MAX_PROP_SIZE, "ea.mt.developmental_period", int);
+LIBEA_MD_DECL(FLIP_PERIOD, "ea.mt.flip_period", int);
 
 /*! Execute the next instruction if the cell was part of the propagule
  */
@@ -70,6 +72,24 @@ DIGEVO_INSTRUCTION_DECL(flag_1) {
         get<FLAG>(*p,0) = 1;
     }
 }
+
+
+
+DIGEVO_INSTRUCTION_DECL(lock_flag_0) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 0;
+        get<FLAG_LOCK>(*p,0) = 1;
+
+    }
+}
+
+DIGEVO_INSTRUCTION_DECL(lock_flag_1) {
+    if (get<FLAG_LOCK>(*p,0) == 0) {
+        get<FLAG>(*p,0) = 1;
+        get<FLAG_LOCK>(*p,0) = 1;
+    }
+}
+
 
 DIGEVO_INSTRUCTION_DECL(flag_2) {
     if (get<FLAG_LOCK>(*p,0) == 0) {
@@ -436,9 +456,82 @@ struct flag_based_resources : end_of_update_event<EA> {
 
 
 template <typename EA>
-struct unqiue_flag_resources : end_of_update_event<EA> {
+struct flip_flag_resources : end_of_update_event<EA> {
     //! Constructor.
-    unqiue_flag_resources(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
+    flip_flag_resources(EA& ea) : end_of_update_event<EA>(ea), _df("flag_res.dat") {
+        _df.add_field("update")
+        .add_field("mean_flags_score")
+        .add_field("mean_res");
+        
+    }
+    
+    
+    //! Destructor.
+    virtual ~flip_flag_resources() {
+    }
+    
+    //! Give resources to populations
+    virtual void operator()(EA& ea) {
+        
+        typename EA::population_type offspring;
+        float num_rewarded = 0;
+        float res = 0;
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            if (get<MULTICELL_REP_TIME>(*i,0) < get<DEVELOPMENTAL_PERIOD>(*i,0)) {
+                get<GROUP_RESOURCE_UNITS>(*i, 0) += 1;
+                continue;
+            }
+            
+            float reward = 1;
+            float flag_0 = 0;
+            float flag_1 = 0;
+            for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
+                if (get<FLAG>(**j,0) == 0){
+                    flag_0++;
+                }
+                if (get<FLAG>(**j,0) == 1){
+                    flag_1++;
+                }
+            }
+            
+            // get update
+            int update = ea.current_update();
+            float rem = floor(update / get<FLIP_PERIOD>(*i, 100)) % 2;
+            if (rem == 0) {
+                if (flag_1 == 0) {
+                    reward += flag_0;
+                    num_rewarded++;
+                }
+            } else {
+                if (flag_0 == 0) {
+                    reward += flag_1;
+                    num_rewarded++;
+                }
+            }
+            
+            res += reward;
+            get<GROUP_RESOURCE_UNITS>(*i, 0) += reward;
+        }
+        if ((ea.current_update() % 100) == 0) {
+            
+            _df.write(ea.current_update())
+            .write(num_rewarded/ea.population().size())
+            .write(res/ea.population().size())
+            .endl();
+        }
+        
+        
+    }
+    datafile _df;
+    
+};
+
+
+
+template <typename EA>
+struct unique_flag_resources : end_of_update_event<EA> {
+    //! Constructor.
+    unique_flag_resources(EA& ea) : end_of_update_event<EA>(ea), _df("size_based_res.dat") {
         _df.add_field("update")
         .add_field("mean_unique_flags")
         .add_field("mean_res");
@@ -447,7 +540,7 @@ struct unqiue_flag_resources : end_of_update_event<EA> {
     
     
     //! Destructor.
-    virtual ~unqiue_flag_resources() {
+    virtual ~unique_flag_resources() {
     }
     
     //! Give resources to populations
@@ -458,7 +551,7 @@ struct unqiue_flag_resources : end_of_update_event<EA> {
         
         float res = 0;
         for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
-            if (get<MULTICELL_REP_TIME>(*i,0) < 10) {
+            if (get<MULTICELL_REP_TIME>(*i,0) < get<DEVELOPMENTAL_PERIOD>(*i,0)) {
                 continue;
             }
             

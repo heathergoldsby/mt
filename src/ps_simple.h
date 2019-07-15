@@ -460,7 +460,9 @@ struct flip_flag_resources : end_of_update_event<EA> {
     //! Constructor.
     flip_flag_resources(EA& ea) : end_of_update_event<EA>(ea), _df("flag_res.dat") {
         _df.add_field("update")
-        .add_field("mean_flags_score")
+        .add_field("num_rewarded")
+        .add_field("num_rewarded_0")
+        .add_field("num_rewarded_1")
         .add_field("mean_res");
         
     }
@@ -475,6 +477,9 @@ struct flip_flag_resources : end_of_update_event<EA> {
         
         typename EA::population_type offspring;
         float num_rewarded = 0;
+        float num_rewarded_0 = 0;
+        float num_rewarded_1 = 0;
+        
         float res = 0;
         for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
             if (get<MULTICELL_REP_TIME>(*i,0) < get<DEVELOPMENTAL_PERIOD>(*i,0)) {
@@ -501,11 +506,13 @@ struct flip_flag_resources : end_of_update_event<EA> {
                 if (flag_1 == 0) {
                     reward += flag_0;
                     num_rewarded++;
+                    num_rewarded_0++;
                 }
             } else {
                 if (flag_0 == 0) {
                     reward += flag_1;
                     num_rewarded++;
+                    num_rewarded_1++;
                 }
             }
             
@@ -515,7 +522,9 @@ struct flip_flag_resources : end_of_update_event<EA> {
         if ((ea.current_update() % 100) == 0) {
             
             _df.write(ea.current_update())
-            .write(num_rewarded/ea.population().size())
+            .write(num_rewarded)
+            .write(num_rewarded_0)
+            .write(num_rewarded_1)
             .write(res/ea.population().size())
             .endl();
         }

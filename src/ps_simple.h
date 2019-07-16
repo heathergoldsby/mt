@@ -491,10 +491,10 @@ struct flip_flag_resources : end_of_update_event<EA> {
             float flag_0 = 0;
             float flag_1 = 0;
             for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
-                if (get<FLAG>(**j,0) == 0){
+                if (get<FLAG>(**j,-1) == 0){
                     flag_0++;
                 }
-                if (get<FLAG>(**j,0) == 1){
+                if (get<FLAG>(**j,-1) == 1){
                     flag_1++;
                 }
             }

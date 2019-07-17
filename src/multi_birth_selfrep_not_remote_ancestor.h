@@ -74,6 +74,60 @@ namespace ealib {
     
     /*! Generates a self-replicating ancestor that performs not.
      */
+    struct multibirth_selfrep_prop1_remote_ancestor {
+        template <typename EA>
+        typename EA::genome_type operator()(EA& ea) {
+            typename EA::genome_type repr;
+            repr.resize(get<REPRESENTATION_SIZE>(ea));
+            std::fill(repr.begin(), repr.end(), ea.isa()["nop_x"]);
+            
+            // Must use representation size of 100.
+            assert(repr.size() == 100);
+            
+            repr[0] =  ea.isa()["h_alloc"]; // h_alloc
+            repr[1] =  ea.isa()["nop_c"]; // nopc
+            repr[2] =  ea.isa()["nop_a"]; // nopa
+            repr[3] =  ea.isa()["h_search"]; // hsearch
+            repr[4] =  ea.isa()["nop_c"]; // nopc
+            repr[5] =  ea.isa()["mov_head"]; // movhead
+            
+            repr[10] = ea.isa()["if_not_birth_0"];
+            repr[11] = ea.isa()["become_soma"];
+            repr[13] = ea.isa()["if_not_birth_0"];
+            repr[14] = ea.isa()["flag_1"];
+
+            
+            // not
+            repr[24] = ea.isa()["fixed_input"]; // input
+            repr[25] = ea.isa()["fixed_input"]; // input
+            repr[26] = ea.isa()["push"]; // push
+            repr[27] = ea.isa()["nop_c"]; // nopc
+            repr[28] = ea.isa()["pop"]; // pop
+            repr[29] = ea.isa()["nand"]; // nand
+            repr[30] = ea.isa()["output"]; //output
+            repr[31] = ea.isa()["donate_res_to_group"]; // donate_res_to_group
+            
+            
+            repr[90] =  ea.isa()["rotate_cw"];
+            repr[91] =  ea.isa()["h_search"]; // hsearch
+            repr[92] =  ea.isa()["h_copy"]; // hcopy
+            repr[93] =  ea.isa()["nop_c"]; // nopc
+            repr[94] =  ea.isa()["nop_a"]; // nopa
+            repr[95] =  ea.isa()["if_label"]; // iflabel
+            //h_alt_divide            repr[96] = ea.isa()["h_alt_divide"];
+            repr[96] =  ea.isa()["h_divide_remote"]; // hdivide
+            repr[97] =  ea.isa()["mov_head"]; // movhead
+            repr[98] =  ea.isa()["nop_a"]; // nopa
+            repr[99] =  ea.isa()["nop_b"]; // nopb
+            
+            
+            return repr;
+        }
+    };
+
+    
+    /*! Generates a self-replicating ancestor that performs not.
+     */
     struct multibirth_selfrep_not_remote_ancestor_mod_resources {
         template <typename EA>
         typename EA::genome_type operator()(EA& ea) {

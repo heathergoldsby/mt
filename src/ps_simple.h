@@ -37,6 +37,8 @@ LIBEA_MD_DECL(FLAG_LOCK, "ea.mt.flag_lock", int);
 LIBEA_MD_DECL(DEVELOPMENTAL_PERIOD, "ea.mt.developmental_period", int);
 LIBEA_MD_DECL(MAX_PROP_SIZE, "ea.mt.developmental_period", int);
 LIBEA_MD_DECL(FLIP_PERIOD, "ea.mt.flip_period", int);
+LIBEA_MD_DECL(BIRTH_ORDER, "ea.mt.birth_order", int);
+
 
 /*! Execute the next instruction if the cell was part of the propagule
  */
@@ -46,6 +48,26 @@ DIGEVO_INSTRUCTION_DECL(if_member_start_propagule) {
     }
 }
 
+/*! Execute the next instruction if the cell was part of the propagule
+ */
+DIGEVO_INSTRUCTION_DECL(get_birth_order) {
+    hw.setRegValue(hw.modifyRegister(), get<BIRTH_ORDER>(*p,0));
+}
+
+
+DIGEVO_INSTRUCTION_DECL(if_birth_0) {
+    if(get<BIRTH_ORDER>(*p,0) != 0) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+
+
+DIGEVO_INSTRUCTION_DECL(if_not_birth_0) {
+    if(get<BIRTH_ORDER>(*p,0) == 0) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
 
 
 /*! Execute the next instruction if the cell was not part of the propagule
@@ -700,6 +722,33 @@ struct flag_based_resources2 : end_of_update_event<EA> {
     datafile _df;
     
 };
+
+
+
+/*! An organism inherits its parent's germ/soma status. If it is undefined,
+ then it is set to germ.
+ */
+template <typename EA>
+struct birth_order_event : inheritance_event<EA> {
+    
+    //! Constructor.
+    birth_order_event(EA& ea) : inheritance_event<EA>(ea) {
+    }
+    
+    //! Destructor.
+    virtual ~birth_order_event() {
+    }
+    
+    /*! Called for every inheritance event.      */
+    virtual void operator()(typename EA::population_type& parents,
+                            typename EA::individual_type& offspring,
+                            EA& ea) {
+        
+        get<BIRTH_ORDER>(offspring, 0) = ea.population().size();
+    }
+};
+
+
 
 
 

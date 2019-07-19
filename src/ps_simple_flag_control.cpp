@@ -70,16 +70,27 @@ struct lifecycle : public default_lifecycle {
         append_isa<lock_flag>(ea);
         append_isa<if_member_start_propagule>(ea);
         append_isa<if_not_member_start_propagule>(ea);
-        append_isa<if_birth_0>(ea);
-        append_isa<if_not_birth_0>(ea);
-        append_isa<get_birth_order>(ea);
+//        append_isa<if_birth_update_0>(ea);
+//        append_isa<if_not_birth_update_0>(ea);
+//        append_isa<get_birth_update>(ea);
         
         add_event<gs_inherit_event>(ea);
         add_event<birth_order_event>(ea);
         
         
         
+        
+        
     }
+    
+    template <typename EA>
+    void after_initial_population(EA& ea) {
+        for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
+            // track time since group rep
+            get<MEMBER_START_PROPAGULE>(*i,0) =1;
+        }
+    }
+    
     
 };
 

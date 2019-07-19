@@ -48,6 +48,17 @@ DIGEVO_INSTRUCTION_DECL(if_member_start_propagule) {
     }
 }
 
+
+/*! Execute the next instruction if the cell was not part of the propagule
+ */
+DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
+    if(get<MEMBER_START_PROPAGULE>(*p,0)) {
+        hw.advanceHead(Hardware::IP);
+    }
+}
+
+
+
 /*! Execute the next instruction if the cell was part of the propagule
  */
 DIGEVO_INSTRUCTION_DECL(get_birth_order) {
@@ -70,13 +81,7 @@ DIGEVO_INSTRUCTION_DECL(if_not_birth_0) {
 }
 
 
-/*! Execute the next instruction if the cell was not part of the propagule
- */
-DIGEVO_INSTRUCTION_DECL(if_not_member_start_propagule) {
-    if(get<MEMBER_START_PROPAGULE>(*p,0)) {
-        hw.advanceHead(Hardware::IP);
-    }
-}
+
 
 DIGEVO_INSTRUCTION_DECL(get_flag) {
     hw.setRegValue(hw.modifyRegister(), get<FLAG>(*p,0));

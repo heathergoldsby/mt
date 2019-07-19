@@ -91,11 +91,16 @@ namespace ealib {
             repr[4] =  ea.isa()["nop_c"]; // nopc
             repr[5] =  ea.isa()["mov_head"]; // movhead
             
+            /*
             repr[10] = ea.isa()["if_not_birth_0"];
             repr[11] = ea.isa()["become_soma"];
             repr[13] = ea.isa()["if_not_birth_0"];
             repr[14] = ea.isa()["flag_1"];
-
+             */
+            repr[10] = ea.isa()["if_not_member_start_propagule"];
+            repr[11] = ea.isa()["become_soma"];
+            repr[13] = ea.isa()["if_not_member_start_propagule"];
+            repr[14] = ea.isa()["flag_1"];
             
             // not
             repr[24] = ea.isa()["fixed_input"]; // input

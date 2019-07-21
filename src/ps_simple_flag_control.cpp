@@ -177,6 +177,8 @@ public:
     virtual void gather_events(EA& ea) {
         add_event<mt_ps_propagule>(ea);
         add_event<flag_based_resources>(ea);
+        add_event<datafiles::mrca_lineage>(ea);
+        add_event<subpopulation_founder_event>(ea);
         //        add_event<germ_soma_based_resources>(ea); # does not work. wrong accounting on soma size...
         
         //        add_event<size_based_resources>(ea);

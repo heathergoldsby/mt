@@ -8,7 +8,7 @@
 #include "mt_propagule_orig.h"
 #include "ps_simple.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
-
+#include "lod_control_analysis.h"
 
 
 
@@ -170,7 +170,8 @@ public:
     }
     
     virtual void gather_tools() {
-        
+        add_tool<ealib::analysis::lod_control_analysis>(this);
+
         
     }
     

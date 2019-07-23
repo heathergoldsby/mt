@@ -51,7 +51,9 @@ namespace ealib {
             typename line_of_descent<EA>::iterator i=lod.begin(); ++i; ++i;
             typename line_of_descent<EA>::iterator iend=lod.end(); --iend;
             
-            datafile df("lod_knockouts.dat");
+            datafile df("lod_control.dat");
+            datafile df2("lod_control_genomes.dat");
+
             df.add_field("lod_depth")
             .add_field("flag_0")
             .add_field("flag_1")
@@ -68,6 +70,7 @@ namespace ealib {
                 float flag_0 = 0;
                 float flag_1 = 0;
                 float num_germ = 0;
+                int count = 0;
                 for(typename EA::subpopulation_type::population_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                     if (get<FLAG>(**j,-1) == 0){
                         flag_0++;
@@ -78,6 +81,19 @@ namespace ealib {
                     if (get<GERM_STATUS>(**j, true) == true) {
                         num_germ++;
                     }
+                    df2.write(lod_depth)
+                    .write(count)
+                    .write(get<FLAG>(**j,-1))
+                    .write(get<GERM_STATUS>(**j, true));
+                    
+                    for(typename EA::subpopulation_type::genome_type::iterator k=(*j)->genome().begin(); k!=(*j)->genome().end(); ++k) {
+                        df2.write(*k)
+                        .write(" ");
+                       
+                    }
+                    df2.endl();
+                    
+                    count++;
                 }
 
                 df.write(lod_depth)

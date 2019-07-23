@@ -78,13 +78,13 @@ namespace ealib {
                     if (get<FLAG>(**j,-1) == 1){
                         flag_1++;
                     }
-                    if (get<GERM_STATUS>(**j, true) == true) {
+                    if (get<GERM_STATUS>(**j, -1) == true) {
                         num_germ++;
                     }
                     df2.write(lod_depth)
                     .write(count)
                     .write(get<FLAG>(**j,-1))
-                    .write(get<GERM_STATUS>(**j, true));
+                    .write(get<GERM_STATUS>(**j, -1));
                     
                     for(typename EA::subpopulation_type::genome_type::iterator k=(*j)->genome().begin(); k!=(*j)->genome().end(); ++k) {
                         df2.write(*k)

@@ -240,7 +240,7 @@ struct mt_ps_propagule : end_of_update_event<MEA> {
                         }
 
                         if ((*j)->alive()) {
-                            if (get<GERM_STATUS>(**j, true)) {
+                            if (get<GERM_STATUS>(**j, -1)) {
 
                             typename MEA::subpopulation_type::genome_type r((*j)->genome().begin(),
                                                                             (*j)->genome().begin()+(*j)->hw().original_size());

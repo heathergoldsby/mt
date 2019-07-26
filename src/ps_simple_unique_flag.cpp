@@ -60,7 +60,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<jump_head>(ea);
         append_isa<is_neighbor>(ea);
         append_isa<h_divide_remote>(ea);
-        append_isa<h_alt_divide>(ea);
+        //append_isa<h_alt_divide>(ea);
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);

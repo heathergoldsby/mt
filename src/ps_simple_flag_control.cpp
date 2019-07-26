@@ -39,7 +39,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<nand>(ea);
         append_isa<push>(ea);
         append_isa<pop>(ea);
-        append_isa<swap>(ea);
+        append_isa<swap>(ea); // 10
         append_isa<inc>(ea);
         append_isa<dec>(ea);
         append_isa<tx_msg>(ea);
@@ -49,9 +49,9 @@ struct lifecycle : public default_lifecycle {
         append_isa<rotate_cw>(ea);
         append_isa<rotate_ccw>(ea);
         append_isa<if_less>(ea);
-        append_isa<h_alloc>(ea);
+        append_isa<h_alloc>(ea); // 20
         append_isa<h_copy>(ea);
-        append_isa<h_divide_soft_parent_reset>(ea);
+        append_isa<h_divide_soft_parent_reset>(ea); // 22
         append_isa<fixed_input>(ea);
         append_isa<output>(ea);
         append_isa<donate_res_to_group>(ea);
@@ -59,8 +59,8 @@ struct lifecycle : public default_lifecycle {
         append_isa<if_not_equal>(ea);
         append_isa<jump_head>(ea);
         append_isa<is_neighbor>(ea);
-        append_isa<h_divide_remote>(ea);
-        append_isa<h_alt_divide>(ea);
+        append_isa<h_divide_remote>(ea); // 30
+        //append_isa<h_alt_divide>(ea);
         append_isa<become_soma>(ea);
         append_isa<if_germ>(ea);
         append_isa<if_soma>(ea);
@@ -69,7 +69,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<unlock_flag>(ea);
         append_isa<lock_flag>(ea);
         append_isa<if_member_start_propagule>(ea);
-        append_isa<if_not_member_start_propagule>(ea);
+        append_isa<if_not_member_start_propagule>(ea); // 40
 //        append_isa<if_birth_update_0>(ea);
 //        append_isa<if_not_birth_update_0>(ea);
 //        append_isa<get_birth_update>(ea);

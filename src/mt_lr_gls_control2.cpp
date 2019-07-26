@@ -52,7 +52,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<nand>(ea);
         append_isa<push>(ea);
         append_isa<pop>(ea);
-        append_isa<swap>(ea);
+        append_isa<swap>(ea); //10
         append_isa<inc>(ea);
         append_isa<dec>(ea);
         append_isa<tx_msg>(ea);
@@ -66,7 +66,7 @@ struct lifecycle : public default_lifecycle {
         append_isa<if_less>(ea);
         append_isa<h_alloc>(ea);
         append_isa<h_copy>(ea);
-        append_isa<h_divide_local>(ea);
+        append_isa<h_divide_local>(ea); // 24
         append_isa<input>(ea);
         append_isa<output>(ea);
         append_isa<donate_res_to_group>(ea);

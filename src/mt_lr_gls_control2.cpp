@@ -260,11 +260,11 @@ public:
     virtual void gather_tools() {
         
         add_tool<movie>(this);
-        add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
-        add_tool<ealib::analysis::lod_transition>(this);
-        add_tool<ealib::analysis::lod_archive_reversion>(this);
-        add_tool<ealib::analysis::lod_archive_trans>(this);
-        add_tool<ealib::analysis::lod_forced_uni>(this);
+        //add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
+        //add_tool<ealib::analysis::lod_transition>(this);
+        //add_tool<ealib::analysis::lod_archive_reversion>(this);
+        //add_tool<ealib::analysis::lod_archive_trans>(this);
+        //add_tool<ealib::analysis::lod_forced_uni>(this);
         
         
         
@@ -272,8 +272,8 @@ public:
     
     virtual void gather_events(EA& ea) {
         add_event<mt_gls_propagule>(ea);
-        add_event<datafiles::mrca_lineage>(ea);
-        add_event<subpopulation_founder_event>(ea);
+        //add_event<datafiles::mrca_lineage>(ea);
+        //add_event<subpopulation_founder_event>(ea);
         add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         add_event<dol_tracking>(ea);

@@ -21,6 +21,8 @@
 #include "mt_propagule_orig.h"
 #include "multi_birth_selfrep_not_remote_ancestor.h"
 #include "lod_knockouts.h"
+#include "lod_knockouts_fitness.h"
+
 #include "mt_analysis.h"
 
 
@@ -284,6 +286,9 @@ public:
         add_tool<ealib::analysis::lod_last_knockouts_line>(this);
         add_tool<ealib::analysis::lod_archive_trans>(this);
         add_tool<ealib::analysis::lod_forced_uni>(this);
+        add_tool<ealib::analysis::lod_fitness>(this);
+        add_tool<ealib::analysis::lod_fitness_at_trans>(this);
+
     }
     
     virtual void gather_events(EA& ea) {

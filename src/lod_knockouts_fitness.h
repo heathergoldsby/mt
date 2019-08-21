@@ -305,7 +305,7 @@ namespace ealib {
                 add_event<mt_gls_propagule>(metapop);
                 
                 int max_size = 32;
-                int max_update = 10000;
+                int max_update = 50000;
                 int cur_update = 0;
                 
                 while ((metapop.size() < max_size) &&

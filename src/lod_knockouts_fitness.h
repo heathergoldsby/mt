@@ -83,7 +83,7 @@ namespace ealib {
                 add_event<mt_gls_propagule>(metapop);
                 
                 int max_size = 32;
-                int max_update = 10000;
+                int max_update = 50000;
                 int cur_update = 0;
                 
                 while ((metapop.size() < max_size) &&
@@ -176,7 +176,7 @@ namespace ealib {
                             
                             metapop.initialize(md);
                             put<METAPOPULATION_SIZE>(32, metapop);
-                            put<RUN_UPDATES>(10000, metapop);
+                            put<RUN_UPDATES>(50000, metapop);
                             put<RNG_SEED>(nr, metapop);
                             if (nr != 0) {
                                 metapop.reset_rng(nr);
@@ -365,7 +365,7 @@ namespace ealib {
                     typename EA::individual_ptr_type knockout_loc2 (knockout_loc);
                     
                     int cur_update = 0;
-                    int update_max = 50000;
+                    int update_max = 10000;
                     // and run till the group amasses the right amount of resources
                     while ((get<DIVIDE_REMOTE>(*knockout_loc,0) == 0) &&
                            (cur_update < update_max)){
@@ -412,7 +412,7 @@ namespace ealib {
                             add_event<mt_gls_propagule>(metapop);
                             
                             int max_size = 32;
-                            int max_update = 10000;
+                            int max_update = 50000;
                             cur_update = 0;
                             
                             while ((metapop.size() < max_size) &&

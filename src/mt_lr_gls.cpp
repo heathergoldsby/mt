@@ -287,6 +287,7 @@ public:
         add_tool<ealib::analysis::lod_archive_trans>(this);
         add_tool<ealib::analysis::lod_forced_uni>(this);
         add_tool<ealib::analysis::lod_fitness>(this);
+        add_tool<ealib::analysis::lod_fitness_no_mutations>(this);
         add_tool<ealib::analysis::lod_fitness_at_trans>(this);
 
     }

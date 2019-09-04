@@ -281,6 +281,8 @@ namespace ealib {
                 put<RNG_SEED>(nr, metapop);
                 put<TASK_MUTATION_PER_SITE_P>(0, metapop);
                 put<MUTATION_PER_SITE_P>(0, metapop);
+                put<GERM_MUTATION_PER_SITE_P>(0, metapop);
+
                 
                 if (nr != 0) {
                     metapop.reset_rng(nr);
@@ -361,6 +363,10 @@ namespace ealib {
 
                     knockout_loc->population()[0]->genome()[z] = q;
                     typename EA::individual_ptr_type knockout_loc2 (knockout_loc);
+                    put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc2);
+                    put<MUTATION_PER_SITE_P>(0, *knockout_loc2);
+                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc2);
+
                     
                     int cur_update = 0;
                     int update_max = 10000;
@@ -400,6 +406,7 @@ namespace ealib {
                             put<RNG_SEED>(nr, metapop);
                             put<TASK_MUTATION_PER_SITE_P>(0, metapop);
                             put<MUTATION_PER_SITE_P>(0, metapop);
+                            put<GERM_MUTATION_PER_SITE_P>(0, metapop);
 
                             if (nr != 0) {
                                 metapop.reset_rng(nr);

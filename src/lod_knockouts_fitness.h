@@ -30,17 +30,20 @@ namespace ealib {
             datafile df("lod_fitness.dat");
             df.add_field("timepoint")
             .add_field("mc_or_uni")
+            .add_field("count")
             .add_field("iteration")
-            .add_field("replicate")
             .add_field("time_to_fill")
             .add_field("workload")
+            .add_field("num_org")
             ;
+            
             
             datafile df2("lod_fit_summary.dat");
             df2.add_field("timepoint")
             .add_field("num_unicell_revertants")
             .add_field("num_viable_unicells")
             .add_field("num_inviable_unicells")
+            .add_field("update")
             ;
 
             int num_rep = 100;
@@ -74,7 +77,6 @@ namespace ealib {
 
                 typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
                 put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_mc);
-                
                 typename EA::population_type init_mc;
                 init_mc.insert(init_mc.end(),control_mc);
                 
@@ -123,6 +125,7 @@ namespace ealib {
             // setup the population (really, an ea):
 
             typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
+            int birth_up = get<IND_BIRTH_UPDATE>(*i->traits().founder(),0);
 
             // ok we need to iterate through size...
             // fixed size 100 genome...
@@ -232,6 +235,7 @@ namespace ealib {
             .write(num_uni)
             .write(num_uni_viable)
             .write(num_uni_inviable)
+            .write(birth_up)
             .endl();
 
             
@@ -242,17 +246,21 @@ namespace ealib {
             datafile df("lod_fitness.dat");
             df.add_field("timepoint")
             .add_field("mc_or_uni")
+            .add_field("count")
             .add_field("iteration")
-            .add_field("replicate")
             .add_field("time_to_fill")
             .add_field("workload")
+            .add_field("num_org")
             ;
+            
             
             datafile df2("lod_fit_summary.dat");
             df2.add_field("timepoint")
+            .add_field("update")
             .add_field("num_unicell_revertants")
             .add_field("num_viable_unicells")
             .add_field("num_inviable_unicells")
+            .add_field("update")
             ;
             
             int num_rep = 100;
@@ -289,6 +297,8 @@ namespace ealib {
                 }
                 
                 typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
+                int birth_up = get<IND_BIRTH_UPDATE>(*i->traits().founder(),0);
+
                 put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_mc);
                 put<TASK_MUTATION_PER_SITE_P>(0, *control_mc);
                 put<MUTATION_PER_SITE_P>(0, *control_mc);
@@ -342,7 +352,8 @@ namespace ealib {
             // setup the population (really, an ea):
             
             typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-            
+            int birth_up = get<IND_BIRTH_UPDATE>(*i->traits().founder(),0);
+
             // ok we need to iterate through size...
             // fixed size 100 genome...
             int uni_count = 0;
@@ -462,6 +473,7 @@ namespace ealib {
             .write(num_uni)
             .write(num_uni_viable)
             .write(num_uni_inviable)
+            .write(birth_up)
             .endl();
             
             
@@ -473,17 +485,20 @@ namespace ealib {
             datafile df("lod_fitness.dat");
             df.add_field("timepoint")
             .add_field("mc_or_uni")
+            .add_field("count")
             .add_field("iteration")
-            .add_field("replicate")
             .add_field("time_to_fill")
             .add_field("workload")
+            .add_field("num_org")
             ;
+            
             
             datafile df2("lod_fit_summary.dat");
             df2.add_field("timepoint")
             .add_field("num_unicell_revertants")
             .add_field("num_viable_unicells")
             .add_field("num_inviable_unicells")
+            .add_field("update")
             ;
             
             int num_rep = 100;
@@ -575,7 +590,8 @@ namespace ealib {
             // setup the population (really, an ea):
             
             typename EA::individual_ptr_type control_ea = ea.make_individual(*i->traits().founder());
-            
+            int birth_up = get<IND_BIRTH_UPDATE>(*i->traits().founder(),0);
+
             // ok we need to iterate through size...
             // fixed size 100 genome...
             int uni_count = 0;
@@ -684,6 +700,7 @@ namespace ealib {
             .write(uni_count)
             .write(num_uni_viable)
             .write(num_uni_inviable)
+            .write(birth_up)
             .endl();
             
             

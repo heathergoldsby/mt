@@ -65,7 +65,7 @@ namespace ealib {
             .add_field("num_neutral_mut")
             .add_field("num_pos_mut")
            ;
-            
+
             int mc = 0;
             int end = 0;
 
@@ -1137,6 +1137,17 @@ namespace ealib {
             ;
             
             
+            datafile df2("lod_fitness.dat");
+            df2.add_field("lod")
+            .add_field("iteration")
+            .add_field("time_to_fill")
+            .add_field("workload")
+            .add_field("num_org")
+            ;
+            
+            
+            
+            
             int lod_depth = 0;
             // skip def ancestor (that's what the +1 does)
             for( ; i!=lod.end(); ++i) {
@@ -1202,6 +1213,69 @@ namespace ealib {
                     df.write(0)
                     .write(0);
                 }
+                
+                int num_rep = 100;
+                for (int nr = 0; nr < num_rep; nr++) {
+                    
+                    
+                    // should define checkpoint + analysis input
+                    //ea is the thing loaded from the checkpoint; EA is its type
+                    EA metapop; // a new EA
+                    //typedef metadata md_type;
+                    
+                    typename EA::md_type md(ea.md());
+                    // override md settings (pop size, geo, etc)
+                    
+                    
+                    metapop.initialize(md);
+                    put<METAPOPULATION_SIZE>(32, metapop);
+                    put<RUN_UPDATES>(10000, metapop);
+                    put<RNG_SEED>(nr, metapop);
+                    
+                    if (nr != 0) {
+                        metapop.reset_rng(nr);
+                    }
+                    
+                    typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
+                    put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_mc);
+                    
+                    typename EA::population_type init_mc;
+                    init_mc.insert(init_mc.end(),control_mc);
+                    
+                    std::swap(metapop.population(), init_mc);
+                    
+                    add_event<mt_gls_propagule>(metapop);
+                    
+                    int max_size = 32;
+                    int max_update = 50000;
+                    int cur_update = 0;
+                    
+                    while ((metapop.size() < max_size) &&
+                           (cur_update < max_update)){
+                        metapop.update();
+                        ++cur_update;
+                    }
+                    
+                    // get workload
+                    float total_workload = 0;
+                    typedef typename EA::subpopulation_type::population_type subpop_type;
+                    
+                    for(typename EA::iterator j=metapop.begin(); j!=metapop.end(); ++j) {
+                        for(typename subpop_type::iterator m=j->population().begin(); m!=j->population().end(); ++m) {
+                            typename EA::subpopulation_type::individual_type& org=**m;
+                            total_workload += get<WORKLOAD>(org, 0.0);
+                        }
+                    }
+                    
+                    df2.write(lod_depth)
+                    .write(nr)
+                    .write(cur_update)
+                    .write(total_workload)
+                    .write(metapop.size());
+                    df2.endl();
+                }
+
+                
                 
                 df.endl();
                 

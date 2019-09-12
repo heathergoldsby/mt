@@ -137,13 +137,22 @@ namespace ealib {
 
             for (int z =0; z < 100; z++) {
                 for (int q = 0; q < control_ea->isa().size(); q++) {
-                    typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
 
+                    typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                    typename EA::individual_ptr_type knockout_loc2 = ea.make_individual(*i->traits().founder());
+                    
                     put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
                     put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
+                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc2);
+                    put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc2);
                     
                     knockout_loc->population()[0]->genome()[z] = q;
-                    typename EA::individual_ptr_type knockout_loc2 (knockout_loc);
+                    knockout_loc2->population()[0]->genome()[z] = q;
+                    
+                    put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    put<MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    put<GERM_MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    
                     
                     int cur_update = 0;
                     int update_max = 10000;
@@ -364,19 +373,23 @@ namespace ealib {
             
             for (int z =0; z < 100; z++) {
                 for (int q = 0; q < control_ea->isa().size(); q++) {
+                    
                     typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                    typename EA::individual_ptr_type knockout_loc2 = ea.make_individual(*i->traits().founder());
                     
                     put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
                     put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
+                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc2);
+                    put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc2);
+                    
+                    knockout_loc->population()[0]->genome()[z] = q;
+                    knockout_loc2->population()[0]->genome()[z] = q;
+                    
                     put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc);
                     put<MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    put<GERM_MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    
 
-
-                    knockout_loc->population()[0]->genome()[z] = q;
-                    typename EA::individual_ptr_type knockout_loc2 (knockout_loc);
-                    put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc2);
-                    put<MUTATION_PER_SITE_P>(0, *knockout_loc2);
-                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc2);
 
                     
                     int cur_update = 0;
@@ -603,12 +616,19 @@ namespace ealib {
             for (int z =0; z < 100; z++) {
                 for (int q = 0; q < control_ea->isa().size(); q++) {
                     typename EA::individual_ptr_type knockout_loc = ea.make_individual(*i->traits().founder());
+                    typename EA::individual_ptr_type knockout_loc2 = ea.make_individual(*i->traits().founder());
                     
                     put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc);
                     put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc);
+                    put<IND_REP_THRESHOLD>(get<IND_REP_THRESHOLD>(ea,0), *knockout_loc2);
+                    put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *knockout_loc2);
                     
                     knockout_loc->population()[0]->genome()[z] = q;
-                    typename EA::individual_ptr_type knockout_loc2 (knockout_loc);
+                    knockout_loc2->population()[0]->genome()[z] = q;
+
+                    put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    put<MUTATION_PER_SITE_P>(0, *knockout_loc);
+                    put<GERM_MUTATION_PER_SITE_P>(0, *knockout_loc);
                     
                     int cur_update = 0;
                     int update_max = 10000;

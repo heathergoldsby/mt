@@ -260,8 +260,8 @@ public:
         add_option<ARCHIVE_OUTPUT>(this);
         add_option<ARCHIVE_MARK>(this);
         add_option<ARCHIVE_OUTPUT_SIZE>(this);
-        
-        
+        add_option<LOD_START_ANALYSIS>(this);
+        add_option<LOD_END_ANALYSIS>(this);
     }
     
     virtual void gather_tools() {
@@ -289,6 +289,7 @@ public:
         add_tool<ealib::analysis::lod_fitness>(this);
         add_tool<ealib::analysis::lod_fitness_no_mutations>(this);
         add_tool<ealib::analysis::lod_fitness_at_trans>(this);
+        add_tool<ealib::analysis::lod_fitness_start_stop>(this);
 
     }
     

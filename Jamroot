@@ -129,3 +129,12 @@ src/mt_lr_gls_no_soma.cpp
 install dist : mt_lr_gls_no_soma : <location>$(HOME)/bin ;
 
 
+
+exe ps_simple :
+src/ps_simple.cpp
+/libea//libea_runner
+: <include>./include <link>static
+;
+
+install dist : ps_simple : <location>$(HOME)/bin ;
+

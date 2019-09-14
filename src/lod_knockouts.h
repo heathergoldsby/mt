@@ -26,7 +26,6 @@ LIBEA_MD_DECL(ARCHIVE_OUTPUT_SIZE, "ea.mt.archive_output_size", int);
 namespace ealib {
     namespace analysis {
         
-        
         /*! lod_knockouts reruns each subpopulation along a line of descent and records how the subpopulation
          fares with key coordination instructions removed.
          

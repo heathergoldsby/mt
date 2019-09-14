@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-               BuildableName = "mt_lr_gls"
-               BlueprintName = "mt_lr_gls"
+               BlueprintIdentifier = "48CDFEEF22AEE34700C24467"
+               BuildableName = "ps_mt_gls"
+               BlueprintName = "ps_mt_gls"
                ReferencedContainer = "container:mt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "48CDFEEF22AEE34700C24467"
+            BuildableName = "ps_mt_gls"
+            BlueprintName = "ps_mt_gls"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,19 +56,15 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "48CDFEEF22AEE34700C24467"
+            BuildableName = "ps_mt_gls"
+            BlueprintName = "ps_mt_gls"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-c ramp.cfg --ea.mt.cost_start_update=1000002 --ea.mt.ind_rep_threshold=5"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-l checkpoint-1000000.xml.gz --analyze lod_fitness_at_trans --ea.analysis.input.filename lod-1000000.xml.gz --ea.mt.cost_start_update=1000000"
+            argument = "-c ramp.cfg"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
@@ -85,9 +81,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "483B732D1F61C21C00DE803D"
-            BuildableName = "mt_lr_gls"
-            BlueprintName = "mt_lr_gls"
+            BlueprintIdentifier = "48CDFEEF22AEE34700C24467"
+            BuildableName = "ps_mt_gls"
+            BlueprintName = "ps_mt_gls"
             ReferencedContainer = "container:mt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -763,7 +763,7 @@ namespace ealib {
             int lod_end_analysis = get<LOD_END_ANALYSIS>(ea);
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
-            typename line_of_descent<EA>::iterator i=lod.begin(); i++;
+            typename line_of_descent<EA>::iterator i=lod.begin(); i++; i++;
             
             for( ; i!=lod.end(); i++) {
                 

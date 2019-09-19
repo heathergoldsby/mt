@@ -394,7 +394,9 @@ namespace ealib {
                     put<MUTATION_PER_SITE_P>(0, *knockout_loc);
                     put<GERM_MUTATION_PER_SITE_P>(0, *knockout_loc);
                     
-
+                    put<TASK_MUTATION_PER_SITE_P>(0, *knockout_loc2);
+                    put<MUTATION_PER_SITE_P>(0, *knockout_loc2);
+                    put<GERM_MUTATION_PER_SITE_P>(0, *knockout_loc2);
 
                     
                     int cur_update = 0;

@@ -46,7 +46,6 @@ using namespace boost::accumulators;
 
 LIBEA_MD_DECL(GERM_STATUS, "ea.gls.germ_status", int);
 LIBEA_MD_DECL(TASK_MUTATION_PER_SITE_P, "ea.gls.task_mutation_per_site_p", double);
-//LIBEA_MD_DECL(GERM_MUTATION_PER_SITE_P, "ea.gls.germ_mutation_per_site_p", double);
 LIBEA_MD_DECL(WORKLOAD, "ea.gls.workload", double);
 LIBEA_MD_DECL(TASK_MUTATION_MULT, "ea.gls.task_mutation_mult", double);
 LIBEA_MD_DECL(NOT_MUTATION_MULT, "ea.gls.not_mutation_mult", double);
@@ -734,43 +733,6 @@ struct gls_replication_ps : end_of_update_event<EA> {
     
 };
 
-///*! Prints information about the mean number of task-switches
-// */
-//
-//
-//template <typename EA>
-//struct apoptosis_tracking : end_of_update_event<EA> {
-//    apoptosis_tracking(EA& ea) : end_of_update_event<EA>(ea), _df("apop.dat") {
-//        _df.add_field("update")
-//        .add_field("mean_apop")
-//        .add_field("max_apop");
-//
-//    }
-//
-//    //! Destructor.
-//    virtual ~apoptosis_tracking() {
-//    }
-//
-//    //! Track how many task-switches are being performed!
-//    virtual void operator()(EA& ea) {
-//        if ((ea.current_update() % 100) == 0) {
-//            accumulator_set<double, stats<tag::mean, tag::max> > apop;
-//
-//
-//            for(typename EA::iterator i=ea.begin(); i!=ea.end(); ++i) {
-//                apop(get<APOPTOSIS_COUNT>(i->ea(), 0));
-//            }
-//
-//            _df.write(ea.current_update())
-//            .write(mean(apop))
-//            .write(max(apop))
-//            .endl();
-//        }
-//        
-//    }
-//    datafile _df;
-//    
-//};
 
 
 

@@ -989,6 +989,7 @@ namespace ealib {
             .add_field("iteration")
             .add_field("update")
             .add_field("organism_size")
+            .add_field("num_germ")
             .add_field("generation")
             .add_field("generation_diff")
             .add_field("workload")
@@ -1001,6 +1002,7 @@ namespace ealib {
             .add_field("iteration")
             .add_field("update")
             .add_field("organism_size")
+            .add_field("num_germ")
             .add_field("generation")
             .add_field("generation_diff")
             .add_field("workload")
@@ -1093,55 +1095,51 @@ namespace ealib {
 
                             float mean_size = organism_size/metapop.size();
                             
-                            df2.write(start_cost)
+                            df.write(start_cost)
                             .write(nr)
                             .write(metapop.current_update())
                             .write(organism_size/metapop.size())
+                            .write(num_germ/metapop.size())
                             .write(mean_gen)
                             .write(mean_gen_diff)
                             .write(total_workload/organism_size)
                             .write(germ_workload/num_germ)
                             .endl();
                             
-                            if (mean_size < 2) {
-                                revert_count += 1;
+                            if ((mean_size < 2) ||
+                                (mean_gen_diff > 100) ||
+                                ((num_germ/metapop.size()) < 1)) {
+                                
+                                if ((mean_size < 2) ||
+                                    (mean_gen_diff > 100)) {
+                                        revert_count += 1;
+                                }
                                 exit = true;
-                                df.write(start_cost)
+                                df2.write(start_cost)
                                 .write(nr)
                                 .write(metapop.current_update())
                                 .write(organism_size/metapop.size())
+                                .write(num_germ/metapop.size())
                                 .write(mean_gen)
                                 .write(mean_gen_diff)
                                 .write(total_workload/organism_size)
                                 .write(germ_workload/num_germ)
                                 .endl();
                             }
-                            if (mean_gen_diff > 100) {
-                                exit = true;
-                                df.write(start_cost)
-                                .write(nr)
-                                .write(metapop.current_update())
-                                .write(organism_size/metapop.size())
-                                .write(mean_gen)
-                                .write(mean_gen_diff)
-                                .write(total_workload/organism_size)
-                                .write(germ_workload/num_germ)
-                                .endl();
-                            }
-                            
                         }
                     }
-                    if (revert_count < 1) {
-                        start_cost += 5;
-                        if (checked_nums.find(start_cost) != checked_nums.end()){
-                            entrench_not_found = false;
-                        }
-                    } else {
-                        start_cost -= 5;
-                        if ((checked_nums.find(start_cost) != checked_nums.end()) ||
-                            (start_cost < 0)){
-                            entrench_not_found = false;
-                        }
+                    
+                }
+                if (revert_count < 1) {
+                    start_cost += 5;
+                    if (checked_nums.find(start_cost) != checked_nums.end()){
+                        entrench_not_found = false;
+                    }
+                } else {
+                    start_cost -= 5;
+                    if ((checked_nums.find(start_cost) != checked_nums.end()) ||
+                        (start_cost < 0)){
+                        entrench_not_found = false;
                     }
                 }
             }// end while

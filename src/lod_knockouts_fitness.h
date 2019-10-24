@@ -23,6 +23,10 @@
 
 LIBEA_MD_DECL(LOD_START_ANALYSIS, "ea.mt.lod_start_analysis", int);
 LIBEA_MD_DECL(LOD_END_ANALYSIS, "ea.mt.lod_end_analysis", int);
+LIBEA_MD_DECL(ANALYSIS_LOD_REPS, "ea.mt.lod_analysis_reps", int);
+LIBEA_MD_DECL(ANALYSIS_LOD_START_COST, "ea.mt.lod_start_cost", int);
+
+
 
 namespace ealib {
     namespace analysis {
@@ -1101,9 +1105,27 @@ namespace ealib {
                             if (mean_size < 2) {
                                 revert_count += 1;
                                 exit = true;
+                                df.write(start_cost)
+                                .write(nr)
+                                .write(metapop.current_update())
+                                .write(organism_size/metapop.size())
+                                .write(mean_gen)
+                                .write(mean_gen_diff)
+                                .write(total_workload/organism_size)
+                                .write(germ_workload/num_germ)
+                                .endl();
                             }
                             if (mean_gen_diff > 100) {
                                 exit = true;
+                                df.write(start_cost)
+                                .write(nr)
+                                .write(metapop.current_update())
+                                .write(organism_size/metapop.size())
+                                .write(mean_gen)
+                                .write(mean_gen_diff)
+                                .write(total_workload/organism_size)
+                                .write(germ_workload/num_germ)
+                                .endl();
                             }
                             
                         }

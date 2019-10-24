@@ -1036,6 +1036,7 @@ namespace ealib {
                     for (int j=0; j<meta_size; ++j){
                         typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
                         put<IND_REP_THRESHOLD>(start_cost, *control_mc);
+                        put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_mc);
                         control_mc->reset_rng(ea.rng().uniform_integer());
                         init_mc.insert(init_mc.end(),ea.make_individual(*control_mc));
                         if (j ==0) {

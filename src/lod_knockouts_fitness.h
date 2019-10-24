@@ -1111,7 +1111,7 @@ namespace ealib {
                                 ((num_germ/metapop.size()) < 1)) {
                                 
                                 if ((mean_size < 2) ||
-                                    (mean_gen_diff > 100)) {
+                                    ((num_germ/metapop.size()) < 1)) {
                                         revert_count += 1;
                                 }
                                 exit = true;

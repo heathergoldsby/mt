@@ -1007,6 +1007,7 @@ namespace ealib {
             .add_field("generation_diff")
             .add_field("workload")
             .add_field("workload_propagule_ineligible")
+            .add_field("reverted")
             ;
             
             int num_rep = get<ANALYSIS_LOD_REPS>(ea,1);
@@ -1109,10 +1110,12 @@ namespace ealib {
                             if ((mean_size < 2) ||
                                 (mean_gen_diff > 100) ||
                                 ((num_germ/metapop.size()) < 0.5)) {
+                                int reverted = 0;
                                 
                                 if ((mean_size < 2) ||
                                     ((num_germ/metapop.size()) < 0.5)) {
-                                        revert_count += 1;
+                                    revert_count += 1;
+                                    reverted = 1;
                                 }
                                 exit = true;
                                 df2.write(start_cost)
@@ -1124,6 +1127,7 @@ namespace ealib {
                                 .write(mean_gen_diff)
                                 .write(total_workload/organism_size)
                                 .write(germ_workload/num_germ)
+                                .write(reverted)
                                 .endl();
                             }
                         }

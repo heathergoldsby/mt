@@ -1118,10 +1118,12 @@ namespace ealib {
                             
                             if ((mean_size < 2) ||
                                 (mean_gen_diff > 100) ||
+                                ((cur_update > 1000) && (mean_gen_diff < 10)) ||
                                 ((num_germ/metapop.size()) < 0.5)) {
                                 int reverted = 0;
                                 
                                 if ((mean_size < 2) ||
+                                    ((cur_update > 1000) && (mean_gen_diff < 10))  ||
                                     ((num_germ/metapop.size()) < 0.5)) {
                                     revert_count += 1;
                                     reverted = 1;
@@ -1140,7 +1142,6 @@ namespace ealib {
                                 .endl();
                             }
                             if (cur_update == max_update){
-                                revert_count += 1;
                                 df2.write(start_cost)
                                 .write(nr)
                                 .write(metapop.current_update())

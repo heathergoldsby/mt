@@ -264,6 +264,8 @@ public:
         add_option<LOD_END_ANALYSIS>(this);
         add_option<ANALYSIS_LOD_REPS>(this);
         add_option<ANALYSIS_LOD_START_COST>(this);
+        add_option<ANALYSIS_LOD_TIMEPOINT_TO_ANALYZE>(this);
+
     }
     
     virtual void gather_tools() {
@@ -292,7 +294,7 @@ public:
         add_tool<ealib::analysis::lod_fitness_no_mutations>(this);
         add_tool<ealib::analysis::lod_fitness_at_trans>(this);
         add_tool<ealib::analysis::lod_fitness_start_stop>(this);
-        add_tool<ealib::analysis::lod_final_entrench>(this);
+        add_tool<ealib::analysis::lod_entrench>(this);
 
 
     }

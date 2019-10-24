@@ -1139,6 +1139,20 @@ namespace ealib {
                                 .write(reverted)
                                 .endl();
                             }
+                            if (cur_update == max_update){
+                                revert_count += 1;
+                                df2.write(start_cost)
+                                .write(nr)
+                                .write(metapop.current_update())
+                                .write(organism_size/metapop.size())
+                                .write(num_germ/metapop.size())
+                                .write(mean_gen)
+                                .write(mean_gen_diff)
+                                .write(total_workload/organism_size)
+                                .write(germ_workload/num_germ)
+                                .write("2")
+                                .endl();
+                            }
                         }
                     }
                     

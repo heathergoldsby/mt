@@ -196,8 +196,8 @@ struct task_mutagenesis : reaction_event<EA> {
         if (prob > 0) {
             configurable_per_site m(prob);
             mutate(ind,m,ea);
-            get<WORKLOAD>(ind,0.0) += mult;
         }
+        get<WORKLOAD>(ind,0.0) += mult;
     }
 };
 
@@ -239,8 +239,8 @@ struct task_mutagenesis_control : reaction_event<EA> {
             
             configurable_per_site m(prob);
             mutate(sacrificial_org,m,ea);
-            get<WORKLOAD>(sacrificial_org,0.0) += mult;
         }
+        get<WORKLOAD>(sacrificial_org,0.0) += mult;
     }
 };
 
@@ -280,8 +280,8 @@ struct task_mutagenesis_control2 : reaction_event<EA> {
             
             configurable_per_site m(prob);
             mutate(sacrificial_org,m,ea);
-            get<WORKLOAD>(sacrificial_org,0.0) += mult;
         }
+        get<WORKLOAD>(sacrificial_org,0.0) += mult;
     }
 };
 

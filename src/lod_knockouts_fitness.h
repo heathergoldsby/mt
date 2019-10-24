@@ -978,7 +978,151 @@ namespace ealib {
                 
                 
             }
-        
+        LIBEA_ANALYSIS_TOOL(lod_final_entrench) {
+            
+            datafile df("lod_entrench_all.dat");
+            df.add_field("cost")
+            .add_field("iteration")
+            .add_field("update")
+            .add_field("organism_size")
+            .add_field("generation")
+            .add_field("generation_diff")
+            .add_field("workload")
+            .add_field("workload_propagule_ineligible")
+            ;
+            
+            
+            datafile df2("lod_entrench_final.dat");
+            df2.add_field("cost")
+            .add_field("iteration")
+            .add_field("update")
+            .add_field("organism_size")
+            .add_field("generation")
+            .add_field("generation_diff")
+            .add_field("workload")
+            .add_field("workload_propagule_ineligible")
+            ;
+            
+            int num_rep = get<ANALYSIS_LOD_REPS>(ea,1);
+            int start_cost = get<ANALYSIS_LOD_START_COST>(ea,0);
+            int meta_size = 1000;
+            int entrench_not_found = true;
+            std::set<int> checked_nums;
+            
+            line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
+            typename line_of_descent<EA>::iterator i=lod.end(); --i;
+
+            while (entrench_not_found) {
+                int revert_count = 0;
+                checked_nums.insert(start_cost);
+                for (int nr = 0; nr < num_rep; nr++) {
+                    // should define checkpoint + analysis input
+                    //ea is the thing loaded from the checkpoint; EA is its type
+                    EA metapop; // a new EA
+                    typename EA::md_type md(ea.md());
+                    
+                    metapop.initialize(md);
+                    put<RNG_SEED>(nr, metapop);
+                    
+                    if (nr != 0) {
+                        metapop.reset_rng(nr);
+                    }
+                    float start_gen = 0;
+                    typename EA::population_type init_mc;
+                    for (int j=0; j<meta_size; ++j){
+                        typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
+                        put<IND_REP_THRESHOLD>(start_cost, *control_mc);
+                        control_mc->reset_rng(ea.rng().uniform_integer());
+                        init_mc.insert(init_mc.end(),ea.make_individual(*control_mc));
+                        if (j ==0) {
+                            start_gen = get<IND_GENERATION>(*control_mc);
+                        }
+                    }
+                    
+                    std::swap(metapop.population(), init_mc);
+                    
+                    add_event<mt_gls_propagule>(metapop);
+                    
+                    int max_update = 50000;
+                    int cur_update = 0;
+                    int exit = false;
+                    
+                    
+                    while ((exit == false) &&
+                           (cur_update < max_update)){
+                        metapop.update();
+                        ++cur_update;
+                        
+                        if ((cur_update % 100)==0) {
+                            
+                            float total_workload = 0;
+                            float germ_workload = 0;
+                            float organism_size = 0;
+                            float num_germ = 0;
+                            float gen = 0;
+                            
+                            typedef typename EA::subpopulation_type::population_type subpop_type;
+                            
+                            for(typename EA::iterator j=metapop.begin(); j!=metapop.end(); ++j) {
+                                for(typename subpop_type::iterator m=j->population().begin(); m!=j->population().end(); ++m) {
+                                    typename EA::subpopulation_type::individual_type& org=**m;
+                                    total_workload += get<WORKLOAD>(org, 0.0);
+                                    if (get<GERM_STATUS>(org, 1)) {
+                                        germ_workload += get<WORKLOAD>(org, 0.0);
+                                        num_germ += 1;
+                                    }
+                                }
+                                organism_size += j->population().size();
+                                gen += get<IND_GENERATION>(*j);
+                            }
+                            /*     .add_field("cost")
+                             .add_field("iteration")
+                             .add_field("update")
+                             .add_field("generation")
+                             .add_field("generation_diff")
+                             .add_field("workload")
+                             .add_field("workload_propagule_ineligible")*/
+                            
+                            float mean_gen = gen/metapop.size();
+                            float mean_gen_diff = mean_gen - start_gen;
+
+                            float mean_size = organism_size/metapop.size();
+                            
+                            df2.write(start_cost)
+                            .write(nr)
+                            .write(metapop.current_update())
+                            .write(organism_size/metapop.size())
+                            .write(mean_gen)
+                            .write(mean_gen_diff)
+                            .write(total_workload/organism_size)
+                            .write(germ_workload/num_germ)
+                            .endl();
+                            
+                            if (mean_size < 2) {
+                                revert_count += 1;
+                                exit = true;
+                            }
+                            if (mean_gen_diff > 100) {
+                                exit = true;
+                            }
+                            
+                        }
+                    }
+                    if (revert_count < 1) {
+                        start_cost += 5;
+                        if (checked_nums.find(start_cost) != checked_nums.end()){
+                            entrench_not_found = false;
+                        }
+                    } else {
+                        start_cost -= 5;
+                        if ((checked_nums.find(start_cost) != checked_nums.end()) ||
+                            (start_cost < 0)){
+                            entrench_not_found = false;
+                        }
+                    }
+                }
+            }// end while
+        }
 
     }
 }

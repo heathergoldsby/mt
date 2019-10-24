@@ -262,34 +262,38 @@ public:
         add_option<ARCHIVE_OUTPUT_SIZE>(this);
         add_option<LOD_START_ANALYSIS>(this);
         add_option<LOD_END_ANALYSIS>(this);
+        add_option<ANALYSIS_LOD_REPS>(this);
+        add_option<ANALYSIS_LOD_START_COST>(this);
     }
     
     virtual void gather_tools() {
         
-        add_tool<movie>(this);
-        add_tool<ealib::analysis::lod_knockouts>(this);
-        add_tool<ealib::analysis::lod_knockouts2>(this);
-
-        add_tool<ealib::analysis::lod_knockouts_capabilities>(this);
-        add_tool<ealib::analysis::lod_report_gs>(this);
-        add_tool<ealib::analysis::lod_transition>(this);
-        add_tool<ealib::analysis::lod_gls_circle_square_plot>(this);
-        add_tool<ealib::analysis::movie_gs>(this);
-        add_tool<ealib::analysis::task_profile2>(this);
-        add_tool<ealib::analysis::temporal_poly>(this);
-        add_tool<ealib::analysis::dom_mutational_analysis>(this);
-        add_tool<ealib::analysis::merge_archives>(this);
-        add_tool<ealib::analysis::archive_population>(this);
-        add_tool<ealib::analysis::lod_archive_reversion>(this);
-        add_tool<ealib::analysis::archive_dominant>(this);
-        add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
-        add_tool<ealib::analysis::lod_last_knockouts_line>(this);
-        add_tool<ealib::analysis::lod_archive_trans>(this);
-        add_tool<ealib::analysis::lod_forced_uni>(this);
+//        add_tool<movie>(this);
+//        add_tool<ealib::analysis::lod_knockouts>(this);
+//        add_tool<ealib::analysis::lod_knockouts2>(this);
+//
+//        add_tool<ealib::analysis::lod_knockouts_capabilities>(this);
+//        add_tool<ealib::analysis::lod_report_gs>(this);
+//        add_tool<ealib::analysis::lod_transition>(this);
+//        add_tool<ealib::analysis::lod_gls_circle_square_plot>(this);
+//        add_tool<ealib::analysis::movie_gs>(this);
+//        add_tool<ealib::analysis::task_profile2>(this);
+//        add_tool<ealib::analysis::temporal_poly>(this);
+//        add_tool<ealib::analysis::dom_mutational_analysis>(this);
+//        add_tool<ealib::analysis::merge_archives>(this);
+//        add_tool<ealib::analysis::archive_population>(this);
+//        add_tool<ealib::analysis::lod_archive_reversion>(this);
+//        add_tool<ealib::analysis::archive_dominant>(this);
+//        add_tool<ealib::analysis::lod_last_knockouts_uni_analysis>(this);
+//        add_tool<ealib::analysis::lod_last_knockouts_line>(this);
+//        add_tool<ealib::analysis::lod_archive_trans>(this);
+//        add_tool<ealib::analysis::lod_forced_uni>(this);
         add_tool<ealib::analysis::lod_fitness>(this);
         add_tool<ealib::analysis::lod_fitness_no_mutations>(this);
         add_tool<ealib::analysis::lod_fitness_at_trans>(this);
         add_tool<ealib::analysis::lod_fitness_start_stop>(this);
+        add_tool<ealib::analysis::lod_final_entrench>(this);
+
 
     }
     
@@ -300,7 +304,7 @@ public:
         add_event<task_performed_tracking>(ea);
         //add_event<task_switch_tracking>(ea);
         add_event<dol_tracking>(ea);
-        add_event<ealib::analysis::mark_tracking>(ea);
+        //add_event<ealib::analysis::mark_tracking>(ea);
         
         
         

@@ -1158,17 +1158,22 @@ namespace ealib {
                     }
                     
                 }
-                if (revert_count < 1) {
+                if (revert_count < (num_rep / 2)) {
                     start_cost += 5;
                     if (checked_nums.find(start_cost) != checked_nums.end()){
                         entrench_not_found = false;
                     }
                 } else {
-                    start_cost -= 5;
+                    if (start_cost == 5){
+                        start_cost = 1;
+                    } else {
+                        start_cost -= 5;
+                    }
                     if ((checked_nums.find(start_cost) != checked_nums.end()) ||
-                        (start_cost < 0)){
+                        (start_cost < 0)) {
                         entrench_not_found = false;
                     }
+                    
                 }
             }// end while
         }

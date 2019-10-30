@@ -195,10 +195,10 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
             indrep = 0;
         } 
         
-        typename EA::environment_type::location_type& l=*ea.env().neighbor(p);
+        typename EA::environment_type::location_type& neighbor=*ea.env().neighbor(p);
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > indrep) {
             // only pay the cost if there is an open space.
-            if(!l.occupied()){
+            if(!neighbor.occupied()){
                 int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - indrep;
                 put<GROUP_RESOURCE_UNITS>(res_amt,ea);
             }

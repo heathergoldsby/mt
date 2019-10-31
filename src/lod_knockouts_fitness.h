@@ -1164,7 +1164,9 @@ namespace ealib {
                         entrench_not_found = false;
                     }
                 } else {
-                    if (start_cost == 5){
+                    if (start_cost == 1){
+                        start_cost = 0;
+                    } else if (start_cost == 5){
                         start_cost = 1;
                     } else {
                         start_cost -= 5;

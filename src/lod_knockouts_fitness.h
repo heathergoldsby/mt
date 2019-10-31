@@ -1116,13 +1116,13 @@ namespace ealib {
                             .write(germ_workload/num_germ)
                             .endl();
                             
-                            if ((mean_size < 2) ||
+                            if (((mean_size < 2) && (cur_update > 1000))||
                                 (mean_gen_diff > 100) ||
                                 ((cur_update > 10000) && (mean_gen_diff < 10)) ||
                                 ((num_germ/metapop.size()) < 0.5)) {
                                 int reverted = 0;
                                 
-                                if ((mean_size < 2) ||
+                                if (((mean_size < 2) && (cur_update > 1000)) ||
                                     ((cur_update > 10000) && (mean_gen_diff < 10))  ||
                                     ((num_germ/metapop.size()) < 0.5)) {
                                     revert_count += 1;

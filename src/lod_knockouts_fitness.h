@@ -1170,7 +1170,7 @@ namespace ealib {
                     }
                     
                 }
-                if (revert_count < (num_rep / 2)) {
+                if (revert_count <= (num_rep / 2)) {
                     start_cost += 5;
                     if (checked_nums.find(start_cost) != checked_nums.end()){
                         entrench_not_found = false;
@@ -1178,6 +1178,8 @@ namespace ealib {
                 } else {
                     if (start_cost == 5){
                         start_cost = 1;
+                    } else if (start_cost == 1) {
+                        start_cost = 0;
                     } else {
                         start_cost -= 5;
                     }

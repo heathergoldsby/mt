@@ -1016,10 +1016,11 @@ namespace ealib {
             int num_rep = get<ANALYSIS_LOD_REPS>(ea,1);
             int start_cost = get<ANALYSIS_LOD_START_COST>(ea,0);
             int timepoint = get<ANALYSIS_LOD_TIMEPOINT_TO_ANALYZE>(ea,0);
-
+            
             int meta_size = 1000;
             int entrench_not_found = true;
             std::set<int> checked_nums;
+            
             
             line_of_descent<EA> lod = lod_load(get<ANALYSIS_INPUT>(ea), ea);
             typename line_of_descent<EA>::iterator i;
@@ -1034,6 +1035,17 @@ namespace ealib {
                     }
                 }
             }
+            
+        
+//            add_option<NOT_MUTATION_MULT>(this);
+//            add_option<NAND_MUTATION_MULT>(this);
+//            add_option<AND_MUTATION_MULT>(this);
+//            add_option<ORNOT_MUTATION_MULT>(this);
+//            add_option<OR_MUTATION_MULT>(this);
+//            add_option<ANDNOT_MUTATION_MULT>(this);
+//            add_option<NOR_MUTATION_MULT>(this);
+//            add_option<XOR_MUTATION_MULT>(this);
+//            add_option<EQUALS_MUTATION_MULT>(this);
 
             while (entrench_not_found) {
                 int revert_count = 0;
@@ -1054,8 +1066,8 @@ namespace ealib {
                     typename EA::population_type init_mc;
                     for (int j=0; j<meta_size; ++j){
                         typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
+                        control_mc->initialize(metapop.md());
                         put<IND_REP_THRESHOLD>(start_cost, *control_mc);
-                        put<COST_START_UPDATE>(get<COST_START_UPDATE>(ea,0), *control_mc);
                         control_mc->reset_rng(ea.rng().uniform_integer());
                         init_mc.insert(init_mc.end(),ea.make_individual(*control_mc));
                         if (j ==0) {
@@ -1116,13 +1128,13 @@ namespace ealib {
                             .write(germ_workload/num_germ)
                             .endl();
                             
-                            if (((mean_size < 2) && (cur_update > 1000))||
+                            if ((mean_size < 2) ||
                                 (mean_gen_diff > 100) ||
                                 ((cur_update > 10000) && (mean_gen_diff < 10)) ||
                                 ((num_germ/metapop.size()) < 0.5)) {
                                 int reverted = 0;
                                 
-                                if (((mean_size < 2) && (cur_update > 1000)) ||
+                                if ((mean_size < 2) ||
                                     ((cur_update > 10000) && (mean_gen_diff < 10))  ||
                                     ((num_germ/metapop.size()) < 0.5)) {
                                     revert_count += 1;
@@ -1158,15 +1170,13 @@ namespace ealib {
                     }
                     
                 }
-                if (revert_count <= (num_rep / 2)) {
+                if (revert_count < (num_rep / 2)) {
                     start_cost += 5;
                     if (checked_nums.find(start_cost) != checked_nums.end()){
                         entrench_not_found = false;
                     }
                 } else {
-                    if (start_cost == 1){
-                        start_cost = 0;
-                    } else if (start_cost == 5){
+                    if (start_cost == 5){
                         start_cost = 1;
                     } else {
                         start_cost -= 5;

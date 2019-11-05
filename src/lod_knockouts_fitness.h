@@ -1083,6 +1083,8 @@ namespace ealib {
                     int cur_update = 0;
                     int exit = false;
                     
+                    int exit_mean_size = 0;
+                    
                     
                     while ((exit == false) &&
                            (cur_update < max_update)){
@@ -1116,6 +1118,11 @@ namespace ealib {
                             float mean_gen_diff = mean_gen - start_gen;
 
                             float mean_size = organism_size/metapop.size();
+                            if (mean_size < 2) {
+                                exit_mean_size++;
+                            } else {
+                                exit_mean_size = 0;
+                            }
                             
                             df.write(start_cost)
                             .write(nr)
@@ -1128,15 +1135,15 @@ namespace ealib {
                             .write(germ_workload/num_germ)
                             .endl();
                             
-                            if ((mean_size < 2) ||
+                            if ((exit_mean_size > 5) ||
                                 (mean_gen_diff > 100) ||
                                 ((cur_update > 10000) && (mean_gen_diff < 10)) ||
-                                ((num_germ/metapop.size()) < 0.5)) {
+                                ((num_germ/metapop.size()) < 0.25)) {
                                 int reverted = 0;
                                 
-                                if ((mean_size < 2) ||
+                                if ((exit_mean_size > 5) ||
                                     ((cur_update > 10000) && (mean_gen_diff < 10))  ||
-                                    ((num_germ/metapop.size()) < 0.5)) {
+                                    ((num_germ/metapop.size()) < 0.25)) {
                                     revert_count += 1;
                                     reverted = 1;
                                 }

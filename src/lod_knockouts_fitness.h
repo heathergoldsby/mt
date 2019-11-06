@@ -1014,7 +1014,7 @@ namespace ealib {
             ;
             
             int num_rep = get<ANALYSIS_LOD_REPS>(ea,1);
-            int start_cost = get<ANALYSIS_LOD_START_COST>(ea,0);
+            int start_mult = get<TISSUE_ACCRETION_MULT>(ea,0);
             int timepoint = get<ANALYSIS_LOD_TIMEPOINT_TO_ANALYZE>(ea,0);
             
             int meta_size = 1000;
@@ -1049,7 +1049,7 @@ namespace ealib {
 
             while (entrench_not_found) {
                 int revert_count = 0;
-                checked_nums.insert(start_cost);
+                checked_nums.insert(start_mult);
                 for (int nr = 0; nr < num_rep; nr++) {
                     // should define checkpoint + analysis input
                     //ea is the thing loaded from the checkpoint; EA is its type
@@ -1067,7 +1067,7 @@ namespace ealib {
                     for (int j=0; j<meta_size; ++j){
                         typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
                         control_mc->initialize(metapop.md());
-                        put<IND_REP_THRESHOLD>(start_cost, *control_mc);
+                        put<TISSUE_ACCRETION_MULT>(start_mult, *control_mc);
                         control_mc->reset_rng(ea.rng().uniform_integer());
                         init_mc.insert(init_mc.end(),ea.make_individual(*control_mc));
                         if (j ==0) {
@@ -1124,7 +1124,7 @@ namespace ealib {
                                 exit_mean_size = 0;
                             }
                             
-                            df.write(start_cost)
+                            df.write(start_mult)
                             .write(nr)
                             .write(metapop.current_update())
                             .write(organism_size/metapop.size())
@@ -1148,7 +1148,7 @@ namespace ealib {
                                     reverted = 1;
                                 }
                                 exit = true;
-                                df2.write(start_cost)
+                                df2.write(start_mult)
                                 .write(nr)
                                 .write(metapop.current_update())
                                 .write(organism_size/metapop.size())
@@ -1161,7 +1161,7 @@ namespace ealib {
                                 .endl();
                             }
                             if (cur_update == max_update){
-                                df2.write(start_cost)
+                                df2.write(start_mult)
                                 .write(nr)
                                 .write(metapop.current_update())
                                 .write(organism_size/metapop.size())
@@ -1178,20 +1178,20 @@ namespace ealib {
                     
                 }
                 if (revert_count <= (num_rep / 2)) {
-                    start_cost += 5;
-                    if (checked_nums.find(start_cost) != checked_nums.end()){
+                    start_mult += 2;
+                    if (checked_nums.find(start_mult) != checked_nums.end()){
                         entrench_not_found = false;
                     }
                 } else {
-                    if (start_cost == 5){
-                        start_cost = 1;
-                    } else if (start_cost == 1) {
-                        start_cost = 0;
+                    if (start_mult == 2){
+                        start_mult = 1;
+                    } else if (start_mult == 1) {
+                        start_mult = 0;
                     } else {
-                        start_cost -= 5;
+                        start_mult -= 2;
                     }
-                    if ((checked_nums.find(start_cost) != checked_nums.end()) ||
-                        (start_cost < 0)) {
+                    if ((checked_nums.find(start_mult) != checked_nums.end()) ||
+                        (start_mult < 0)) {
                         entrench_not_found = false;
                     }
                     

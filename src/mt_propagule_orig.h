@@ -101,6 +101,15 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
             put<GROUP_RESOURCE_UNITS>(res_amt,ea);
             // raise flag
             put<DIVIDE_REMOTE>(1, ea);
+            
+            // add a time cost to each organism.
+            int ind_cost = time_delay * get<SCHEDULER_TIME_SLICE>(ea,30);
+            typedef typename EA::population_type ind_type;
+            
+            for(typename ind_type::iterator j=ea.population().begin(); j!=ea.population().end(); ++j) {
+                (*j)->hw().add_cost(ind_cost);
+            }
+            
         }
     }
 }
@@ -668,8 +677,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 
                 
                 
-                int z =get<TIME_DELAY>(*i,0);
-                if ((get<DIVIDE_REMOTE>(*i,0) && (get<TIME_DELAY>(*i,0) == 0))){
+                int time_delay = get<TIME_DELAY>(*i,0);
+                if (time_delay > 0) put<TIME_DELAY>(time_delay-1, *i);
+                if ((get<DIVIDE_REMOTE>(*i,0) && (time_delay == 0))){
                     typename MEA::subpopulation_type::individual_type germ;
                     int germ_present = false;
                     

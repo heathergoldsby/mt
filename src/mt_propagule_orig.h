@@ -37,7 +37,11 @@ LIBEA_MD_DECL(COST_START_UPDATE, "ea.mt.cost_start_update", int);
 LIBEA_MD_DECL(COST_RAMP, "ea.mt.cost_ramp", int);
 LIBEA_MD_DECL(LAST_REPLICATION_STATE, "ea.mt.last_rep_state", int); // 0 uni, 1 mc, -1 not set
 LIBEA_MD_DECL(REPLICATION_STATE_INDEX, "ea.mt.rep_state_index", int); // increments based on number of flips
-LIBEA_MD_DECL(GENERATION, "ea.mt.rep_state_index", int); // increments based on number of flips
+LIBEA_MD_DECL(GENERATION, "ea.mt.rep_state_index", int); //
+LIBEA_MD_DECL(TISSUE_ACCRETION_MULT, "ea.mt.tissue_accretion_mult", int); //
+LIBEA_MD_DECL(NUM_CELLS_ACCRETED, "ea.mt.num_cells_accreted", int); //
+LIBEA_MD_DECL(TIME_DELAY, "ea.mt.time_delay", int); //
+
 
 
 //! Execute the next instruction if group resources exceed threshold.
@@ -89,6 +93,10 @@ DIGEVO_INSTRUCTION_DECL(h_divide_remote) {
         
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > get<GROUP_REP_THRESHOLD>(ea, 0.0)) {
             // set rest to zero
+            int num_cells_accreted = get<NUM_CELLS_ACCRETED>(ea, 0);
+            int time_delay = get<TISSUE_ACCRETION_MULT>(ea,0) * num_cells_accreted;
+            put<TIME_DELAY>(time_delay, ea);
+            put<NUM_CELLS_ACCRETED>(0, ea);
             int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - get<GROUP_REP_THRESHOLD>(ea, 0.0);
             put<GROUP_RESOURCE_UNITS>(res_amt,ea);
             // raise flag
@@ -196,11 +204,14 @@ DIGEVO_INSTRUCTION_DECL(h_divide_local) {
         } 
         
         typename EA::environment_type::location_type& neighbor=*ea.env().neighbor(p);
+
         if (get<GROUP_RESOURCE_UNITS>(ea, 0.0) > indrep) {
+            // raise flag
             // only pay the cost if there is an open space.
             if(!neighbor.occupied()){
                 int res_amt = get<GROUP_RESOURCE_UNITS>(ea) - indrep;
                 put<GROUP_RESOURCE_UNITS>(res_amt,ea);
+                put<NUM_CELLS_ACCRETED>(get<NUM_CELLS_ACCRETED>(ea,0)+1, ea);
             }
             replicate(p, offr, ea);
             
@@ -646,7 +657,7 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     multicell_rep.push_back(get<MULTICELL_REP_TIME>(*i,0));
                     multicell_res.push_back(get<GROUP_RESOURCE_UNITS>(*i,0));
                     multicell_size.push_back(alive_count);
-        
+                            
                     if (alive_count == 1) {
                         count_uni += 1;
                         uni_index += get<REPLICATION_STATE_INDEX>(*i,0);
@@ -657,8 +668,8 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 
                 
                 
-                
-                if (get<DIVIDE_REMOTE>(*i,0)){
+                int z =get<TIME_DELAY>(*i,0);
+                if ((get<DIVIDE_REMOTE>(*i,0) && (get<TIME_DELAY>(*i,0) == 0))){
                     typename MEA::subpopulation_type::individual_type germ;
                     int germ_present = false;
                     
@@ -793,7 +804,6 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 std::swap(mea.population(), survivors);
             }
         }
-        
         
         if ((mea.current_update() % 100) == 0) {
             _df.write(mea.current_update());

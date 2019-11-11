@@ -1036,17 +1036,6 @@ namespace ealib {
                 }
             }
             
-        
-//            add_option<NOT_MUTATION_MULT>(this);
-//            add_option<NAND_MUTATION_MULT>(this);
-//            add_option<AND_MUTATION_MULT>(this);
-//            add_option<ORNOT_MUTATION_MULT>(this);
-//            add_option<OR_MUTATION_MULT>(this);
-//            add_option<ANDNOT_MUTATION_MULT>(this);
-//            add_option<NOR_MUTATION_MULT>(this);
-//            add_option<XOR_MUTATION_MULT>(this);
-//            add_option<EQUALS_MUTATION_MULT>(this);
-
             while (entrench_not_found) {
                 int revert_count = 0;
                 checked_nums.insert(start_mult);
@@ -1057,19 +1046,22 @@ namespace ealib {
                     typename EA::md_type md(ea.md());
                     
                     metapop.initialize(md);
-                    put<RNG_SEED>(nr, metapop);
                     
+                    // Keep the seed the same for trial 0.
                     if (nr != 0) {
+                        put<RNG_SEED>(nr, metapop);
                         metapop.reset_rng(nr);
                     }
                     float start_gen = 0;
                     typename EA::population_type init_mc;
                     for (int j=0; j<meta_size; ++j){
-                        typename EA::individual_ptr_type control_mc = ea.make_individual(*i->traits().founder());
+                        typename EA::individual_ptr_type control_mc = metapop.make_individual(*i->traits().founder());
                         control_mc->initialize(metapop.md());
                         put<TISSUE_ACCRETION_MULT>(start_mult, *control_mc);
-                        control_mc->reset_rng(ea.rng().uniform_integer());
-                        init_mc.insert(init_mc.end(),ea.make_individual(*control_mc));
+                        if (init_mc.size() > 0) {
+                            control_mc->reset_rng(metapop.rng().uniform_integer());
+                        }
+                        init_mc.insert(init_mc.end(),metapop.make_individual(*control_mc));
                         if (j ==0) {
                             start_gen = get<IND_GENERATION>(*control_mc);
                         }

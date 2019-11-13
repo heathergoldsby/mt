@@ -678,7 +678,10 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                 
                 
                 int time_delay = get<TIME_DELAY>(*i,0);
-                if (time_delay > 0) put<TIME_DELAY>(time_delay-1, *i);
+                if (time_delay > 0) {
+                    int tmp_time_delay = time_delay -1;
+                    put<TIME_DELAY>(tmp_time_delay, *i);
+                }
                 if ((get<DIVIDE_REMOTE>(*i,0) && (time_delay == 0))){
                     typename MEA::subpopulation_type::individual_type germ;
                     int germ_present = false;
@@ -698,8 +701,9 @@ struct mt_gls_propagule : end_of_update_event<MEA> {
                     // get a new subpopulation:
                     typename MEA::individual_ptr_type p = mea.make_individual();
                     p->initialize(mea.md());
-                    p->reset_rng(mea.rng().seed());
-                    
+                    //p->reset_rng(mea.rng().seed());
+                    p->reset_rng(mea.rng().uniform_integer());
+
                     int total_workload = 0;
                     for(typename propagule_type::iterator j=i->population().begin(); j!=i->population().end(); ++j) {
                         typename MEA::subpopulation_type::individual_type& org=**j;

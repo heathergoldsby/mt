@@ -1043,9 +1043,9 @@ namespace ealib {
                     // should define checkpoint + analysis input
                     //ea is the thing loaded from the checkpoint; EA is its type
                     EA metapop; // a new EA
-                    typename EA::md_type md(ea.md());
+                    //typename EA::md_type md(ea.md());
                     
-                    metapop.initialize(md);
+                    metapop.initialize(ea.md());
                     
                     // Keep the seed the same for trial 0.
                     if (nr != 0) {
@@ -1056,11 +1056,11 @@ namespace ealib {
                     typename EA::population_type init_mc;
                     for (int j=0; j<meta_size; ++j){
                         typename EA::individual_ptr_type control_mc = metapop.make_individual(*i->traits().founder());
-                        control_mc->initialize(metapop.md());
+                        //control_mc->initialize(metapop.md());
                         put<TISSUE_ACCRETION_MULT>(start_mult, *control_mc);
-                        if (init_mc.size() > 0) {
-                            control_mc->reset_rng(metapop.rng().uniform_integer());
-                        }
+//                        if (init_mc.size() > 0) {
+//                            control_mc->reset_rng(metapop.rng().uniform_integer());
+//                        }
                         init_mc.insert(init_mc.end(),metapop.make_individual(*control_mc));
                         if (j ==0) {
                             start_gen = get<IND_GENERATION>(*control_mc);

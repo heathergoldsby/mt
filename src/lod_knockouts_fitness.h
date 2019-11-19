@@ -1048,10 +1048,10 @@ namespace ealib {
                     metapop.initialize(ea.md());
                     
                     // Keep the seed the same for trial 0.
-                    if (nr != 0) {
-                        put<RNG_SEED>(nr, metapop);
-                        metapop.reset_rng(nr);
-                    }
+                    int new_seed = ea.rng().uniform_integer();
+                    put<RNG_SEED>(new_seed, metapop);
+                    metapop.reset_rng(new_seed);
+                    
                     float start_gen = 0;
                     typename EA::population_type init_mc;
                     for (int j=0; j<meta_size; ++j){
